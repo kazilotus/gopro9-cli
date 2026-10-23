@@ -40,22 +40,23 @@ type Server struct {
 	now      func() time.Time
 
 	// Observable state (read under Lock or via Snapshot).
-	Recording    bool
-	Sleeping     bool
-	Locate       bool
-	Turbo        bool
-	Zoom         int
-	KeepAlives   int
-	WebcamStatus int // 0 off, 1 idle, 2 high-power preview, 3 low-power preview
-	Streaming    bool
-	PresetLoaded uint32
-	PresetGroup  uint32
-	Settings     map[uint16]int64
-	Status       map[uint16]json.RawMessage
-	Clock        time.Time
-	Media        []MediaFile
-	Hilights     map[string][]int64
-	Requests     []string
+	Recording     bool
+	Sleeping      bool
+	Locate        bool
+	Turbo         bool
+	Zoom          int
+	KeepAlives    int
+	WebcamStatus  int // 0 off, 1 idle, 2 high-power preview, 3 low-power preview
+	Streaming     bool
+	PresetLoaded  uint32
+	PresetGroup   uint32
+	Settings      map[uint16]int64
+	NotApplicable map[uint16]bool // settings the camera rejects in the current mode
+	Status        map[uint16]json.RawMessage
+	Clock         time.Time
+	Media         []MediaFile
+	Hilights      map[string][]int64
+	Requests      []string
 
 	// Behaviour toggles.
 	HostCheck bool
@@ -95,12 +96,13 @@ func New(tb testing.TB, opts ...Option) *Server {
 // Start launches a fake camera without a testing.TB (for examples and manual use).
 func Start(opts ...Option) (*Server, error) {
 	s := &Server{
-		fixtures:     map[string][]byte{},
-		now:          time.Now,
-		HostCheck:    true,
-		WebcamStatus: 1,
-		Hilights:     map[string][]int64{},
-		FailWith:     map[string]int{},
+		fixtures:      map[string][]byte{},
+		now:           time.Now,
+		HostCheck:     true,
+		WebcamStatus:  1,
+		Hilights:      map[string][]int64{},
+		FailWith:      map[string]int{},
+		NotApplicable: map[uint16]bool{},
 	}
 	for _, o := range opts {
 		o(s)
@@ -412,6 +414,11 @@ func (s *Server) shutter(start bool) http.HandlerFunc {
 }
 
 func (s *Server) setting(w http.ResponseWriter, r *http.Request) {
+	// The real camera parses positionally: "option" before "setting" is a 400.
+	if strings.HasPrefix(r.URL.RawQuery, "option=") {
+		writeJSON(w, http.StatusBadRequest, "{}")
+		return
+	}
 	q := r.URL.Query()
 	id, err := strconv.ParseUint(q.Get("setting"), 10, 16)
 	if err != nil {
@@ -428,8 +435,33 @@ func (s *Server) setting(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusBadRequest, "{}")
 		return
 	}
-	if _, valid := d.FromValue(uint32(opt)); !valid {
-		writeJSON(w, http.StatusForbidden, "{}")
+	s.mu.Lock()
+	notApplicable := s.NotApplicable[uint16(id)]
+	s.mu.Unlock()
+	reject := func(available []uint32) {
+		if available == nil {
+			available = []uint32{}
+		}
+		b, _ := json.Marshal(map[string]any{"error": 1, "option_id": opt, "setting_id": id, "available_options": available})
+		writeJSON(w, http.StatusForbidden, string(b))
+	}
+	if notApplicable {
+		reject(nil)
+		return
+	}
+	s.mu.Lock()
+	current := s.Settings[uint16(id)]
+	s.mu.Unlock()
+	// Like the real camera, re-asserting the current value always succeeds,
+	// even when the spec does not list that value for the HERO9.
+	if o, valid := d.FromValue(uint32(opt)); int64(opt) != current && (!valid || !o.SupportedOnHERO9()) {
+		var avail []uint32
+		for _, oi := range d.Options {
+			if oi.HERO9 {
+				avail = append(avail, oi.Value)
+			}
+		}
+		reject(avail)
 		return
 	}
 	s.set(func() { s.Settings[uint16(id)] = int64(opt) })

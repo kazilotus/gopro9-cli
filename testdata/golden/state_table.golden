@@ -11,7 +11,7 @@ setting.max-lens                      On
 setting.media-format                  12
 setting.multi-shot-duration           No Limit
 setting.nightlapse-rate               10 Seconds
-setting.photo-lens                    0
+setting.photo-lens                    Wide 12 MP
 setting.photo-output                  Standard
 setting.photo-timelapse-rate          0.5 Seconds
 setting.scheduled-capture             0

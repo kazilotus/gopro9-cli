@@ -13,6 +13,7 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"github.com/kazilotus/gopro9-cli/internal/exitcode"
+	"github.com/kazilotus/gopro9-cli/pkg/gopro/ogp"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/settings"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/transport"
 )
@@ -158,10 +159,7 @@ numeric option. Only options the HERO9 supports are accepted; see
 				return err
 			}
 			if err := cam.OGP.SetSetting(cmd.Context(), opt); err != nil {
-				if errors.Is(err, transport.ErrForbidden) {
-					return &cameraError{err: fmt.Errorf("camera rejected %s=%s (not valid in the current mode or preset)", d.Name, opt), code: exitcode.TempFail}
-				}
-				return wrapCameraErr(err)
+				return rejectionError(d, opt, err)
 			}
 			return a.print(cmd, settingRow{ID: d.ID, Name: d.Name, Title: d.Title, Value: opt.String(), Raw: int64(opt.Value()), Known: true})
 		},
@@ -222,10 +220,14 @@ numeric option. Only options the HERO9 supports are accepted; see
 		},
 	}
 
+	var strict bool
 	apply := &cobra.Command{
 		Use:   "apply <file.yaml|->",
 		Short: "Apply settings from a YAML map of name: value (as produced by `setting dump`)",
-		Args:  cobra.ExactArgs(1),
+		Long: `Applies every entry in order of setting id. Settings the camera reports as
+not applicable in its current mode (for example time-lapse rates while in
+video mode) are skipped and listed on stderr; pass --strict to fail instead.`,
+		Args: cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			var data []byte
 			var err error
@@ -267,18 +269,52 @@ numeric option. Only options the HERO9 supports are accepted; see
 				return err
 			}
 			applied := settingListResult{}
+			var skipped []string
 			for _, p := range pairs {
-				if err := cam.OGP.SetSetting(cmd.Context(), p.opt); err != nil {
-					return wrapCameraErr(fmt.Errorf("%s=%s: %w", p.d.Name, p.opt, err))
+				err := cam.OGP.SetSetting(cmd.Context(), p.opt)
+				var rej *ogp.SettingRejectedError
+				switch {
+				case err == nil:
+					applied.Settings = append(applied.Settings, settingRow{ID: p.d.ID, Name: p.d.Name, Title: p.d.Title, Value: p.opt.String(), Raw: int64(p.opt.Value()), Known: true})
+				case errors.As(err, &rej) && !rej.Applicable() && !strict:
+					skipped = append(skipped, p.d.Name)
+				default:
+					return rejectionError(p.d, p.opt, err)
 				}
-				applied.Settings = append(applied.Settings, settingRow{ID: p.d.ID, Name: p.d.Name, Title: p.d.Title, Value: p.opt.String(), Raw: int64(p.opt.Value()), Known: true})
+			}
+			if len(skipped) > 0 && !a.opts.Quiet {
+				_, _ = fmt.Fprintf(cmd.ErrOrStderr(), "skipped (not applicable in the current mode): %s\n", strings.Join(skipped, ", "))
 			}
 			return a.print(cmd, applied)
 		},
 	}
+	apply.Flags().BoolVar(&strict, "strict", false, "fail when the camera rejects any setting instead of skipping inapplicable ones")
 
 	cmd.AddCommand(list, get, set, describe, dump, apply)
 	return cmd
+}
+
+// rejectionError turns a camera refusal into an actionable message.
+func rejectionError(d settings.Descriptor, opt settings.Option, err error) error {
+	var rej *ogp.SettingRejectedError
+	if !errors.As(err, &rej) {
+		if errors.Is(err, transport.ErrForbidden) {
+			return &cameraError{err: fmt.Errorf("camera rejected %s=%s", d.Name, opt), code: exitcode.TempFail}
+		}
+		return wrapCameraErr(err)
+	}
+	if !rej.Applicable() {
+		return &cameraError{err: fmt.Errorf("camera rejected %s=%s: setting does not apply in the current mode or preset", d.Name, opt), code: exitcode.TempFail}
+	}
+	labels := make([]string, 0, len(rej.AvailableOptions))
+	for _, v := range rej.AvailableOptions {
+		if o, ok := d.FromValue(v); ok {
+			labels = append(labels, o.String())
+		} else {
+			labels = append(labels, strconv.FormatUint(uint64(v), 10))
+		}
+	}
+	return &cameraError{err: fmt.Errorf("camera rejected %s=%s; valid right now: %s", d.Name, opt, strings.Join(labels, ", ")), code: exitcode.TempFail}
 }
 
 func unknownSetting(name string) error {

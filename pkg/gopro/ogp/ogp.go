@@ -5,9 +5,9 @@ package ogp
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
-	"net/url"
 	"strconv"
 	"time"
 
@@ -74,12 +74,48 @@ func (c *Client) Shutter(ctx context.Context, a ShutterAction) error {
 	return err
 }
 
+// SettingRejectedError is returned when the camera answers a setting change
+// with 403. The camera lists the options it would accept right now; an empty
+// list means the setting does not apply in the current mode or preset.
+type SettingRejectedError struct {
+	Setting          settings.SettingID
+	Option           uint32
+	AvailableOptions []uint32
+	Err              error
+}
+
+func (e *SettingRejectedError) Error() string {
+	if len(e.AvailableOptions) == 0 {
+		return fmt.Sprintf("camera rejected %s=%d: setting not applicable in the current mode", e.Setting, e.Option)
+	}
+	return fmt.Sprintf("camera rejected %s=%d: valid now: %v", e.Setting, e.Option, e.AvailableOptions)
+}
+
+// Unwrap exposes the transport error (and thus transport.ErrForbidden).
+func (e *SettingRejectedError) Unwrap() error { return e.Err }
+
+// Applicable reports whether the camera would accept any option for the setting right now.
+func (e *SettingRejectedError) Applicable() bool { return len(e.AvailableOptions) > 0 }
+
 // SetSetting applies one typed setting option.
 func (c *Client) SetSetting(ctx context.Context, opt settings.Option) error {
-	q := url.Values{}
-	q.Set("setting", strconv.FormatUint(uint64(opt.ID()), 10))
-	q.Set("option", strconv.FormatUint(uint64(opt.Value()), 10))
-	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/setting", Query: q})
+	// Order matters: the camera returns 400 when option precedes setting.
+	params := transport.Params{
+		transport.P("setting", strconv.FormatUint(uint64(opt.ID()), 10)),
+		transport.P("option", strconv.FormatUint(uint64(opt.Value()), 10)),
+	}
+	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/setting", Params: params})
+	var te *transport.Error
+	if errors.As(err, &te) && te.Status == 403 {
+		rej := &SettingRejectedError{Setting: opt.ID(), Option: opt.Value(), Err: err}
+		var body struct {
+			Available []uint32 `json:"available_options"`
+		}
+		if json.Unmarshal(te.Body, &body) == nil {
+			rej.AvailableOptions = body.Available
+		}
+		return rej
+	}
 	return err
 }
 
@@ -117,9 +153,7 @@ func (c *Client) Presets(ctx context.Context) (presets.Status, error) {
 
 // LoadPreset activates a preset by numeric id.
 func (c *Client) LoadPreset(ctx context.Context, id uint32) error {
-	q := url.Values{}
-	q.Set("id", strconv.FormatUint(uint64(id), 10))
-	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/presets/load", Query: q})
+	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/presets/load", Params: transport.Params{transport.P("id", strconv.FormatUint(uint64(id), 10))}})
 	return err
 }
 
@@ -129,9 +163,7 @@ func (c *Client) SetPresetGroup(ctx context.Context, g presets.Group) error {
 	if !ok {
 		return fmt.Errorf("ogp: unknown preset group %q", g)
 	}
-	q := url.Values{}
-	q.Set("id", strconv.FormatUint(uint64(id), 10))
-	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/presets/set_group", Query: q})
+	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/presets/set_group", Params: transport.Params{transport.P("id", strconv.FormatUint(uint64(id), 10))}})
 	return err
 }
 
@@ -140,17 +172,13 @@ func (c *Client) DigitalZoom(ctx context.Context, percent uint8) error {
 	if percent > 100 {
 		return fmt.Errorf("ogp: zoom %d%% out of range 0-100", percent)
 	}
-	q := url.Values{}
-	q.Set("percent", strconv.Itoa(int(percent)))
-	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/digital_zoom", Query: q})
+	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/digital_zoom", Params: transport.Params{transport.P("percent", strconv.Itoa(int(percent)))}})
 	return err
 }
 
 // TurboTransfer toggles turbo mode, which prioritises USB bandwidth for media transfer.
 func (c *Client) TurboTransfer(ctx context.Context, on bool) error {
-	q := url.Values{}
-	q.Set("p", boolParam(on))
-	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/media/turbo_transfer", Query: q})
+	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/media/turbo_transfer", Params: transport.Params{transport.P("p", boolParam(on))}})
 	return err
 }
 
@@ -172,10 +200,8 @@ func (c *Client) GetDateTime(ctx context.Context) (DateTime, error) {
 
 // SetDateTime writes the camera clock (local wall time; the HERO9 has no timezone field).
 func (c *Client) SetDateTime(ctx context.Context, t time.Time) error {
-	q := url.Values{}
-	q.Set("date", t.Format("2006_01_02"))
-	q.Set("time", t.Format("15_04_05"))
-	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/set_date_time", Query: q})
+	params := transport.Params{transport.P("date", t.Format("2006_01_02")), transport.P("time", t.Format("15_04_05"))}
+	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/camera/set_date_time", Params: params})
 	return err
 }
 
@@ -193,12 +219,11 @@ func (c *Client) hilight(ctx context.Context, endpoint, path string, offset time
 	if path == "" {
 		return errors.New("ogp: media path required")
 	}
-	q := url.Values{}
-	q.Set("path", path)
+	params := transport.Params{transport.P("path", path)}
 	if offset > 0 {
-		q.Set("ms", strconv.FormatInt(offset.Milliseconds(), 10))
+		params = append(params, transport.P("ms", strconv.FormatInt(offset.Milliseconds(), 10)))
 	}
-	_, err := c.t.Get(ctx, transport.Request{Path: endpoint, Query: q})
+	_, err := c.t.Get(ctx, transport.Request{Path: endpoint, Params: params})
 	return err
 }
 

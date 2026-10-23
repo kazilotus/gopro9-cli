@@ -133,7 +133,7 @@ func TestSettingCommands(t *testing.T) {
 	assert.Equal(t, int64(1), cam.Settings[2])
 
 	_, errOut, code := runCam(t, cam, "setting", "set", "video-resolution", "8K")
-	assert.Equal(t, 0, code, "documented for other cameras: allowed with a warning")
+	assert.Equal(t, 75, code, "documented for other cameras: sent with a warning, camera rejects")
 	assert.Contains(t, errOut, "not listed for the HERO9")
 	_, errOut, code = runCam(t, cam, "setting", "set", "video-resolution", "999")
 	assert.Equal(t, 64, code)
@@ -143,13 +143,17 @@ func TestSettingCommands(t *testing.T) {
 	assert.Equal(t, 64, code)
 	assert.Contains(t, errOut, "unknown setting")
 
-	cam.FailWith["/gopro/camera/setting"] = 403
 	_, _, code = runCam(t, cam, "setting", "set", "fps", "60")
 	assert.Equal(t, 64, code, "fps is not a known name")
+	cam.NotApplicable[3] = true
 	_, errOut, code = runCam(t, cam, "setting", "set", "frames-per-second", "60")
 	assert.Equal(t, 75, code)
-	assert.Contains(t, errOut, "not valid in the current mode")
-	delete(cam.FailWith, "/gopro/camera/setting")
+	assert.Contains(t, errOut, "does not apply in the current mode")
+	delete(cam.NotApplicable, 3)
+	// Option documented for another camera: fake rejects it and lists what is valid now.
+	_, errOut, code = runCam(t, cam, "setting", "set", "video-resolution", "5.3K")
+	assert.Equal(t, 75, code)
+	assert.Contains(t, errOut, "valid right now: 4K")
 
 	out, _, code = runCam(t, cam, "setting", "describe", "video-lens", "--output", "json")
 	require.Equal(t, 0, code)
@@ -179,6 +183,16 @@ func TestSettingDumpApply(t *testing.T) {
 	_, errOut, code = runCam(t, cam, "setting", "apply", file)
 	assert.Equal(t, 0, code, "round-trip apply: %s\ninput:\n%s", errOut, dumped)
 
+	// Settings not applicable in the current mode are skipped unless --strict.
+	cam.NotApplicable[5] = true
+	_, errOut, code = runCam(t, cam, "setting", "apply", file)
+	assert.Equal(t, 0, code, errOut)
+	assert.Contains(t, errOut, "skipped (not applicable in the current mode): video-timelapse-rate")
+	_, errOut, code = runCam(t, cam, "setting", "apply", file, "--strict")
+	assert.Equal(t, 75, code)
+	assert.Contains(t, errOut, "does not apply")
+	delete(cam.NotApplicable, 5)
+
 	require.NoError(t, os.WriteFile(file, []byte("video-resolution: \"999\"\n"), 0o600))
 	_, errOut, code = runCam(t, cam, "setting", "apply", file)
 	assert.Equal(t, 64, code)
@@ -206,7 +220,12 @@ func TestSettingDumpApply(t *testing.T) {
 
 func TestZoomPowerTurbo(t *testing.T) {
 	cam := fakecam.New(t)
-	_, _, code := runCam(t, cam, "zoom", "35")
+	cam.Status[77] = []byte("0") // zoom unavailable (Max Lens Mod)
+	_, errOut, code := runCam(t, cam, "zoom", "35")
+	assert.Equal(t, 75, code)
+	assert.Contains(t, errOut, "not available")
+	cam.Status[77] = []byte("1")
+	_, _, code = runCam(t, cam, "zoom", "35")
 	require.Equal(t, 0, code)
 	assert.Equal(t, 35, cam.Zoom)
 	_, _, code = runCam(t, cam, "zoom", "250")

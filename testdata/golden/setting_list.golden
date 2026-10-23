@@ -10,7 +10,7 @@ ID   NAME                       VALUE          OPTIONS
 88   lcd-brightness             100            10-100
 91   led                        All On         All On, All Off, Front Off Only
 121  video-lens                 Max SuperView  Wide, Narrow, Superview, Linear, Max SuperView, Linear + Horizon Leveling
-122  photo-lens                 0              Narrow, Max SuperView, Wide, Linear
+122  photo-lens                 Wide 12 MP     Narrow, Max SuperView, Wide, Linear
 123  time-lapse-digital-lenses  0              Narrow, Wide, Linear
 125  photo-output               Standard       Standard, Raw, HDR, SuperPhoto
 128  media-format               12             Time Lapse Video, Time Lapse Photo, Night Lapse Photo, Night Lapse Video
@@ -20,4 +20,4 @@ ID   NAME                       VALUE          OPTIONS
 157  multi-shot-duration        No Limit       15 Seconds, 30 Seconds, 1 Minute, 5 Minutes, 15 Minutes, 30 Minutes, 1 Hour, 2 Hours, 3 Hours, No Limit
 162  max-lens                   On             Off, On
 167  hindsight                  Off            15 Seconds, 30 Seconds, Off
-168  scheduled-capture          0              2-8
+168  scheduled-capture          0              integer

@@ -170,7 +170,7 @@ func parseValueTable(desc string) []tableRow {
 	return rows
 }
 
-var rangeRe = regexp.MustCompile(`(\d+)\s*-\s*(\d+)`)
+var rangeRe = regexp.MustCompile(`from (\d+)\s*-\s*(\d+)`)
 
 func parseRange(desc string) (uint32, uint32) {
 	m := rangeRe.FindStringSubmatch(desc)

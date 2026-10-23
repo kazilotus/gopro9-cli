@@ -4,7 +4,6 @@ package gpcontrol
 
 import (
 	"context"
-	"net/url"
 
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/ogp"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/transport"
@@ -67,13 +66,11 @@ func (c *Client) Sleep(ctx context.Context) error {
 
 // Locate turns the locate beep on or off.
 func (c *Client) Locate(ctx context.Context, on bool) error {
-	q := url.Values{}
+	p := "0"
 	if on {
-		q.Set("p", "1")
-	} else {
-		q.Set("p", "0")
+		p = "1"
 	}
-	_, err := c.t.Get(ctx, transport.Request{Path: "/gp/gpControl/command/system/locate", Query: q})
+	_, err := c.t.Get(ctx, transport.Request{Path: "/gp/gpControl/command/system/locate", Params: transport.Params{transport.P("p", p)}})
 	return err
 }
 

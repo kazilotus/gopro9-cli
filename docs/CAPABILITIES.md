@@ -103,7 +103,7 @@ Options marked `*` are documented by the spec but not listed for the HERO9; the 
 | 157 | `multi-shot-duration` | 0=Off*, 1=15 Seconds, 2=30 Seconds, 3=1 Minute, 4=5 Minutes, 5=15 Minutes, 6=30 Minutes, 7=1 Hour, 8=2 Hours, 9=3 Hours, 100=No Limit |
 | 162 | `max-lens` | 0=Off, 1=On |
 | 167 | `hindsight` | 2=15 Seconds, 3=30 Seconds, 4=Off |
-| 168 | `scheduled-capture` | integer 2–8 |
+| 168 | `scheduled-capture` | integer |
 
 ## Statuses (83 documented, 74 for HERO9)
 

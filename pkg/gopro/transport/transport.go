@@ -17,6 +17,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -130,9 +131,15 @@ type Response struct {
 }
 
 // Request describes one camera call.
+//
+// The camera's CGI handler parses query parameters positionally: for
+// /gopro/camera/setting the `setting` parameter must precede `option` or
+// the camera answers 400. url.Values.Encode sorts keys alphabetically and
+// would break that, so Params preserves the caller's order.
 type Request struct {
 	Path       string     // e.g. "/gopro/camera/state"
-	Query      url.Values // optional
+	Params     Params     // ordered query parameters (preferred)
+	Query      url.Values // unordered query parameters (appended after Params)
 	Headers    http.Header
 	Idempotent bool // enables retry on transport failures
 	// Accept lists status codes that are not errors (default: 2xx only).
@@ -179,10 +186,40 @@ func (c *Client) Post(ctx context.Context, req Request, contentType string, body
 
 func (c *Client) url(req Request) string {
 	u := c.ep.BaseURL() + req.Path
+	q := req.Params.Encode()
 	if len(req.Query) > 0 {
-		u += "?" + req.Query.Encode()
+		if q != "" {
+			q += "&"
+		}
+		q += req.Query.Encode()
+	}
+	if q != "" {
+		u += "?" + q
 	}
 	return u
+}
+
+// Param is one query parameter.
+type Param struct{ Key, Value string }
+
+// Params is an ordered list of query parameters.
+type Params []Param
+
+// P builds a Param.
+func P(key, value string) Param { return Param{Key: key, Value: value} }
+
+// Encode renders the parameters in order, percent-escaped.
+func (p Params) Encode() string {
+	var b strings.Builder
+	for i, kv := range p {
+		if i > 0 {
+			b.WriteByte('&')
+		}
+		b.WriteString(url.QueryEscape(kv.Key))
+		b.WriteByte('=')
+		b.WriteString(url.QueryEscape(kv.Value))
+	}
+	return b.String()
 }
 
 func (c *Client) do(ctx context.Context, method string, req Request, body io.Reader) (*http.Response, io.ReadCloser, error) {

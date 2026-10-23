@@ -141,12 +141,19 @@ func TestQueryEncoding(t *testing.T) {
 	var got string
 	ep := newServer(t, func(_ http.ResponseWriter, r *http.Request) { got = r.URL.RawQuery })
 	c := New(ep)
-	q := url.Values{}
-	q.Set("setting", "2")
-	q.Set("option", "9")
-	_, err := c.Get(context.Background(), Request{Path: "/gopro/camera/setting", Query: q})
+	// Ordered params keep caller order (the camera parses them positionally).
+	_, err := c.Get(context.Background(), Request{Path: "/gopro/camera/setting", Params: Params{P("setting", "2"), P("option", "9")}})
 	require.NoError(t, err)
-	assert.Equal(t, "option=9&setting=2", got)
+	assert.Equal(t, "setting=2&option=9", got)
+	// Unordered values are appended after ordered ones, sorted.
+	q := url.Values{}
+	q.Set("z", "1")
+	q.Set("a", "x y")
+	_, err = c.Get(context.Background(), Request{Path: "/x", Params: Params{P("first", "1")}, Query: q})
+	require.NoError(t, err)
+	assert.Equal(t, "first=1&a=x+y&z=1", got)
+	assert.Equal(t, "path=100GOPRO%2FGH010397.MP4", Params{P("path", "100GOPRO/GH010397.MP4")}.Encode())
+	assert.Empty(t, Params(nil).Encode())
 }
 
 func TestRetryOnlyForIdempotent(t *testing.T) {

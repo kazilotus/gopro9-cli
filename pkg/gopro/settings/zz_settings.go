@@ -2219,20 +2219,14 @@ func (o *HindSight) UnmarshalText(text []byte) error { return o.Set(string(text)
 // time.
 type ScheduledCapture uint32
 
-// Bounds for ScheduledCapture.
-const (
-	ScheduledCaptureMin ScheduledCapture = 2
-	ScheduledCaptureMax ScheduledCapture = 8
-)
-
 // ID implements Option.
 func (ScheduledCapture) ID() SettingID { return SettingScheduledCapture }
 
 // Value implements Option.
 func (o ScheduledCapture) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is within the documented range.
-func (o ScheduledCapture) Valid() bool { return o >= ScheduledCaptureMin && o <= ScheduledCaptureMax }
+// Valid always reports true: the spec documents no bounds for this setting.
+func (ScheduledCapture) Valid() bool { return true }
 
 // SupportedOnHERO9 always reports true for numeric settings documented for the HERO9.
 func (ScheduledCapture) SupportedOnHERO9() bool { return true }
@@ -2607,7 +2601,7 @@ var descriptors = []Descriptor{
 	},
 	{
 		ID: SettingScheduledCapture, Name: "scheduled-capture", Title: "Scheduled Capture", Numeric: true,
-		Min: 2, Max: 8,
+		Min: 0, Max: 0,
 		parse:     func(s string) (Option, error) { return ParseScheduledCapture(s) },
 		fromValue: func(v uint32) (Option, bool) { o := ScheduledCapture(v); return o, o.Valid() },
 	},

@@ -44,6 +44,7 @@ legacy:   # /gp/gpControl endpoints absent from the upstream spec, probed on 1.7
   GP_VERSION:           { path: "/gp/gpControl/version",                    support: unsupported, note: "400 from gpcontrol_cgi_handler 6.00" }
   DCIM_INDEX:           { path: "/videos/DCIM/",                            support: verified, note: "HTML listing; sort params nd dd sd" }
 transport_facts:
+  query_params_positional: true   # /gopro/camera/setting?setting=N&option=M; option first → 400
   ports_http: [80, 8000, 8001, 8080]
   port_unknown_tcp: 8081
   udp_stream_port: 8554

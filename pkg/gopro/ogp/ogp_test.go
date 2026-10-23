@@ -75,6 +75,18 @@ func TestSettings(t *testing.T) {
 
 	err = c.SetSetting(ctx, settings.VideoResolution(250))
 	require.ErrorIs(t, err, transport.ErrForbidden)
+	var rej *ogp.SettingRejectedError
+	require.ErrorAs(t, err, &rej)
+	assert.True(t, rej.Applicable())
+	assert.Contains(t, rej.AvailableOptions, uint32(1))
+	assert.Contains(t, rej.Error(), "valid now")
+
+	cam.NotApplicable[2] = true
+	err = c.SetSetting(ctx, settings.VideoResolution4K)
+	require.ErrorAs(t, err, &rej)
+	assert.False(t, rej.Applicable())
+	assert.Contains(t, rej.Error(), "not applicable")
+	delete(cam.NotApplicable, 2)
 
 	// Undocumented setting still surfaces its raw value.
 	raw, err := c.GetSetting(ctx, settings.SettingID(169))

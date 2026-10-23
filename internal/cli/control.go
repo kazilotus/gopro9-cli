@@ -290,6 +290,13 @@ func (a *App) newZoomCommand() *cobra.Command {
 			if err != nil {
 				return err
 			}
+			st, err := cam.OGP.State(cmd.Context())
+			if err != nil {
+				return wrapCameraErr(err)
+			}
+			if !st.Status.ZoomAvailable {
+				return &cameraError{err: errors.New("digital zoom is not available in the current mode (disabled with Max Lens Mod and in some presets)"), code: exitcode.TempFail}
+			}
 			if err := cam.OGP.DigitalZoom(cmd.Context(), uint8(n)); err != nil {
 				return wrapCameraErr(err)
 			}
