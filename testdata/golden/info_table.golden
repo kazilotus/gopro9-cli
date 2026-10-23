@@ -1,0 +1,9 @@
+model            HERO9 Black
+firmware         HD9.01.01.72.00
+labs             false
+serial           C3XXXXXXXXXXXX
+board            0x05
+ap ssid          HERO9 Black
+ap mac           000000000000
+open gopro api   2.0
+update required  0

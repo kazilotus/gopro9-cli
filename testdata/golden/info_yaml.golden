@@ -1,0 +1,18 @@
+ok: true
+data:
+  model_number: 55
+  model_name: HERO9 Black
+  firmware_version: HD9.01.01.72.00
+  serial_number: C3XXXXXXXXXXXX
+  board_type: "0x05"
+  ap_mac: "000000000000"
+  ap_ssid: HERO9 Black
+  ap_has_default_credentials: "0"
+  capabilities: "16"
+  lens_count: "1"
+  update_required: "0"
+  required_networks:
+    - ble
+  http_keepalive: 1
+  api_version: "2.0"
+  labs: false

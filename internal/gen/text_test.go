@@ -24,6 +24,11 @@ func TestPascal(t *testing.T) {
 	assert.Equal(t, "2_7K4x3", optionIdent("2.7K 4:3"))
 	assert.Equal(t, "30", optionIdent("30.0"))
 	assert.Equal(t, "Wide", optionIdent("Wide"))
+	assert.Equal(t, "NeverStarted", optionIdent("Never Started"))
+	assert.Equal(t, "CameraIdle", optionIdent("Camera Idle: No one is attempting to change camera settings"))
+	assert.Equal(t, "AccessoryConnectedAndAMicrophoneIs", optionIdent("Accessory connected and a microphone is plugged into the accessory"))
+	assert.Equal(t, "N000", pascal("000"))
+	assert.Equal(t, "000", optionIdent("000: Display Mod: 0"))
 }
 
 func TestKebab(t *testing.T) {

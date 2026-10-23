@@ -539,8 +539,8 @@ type WebcamDigitalLenses uint16
 const (
 	// WebcamDigitalLensesWide is "Wide".
 	WebcamDigitalLensesWide WebcamDigitalLenses = 0
-	// WebcamDigitalLensesarrow is "Narrow".
-	WebcamDigitalLensesarrow WebcamDigitalLenses = 2
+	// WebcamDigitalLensesNarrow is "Narrow".
+	WebcamDigitalLensesNarrow WebcamDigitalLenses = 2
 	// WebcamDigitalLensesSuperview is "Superview".
 	WebcamDigitalLensesSuperview WebcamDigitalLenses = 3
 	// WebcamDigitalLensesLinear is "Linear".
@@ -549,7 +549,7 @@ const (
 
 var webcamDigitalLensesLabels = map[WebcamDigitalLenses]string{
 	WebcamDigitalLensesWide:      "Wide",
-	WebcamDigitalLensesarrow:     "Narrow",
+	WebcamDigitalLensesNarrow:    "Narrow",
 	WebcamDigitalLensesSuperview: "Superview",
 	WebcamDigitalLensesLinear:    "Linear",
 }
@@ -613,8 +613,8 @@ type AutoPowerDown uint16
 
 // AutoPowerDown options supported by the HERO9 Black.
 const (
-	// AutoPowerDownever is "Never".
-	AutoPowerDownever AutoPowerDown = 0
+	// AutoPowerDownNever is "Never".
+	AutoPowerDownNever AutoPowerDown = 0
 	// AutoPowerDown5Min is "5 Min".
 	AutoPowerDown5Min AutoPowerDown = 4
 	// AutoPowerDown15Min is "15 Min".
@@ -624,7 +624,7 @@ const (
 )
 
 var autoPowerDownLabels = map[AutoPowerDown]string{
-	AutoPowerDownever:  "Never",
+	AutoPowerDownNever: "Never",
 	AutoPowerDown5Min:  "5 Min",
 	AutoPowerDown15Min: "15 Min",
 	AutoPowerDown30Min: "30 Min",
@@ -889,8 +889,8 @@ type VideoLens uint16
 const (
 	// VideoLensWide is "Wide".
 	VideoLensWide VideoLens = 0
-	// VideoLensarrow is "Narrow".
-	VideoLensarrow VideoLens = 2
+	// VideoLensNarrow is "Narrow".
+	VideoLensNarrow VideoLens = 2
 	// VideoLensSuperview is "Superview".
 	VideoLensSuperview VideoLens = 3
 	// VideoLensLinear is "Linear".
@@ -903,7 +903,7 @@ const (
 
 var videoLensLabels = map[VideoLens]string{
 	VideoLensWide:                      "Wide",
-	VideoLensarrow:                     "Narrow",
+	VideoLensNarrow:                    "Narrow",
 	VideoLensSuperview:                 "Superview",
 	VideoLensLinear:                    "Linear",
 	VideoLensMaxSuperView:              "Max SuperView",
@@ -969,8 +969,8 @@ type PhotoLens uint16
 
 // PhotoLens options supported by the HERO9 Black.
 const (
-	// PhotoLensarrow is "Narrow".
-	PhotoLensarrow PhotoLens = 19
+	// PhotoLensNarrow is "Narrow".
+	PhotoLensNarrow PhotoLens = 19
 	// PhotoLensMaxSuperView is "Max SuperView".
 	PhotoLensMaxSuperView PhotoLens = 100
 	// PhotoLensWide is "Wide".
@@ -980,7 +980,7 @@ const (
 )
 
 var photoLensLabels = map[PhotoLens]string{
-	PhotoLensarrow:        "Narrow",
+	PhotoLensNarrow:       "Narrow",
 	PhotoLensMaxSuperView: "Max SuperView",
 	PhotoLensWide:         "Wide",
 	PhotoLensLinear:       "Linear",
@@ -1045,8 +1045,8 @@ type TimeLapseDigitalLenses uint16
 
 // TimeLapseDigitalLenses options supported by the HERO9 Black.
 const (
-	// TimeLapseDigitalLensesarrow is "Narrow".
-	TimeLapseDigitalLensesarrow TimeLapseDigitalLenses = 19
+	// TimeLapseDigitalLensesNarrow is "Narrow".
+	TimeLapseDigitalLensesNarrow TimeLapseDigitalLenses = 19
 	// TimeLapseDigitalLensesWide is "Wide".
 	TimeLapseDigitalLensesWide TimeLapseDigitalLenses = 101
 	// TimeLapseDigitalLensesLinear is "Linear".
@@ -1054,7 +1054,7 @@ const (
 )
 
 var timeLapseDigitalLensesLabels = map[TimeLapseDigitalLenses]string{
-	TimeLapseDigitalLensesarrow:  "Narrow",
+	TimeLapseDigitalLensesNarrow: "Narrow",
 	TimeLapseDigitalLensesWide:   "Wide",
 	TimeLapseDigitalLensesLinear: "Linear",
 }
@@ -1198,17 +1198,17 @@ const (
 	MediaFormatTimeLapseVideo MediaFormat = 13
 	// MediaFormatTimeLapsePhoto is "Time Lapse Photo".
 	MediaFormatTimeLapsePhoto MediaFormat = 20
-	// MediaFormatightLapsePhoto is "Night Lapse Photo".
-	MediaFormatightLapsePhoto MediaFormat = 21
-	// MediaFormatightLapseVideo is "Night Lapse Video".
-	MediaFormatightLapseVideo MediaFormat = 26
+	// MediaFormatNightLapsePhoto is "Night Lapse Photo".
+	MediaFormatNightLapsePhoto MediaFormat = 21
+	// MediaFormatNightLapseVideo is "Night Lapse Video".
+	MediaFormatNightLapseVideo MediaFormat = 26
 )
 
 var mediaFormatLabels = map[MediaFormat]string{
-	MediaFormatTimeLapseVideo: "Time Lapse Video",
-	MediaFormatTimeLapsePhoto: "Time Lapse Photo",
-	MediaFormatightLapsePhoto: "Night Lapse Photo",
-	MediaFormatightLapseVideo: "Night Lapse Video",
+	MediaFormatTimeLapseVideo:  "Time Lapse Video",
+	MediaFormatTimeLapsePhoto:  "Time Lapse Photo",
+	MediaFormatNightLapsePhoto: "Night Lapse Photo",
+	MediaFormatNightLapseVideo: "Night Lapse Video",
 }
 
 // ID implements Option.
@@ -1434,8 +1434,8 @@ const (
 	VideoDuration2Hours VideoDuration = 8
 	// VideoDuration3Hours is "3 Hours".
 	VideoDuration3Hours VideoDuration = 9
-	// VideoDurationoLimit is "No Limit".
-	VideoDurationoLimit VideoDuration = 100
+	// VideoDurationNoLimit is "No Limit".
+	VideoDurationNoLimit VideoDuration = 100
 )
 
 var videoDurationLabels = map[VideoDuration]string{
@@ -1448,7 +1448,7 @@ var videoDurationLabels = map[VideoDuration]string{
 	VideoDuration1Hour:     "1 Hour",
 	VideoDuration2Hours:    "2 Hours",
 	VideoDuration3Hours:    "3 Hours",
-	VideoDurationoLimit:    "No Limit",
+	VideoDurationNoLimit:   "No Limit",
 }
 
 // ID implements Option.
@@ -1528,8 +1528,8 @@ const (
 	MultiShotDuration2Hours MultiShotDuration = 8
 	// MultiShotDuration3Hours is "3 Hours".
 	MultiShotDuration3Hours MultiShotDuration = 9
-	// MultiShotDurationoLimit is "No Limit".
-	MultiShotDurationoLimit MultiShotDuration = 100
+	// MultiShotDurationNoLimit is "No Limit".
+	MultiShotDurationNoLimit MultiShotDuration = 100
 )
 
 var multiShotDurationLabels = map[MultiShotDuration]string{
@@ -1542,7 +1542,7 @@ var multiShotDurationLabels = map[MultiShotDuration]string{
 	MultiShotDuration1Hour:     "1 Hour",
 	MultiShotDuration2Hours:    "2 Hours",
 	MultiShotDuration3Hours:    "3 Hours",
-	MultiShotDurationoLimit:    "No Limit",
+	MultiShotDurationNoLimit:   "No Limit",
 }
 
 // ID implements Option.

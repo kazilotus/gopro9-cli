@@ -62,12 +62,29 @@ func pascal(s string) string {
 }
 
 // optionIdent names an option constant fragment. Unlike pascal it may start
-// with a digit because it is always suffixed to a type name, and it drops a
-// redundant ".0" ("30.0" -> "30").
+// with a digit because it is always suffixed to a type name. It drops a
+// redundant ".0" ("30.0" -> "30") and keeps only the part of a label before
+// a colon or parenthesis, capped at six words, so long explanatory labels
+// such as "Camera Idle: No one is attempting to change camera settings"
+// become "CameraIdle".
 func optionIdent(label string) string {
-	label = strings.TrimSuffix(strings.TrimSpace(label), ".0")
+	label = strings.TrimSpace(label)
+	// Cut explanatory tails ("Camera Idle: No one ...", "Auto (default)") but
+	// keep aspect ratios such as "4:3", where the colon is between digits.
+	for _, sep := range []string{": ", " (", " - "} {
+		if i := strings.Index(label, sep); i > 0 {
+			label = strings.TrimSpace(label[:i])
+		}
+	}
+	if words := strings.Fields(label); len(words) > 6 {
+		label = strings.Join(words[:6], " ")
+	}
+	label = strings.TrimSuffix(label, ".0")
 	out := pascal(label)
-	return strings.TrimPrefix(out, "N")
+	if label != "" && unicode.IsDigit(rune(label[0])) {
+		out = strings.TrimPrefix(out, "N")
+	}
+	return out
 }
 
 // kebab turns a human label into a CLI-friendly lowercase token.

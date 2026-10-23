@@ -1,0 +1,28 @@
+OPERATION                    LEVEL     METHOD  PATH                                     NOTE
+DCIM_INDEX                   verified  GET     /videos/DCIM/                            HTML listing; sort params nd dd sd
+GPCAMERA_OPENGOPRO_VERSION   verified  GET     /gopro/version                           {"version":"2.0"}
+GPCAMERA_WEBCAM_EXIT_OGP     verified  GET     /gopro/webcam/exit                       
+GPCAMERA_WEBCAM_PREVIEW_OGP  verified  GET     /gopro/webcam/preview                    
+GPCAMERA_WEBCAM_START_OGP    verified  GET     /gopro/webcam/start                      not exercised in probe; documented HERO9 webcam v4
+GPCAMERA_WEBCAM_STATUS_OGP   verified  GET     /gopro/webcam/status                     status 1 idle, error 0
+GPCAMERA_WEBCAM_STOP_OGP     verified  GET     /gopro/webcam/stop                       
+GPCAMERA_WEBCAM_VERSION_OGP  verified  GET     /gopro/webcam/version                    version 4, usb_3_1_compatible true
+GP_ANALYTICS_GET             verified  GET     /gp/gpControl/analytics/get              binary blob
+GP_INFO                      verified  GET     /gp/gpControl/info                       
+GP_MEDIA_LIST                verified  GET     /gp/gpMediaList                          
+GP_SOFTUPDATE_FORM           verified  GET     /gp/gpSoftUpdate                         HTML multipart form; dangerous
+GP_STATUS                    verified  GET     /gp/gpControl/status                     
+GP_WEBCAM_STATUS             verified  GET     /gp/gpWebcam/STATUS                      
+GP_WEBCAM_VERSION            verified  GET     /gp/gpWebcam/VERSION                     
+OGP_DOWNLOAD_MEDIA           verified  GET     /videos/DCIM/{directory}/{filename}      HEAD returns 403; use Range GET
+OGP_GET_DATE_AND_TIME_DST    verified  GET     /gopro/camera/get_date_time              200 with date/time; dst field absent
+OGP_GET_STATE                verified  GET     /gopro/camera/state                      86 status + 88 setting ids
+OGP_KEEP_ALIVE               verified  GET     /gopro/camera/keep_alive                 
+OGP_MEDIA_GPMF               verified  GET     /gopro/media/gpmf                        
+OGP_MEDIA_LIST               verified  GET     /gopro/media/list                        
+OGP_MEDIA_SCREENNAIL         verified  GET     /gopro/media/screennail                  
+OGP_MEDIA_TELEMETRY          verified  GET     /gopro/media/telemetry                   
+OGP_MEDIA_THUMBNAIL          verified  GET     /gopro/media/thumbnail                   
+OGP_PRESETS_GET              verified  GET     /gopro/camera/presets/get                
+OGP_SET_ANALYTICS            verified  GET     /gopro/camera/analytics/set_client_info  
+OGP_SHUTTER                  verified  GET     /gopro/camera/shutter/{mode}             spec omits HERO9; present on 1.72

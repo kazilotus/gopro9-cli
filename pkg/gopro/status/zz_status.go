@@ -383,8 +383,8 @@ type PairingState int64
 
 // PairingState values.
 const (
-	// PairingStateeverStarted is "Never Started".
-	PairingStateeverStarted PairingState = 0
+	// PairingStateNeverStarted is "Never Started".
+	PairingStateNeverStarted PairingState = 0
 	// PairingStateStarted is "Started".
 	PairingStateStarted PairingState = 1
 	// PairingStateAborted is "Aborted".
@@ -396,11 +396,11 @@ const (
 )
 
 var pairingStateLabels = map[PairingState]string{
-	PairingStateeverStarted: "Never Started",
-	PairingStateStarted:     "Started",
-	PairingStateAborted:     "Aborted",
-	PairingStateCancelled:   "Cancelled",
-	PairingStateCompleted:   "Completed",
+	PairingStateNeverStarted: "Never Started",
+	PairingStateStarted:      "Started",
+	PairingStateAborted:      "Aborted",
+	PairingStateCancelled:    "Cancelled",
+	PairingStateCompleted:    "Completed",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -421,8 +421,8 @@ type LastPairingType int64
 
 // LastPairingType values.
 const (
-	// LastPairingTypeotPairing is "Not Pairing".
-	LastPairingTypeotPairing LastPairingType = 0
+	// LastPairingTypeNotPairing is "Not Pairing".
+	LastPairingTypeNotPairing LastPairingType = 0
 	// LastPairingTypePairingApp is "Pairing App".
 	LastPairingTypePairingApp LastPairingType = 1
 	// LastPairingTypePairingRemoteControl is "Pairing Remote Control".
@@ -432,7 +432,7 @@ const (
 )
 
 var lastPairingTypeLabels = map[LastPairingType]string{
-	LastPairingTypeotPairing:              "Not Pairing",
+	LastPairingTypeNotPairing:             "Not Pairing",
 	LastPairingTypePairingApp:             "Pairing App",
 	LastPairingTypePairingRemoteControl:   "Pairing Remote Control",
 	LastPairingTypePairingBluetoothDevice: "Pairing Bluetooth Device",
@@ -456,8 +456,8 @@ type WifiScanState int64
 
 // WifiScanState values.
 const (
-	// WifiScanStateeverStarted is "Never started".
-	WifiScanStateeverStarted WifiScanState = 0
+	// WifiScanStateNeverStarted is "Never started".
+	WifiScanStateNeverStarted WifiScanState = 0
 	// WifiScanStateStarted is "Started".
 	WifiScanStateStarted WifiScanState = 1
 	// WifiScanStateAborted is "Aborted".
@@ -469,11 +469,11 @@ const (
 )
 
 var wifiScanStateLabels = map[WifiScanState]string{
-	WifiScanStateeverStarted: "Never started",
-	WifiScanStateStarted:     "Started",
-	WifiScanStateAborted:     "Aborted",
-	WifiScanStateCanceled:    "Canceled",
-	WifiScanStateCompleted:   "Completed",
+	WifiScanStateNeverStarted: "Never started",
+	WifiScanStateStarted:      "Started",
+	WifiScanStateAborted:      "Aborted",
+	WifiScanStateCanceled:     "Canceled",
+	WifiScanStateCompleted:    "Completed",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -494,8 +494,8 @@ type WifiProvisioningState int64
 
 // WifiProvisioningState values.
 const (
-	// WifiProvisioningStateeverStarted is "Never started".
-	WifiProvisioningStateeverStarted WifiProvisioningState = 0
+	// WifiProvisioningStateNeverStarted is "Never started".
+	WifiProvisioningStateNeverStarted WifiProvisioningState = 0
 	// WifiProvisioningStateStarted is "Started".
 	WifiProvisioningStateStarted WifiProvisioningState = 1
 	// WifiProvisioningStateAborted is "Aborted".
@@ -507,11 +507,11 @@ const (
 )
 
 var wifiProvisioningStateLabels = map[WifiProvisioningState]string{
-	WifiProvisioningStateeverStarted: "Never started",
-	WifiProvisioningStateStarted:     "Started",
-	WifiProvisioningStateAborted:     "Aborted",
-	WifiProvisioningStateCanceled:    "Canceled",
-	WifiProvisioningStateCompleted:   "Completed",
+	WifiProvisioningStateNeverStarted: "Never started",
+	WifiProvisioningStateStarted:      "Started",
+	WifiProvisioningStateAborted:      "Aborted",
+	WifiProvisioningStateCanceled:     "Canceled",
+	WifiProvisioningStateCompleted:    "Completed",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -665,14 +665,14 @@ const (
 	MicrophoneAccessoryAccessoryNotConnected MicrophoneAccessory = 0
 	// MicrophoneAccessoryAccessoryConnected is "Accessory connected".
 	MicrophoneAccessoryAccessoryConnected MicrophoneAccessory = 1
-	// MicrophoneAccessoryAccessoryConnectedAndAMicrophoneIsPluggedIntoTheAccessory is "Accessory connected and a microphone is plugged into the accessory".
-	MicrophoneAccessoryAccessoryConnectedAndAMicrophoneIsPluggedIntoTheAccessory MicrophoneAccessory = 2
+	// MicrophoneAccessoryAccessoryConnectedAndAMicrophoneIs is "Accessory connected and a microphone is plugged into the accessory".
+	MicrophoneAccessoryAccessoryConnectedAndAMicrophoneIs MicrophoneAccessory = 2
 )
 
 var microphoneAccessoryLabels = map[MicrophoneAccessory]string{
-	MicrophoneAccessoryAccessoryNotConnected:                                     "Accessory not connected",
-	MicrophoneAccessoryAccessoryConnected:                                        "Accessory connected",
-	MicrophoneAccessoryAccessoryConnectedAndAMicrophoneIsPluggedIntoTheAccessory: "Accessory connected and a microphone is plugged into the accessory",
+	MicrophoneAccessoryAccessoryNotConnected:              "Accessory not connected",
+	MicrophoneAccessoryAccessoryConnected:                 "Accessory connected",
+	MicrophoneAccessoryAccessoryConnectedAndAMicrophoneIs: "Accessory connected and a microphone is plugged into the accessory",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -720,21 +720,21 @@ type Rotation int64
 
 // Rotation values.
 const (
-	// Rotation0DegreesUpright is "0 degrees (upright)".
-	Rotation0DegreesUpright Rotation = 0
-	// Rotation180DegreesUpsideDown is "180 degrees (upside down)".
-	Rotation180DegreesUpsideDown Rotation = 1
-	// Rotation90DegreesLayingOnRightSide is "90 degrees (laying on right side)".
-	Rotation90DegreesLayingOnRightSide Rotation = 2
-	// Rotation270DegreesLayingOnLeftSide is "270 degrees (laying on left side)".
-	Rotation270DegreesLayingOnLeftSide Rotation = 3
+	// Rotation0Degrees is "0 degrees (upright)".
+	Rotation0Degrees Rotation = 0
+	// Rotation180Degrees is "180 degrees (upside down)".
+	Rotation180Degrees Rotation = 1
+	// Rotation90Degrees is "90 degrees (laying on right side)".
+	Rotation90Degrees Rotation = 2
+	// Rotation270Degrees is "270 degrees (laying on left side)".
+	Rotation270Degrees Rotation = 3
 )
 
 var rotationLabels = map[Rotation]string{
-	Rotation0DegreesUpright:            "0 degrees (upright)",
-	Rotation180DegreesUpsideDown:       "180 degrees (upside down)",
-	Rotation90DegreesLayingOnRightSide: "90 degrees (laying on right side)",
-	Rotation270DegreesLayingOnLeftSide: "270 degrees (laying on left side)",
+	Rotation0Degrees:   "0 degrees (upright)",
+	Rotation180Degrees: "180 degrees (upside down)",
+	Rotation90Degrees:  "90 degrees (laying on right side)",
+	Rotation270Degrees: "270 degrees (laying on left side)",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -805,26 +805,26 @@ const (
 	TimeWarpSpeed10x TimeWarpSpeed = 9
 	// TimeWarpSpeedAuto is "Auto".
 	TimeWarpSpeedAuto TimeWarpSpeed = 10
-	// TimeWarpSpeed1xRealtime is "1x (realtime)".
-	TimeWarpSpeed1xRealtime TimeWarpSpeed = 11
-	// TimeWarpSpeed12xSlowMotion is "1/2x (slow-motion)".
-	TimeWarpSpeed12xSlowMotion TimeWarpSpeed = 12
+	// TimeWarpSpeed1x is "1x (realtime)".
+	TimeWarpSpeed1x TimeWarpSpeed = 11
+	// TimeWarpSpeed12x is "1/2x (slow-motion)".
+	TimeWarpSpeed12x TimeWarpSpeed = 12
 )
 
 var timeWarpSpeedLabels = map[TimeWarpSpeed]string{
-	TimeWarpSpeed15x:           "15x",
-	TimeWarpSpeed30x:           "30x",
-	TimeWarpSpeed60x:           "60x",
-	TimeWarpSpeed150x:          "150x",
-	TimeWarpSpeed300x:          "300x",
-	TimeWarpSpeed900x:          "900x",
-	TimeWarpSpeed1800x:         "1800x",
-	TimeWarpSpeed2x:            "2x",
-	TimeWarpSpeed5x:            "5x",
-	TimeWarpSpeed10x:           "10x",
-	TimeWarpSpeedAuto:          "Auto",
-	TimeWarpSpeed1xRealtime:    "1x (realtime)",
-	TimeWarpSpeed12xSlowMotion: "1/2x (slow-motion)",
+	TimeWarpSpeed15x:   "15x",
+	TimeWarpSpeed30x:   "30x",
+	TimeWarpSpeed60x:   "60x",
+	TimeWarpSpeed150x:  "150x",
+	TimeWarpSpeed300x:  "300x",
+	TimeWarpSpeed900x:  "900x",
+	TimeWarpSpeed1800x: "1800x",
+	TimeWarpSpeed2x:    "2x",
+	TimeWarpSpeed5x:    "5x",
+	TimeWarpSpeed10x:   "10x",
+	TimeWarpSpeedAuto:  "Auto",
+	TimeWarpSpeed1x:    "1x (realtime)",
+	TimeWarpSpeed12x:   "1/2x (slow-motion)",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -857,27 +857,27 @@ const (
 	LensTypeMacroLens LensType = 4
 	// LensTypeAnamorphicLens is "Anamorphic Lens".
 	LensTypeAnamorphicLens LensType = 5
-	// LensTypeeutralDensity4 is "Neutral Density 4".
-	LensTypeeutralDensity4 LensType = 6
-	// LensTypeeutralDensity8 is "Neutral Density 8".
-	LensTypeeutralDensity8 LensType = 7
-	// LensTypeeutralDensity16 is "Neutral Density 16".
-	LensTypeeutralDensity16 LensType = 8
-	// LensTypeeutralDensity32 is "Neutral Density 32".
-	LensTypeeutralDensity32 LensType = 9
+	// LensTypeNeutralDensity4 is "Neutral Density 4".
+	LensTypeNeutralDensity4 LensType = 6
+	// LensTypeNeutralDensity8 is "Neutral Density 8".
+	LensTypeNeutralDensity8 LensType = 7
+	// LensTypeNeutralDensity16 is "Neutral Density 16".
+	LensTypeNeutralDensity16 LensType = 8
+	// LensTypeNeutralDensity32 is "Neutral Density 32".
+	LensTypeNeutralDensity32 LensType = 9
 )
 
 var lensTypeLabels = map[LensType]string{
-	LensTypeDefault:         "Default",
-	LensTypeMaxLens:         "Max Lens",
-	LensTypeMaxLens2:        "Max Lens 2.0",
-	LensTypeMaxLens2_5:      "Max Lens 2.5",
-	LensTypeMacroLens:       "Macro Lens",
-	LensTypeAnamorphicLens:  "Anamorphic Lens",
-	LensTypeeutralDensity4:  "Neutral Density 4",
-	LensTypeeutralDensity8:  "Neutral Density 8",
-	LensTypeeutralDensity16: "Neutral Density 16",
-	LensTypeeutralDensity32: "Neutral Density 32",
+	LensTypeDefault:          "Default",
+	LensTypeMaxLens:          "Max Lens",
+	LensTypeMaxLens2:         "Max Lens 2.0",
+	LensTypeMaxLens2_5:       "Max Lens 2.5",
+	LensTypeMacroLens:        "Macro Lens",
+	LensTypeAnamorphicLens:   "Anamorphic Lens",
+	LensTypeNeutralDensity4:  "Neutral Density 4",
+	LensTypeNeutralDensity8:  "Neutral Density 8",
+	LensTypeNeutralDensity16: "Neutral Density 16",
+	LensTypeNeutralDensity32: "Neutral Density 32",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -898,33 +898,33 @@ type DisplayModStatus int64
 
 // DisplayModStatus values.
 const (
-	// DisplayModStatus000DisplayModx0HDMIx0DisplayModConnectedxFalse is "000 = Display Mod: 0, HDMI: 0, Display Mod Connected: False".
-	DisplayModStatus000DisplayModx0HDMIx0DisplayModConnectedxFalse DisplayModStatus = 0
-	// DisplayModStatus001DisplayModx0HDMIx0DisplayModConnectedxTrue is "001 = Display Mod: 0, HDMI: 0, Display Mod Connected: True".
-	DisplayModStatus001DisplayModx0HDMIx0DisplayModConnectedxTrue DisplayModStatus = 1
-	// DisplayModStatus010DisplayModx0HDMIx1DisplayModConnectedxFalse is "010 = Display Mod: 0, HDMI: 1, Display Mod Connected: False".
-	DisplayModStatus010DisplayModx0HDMIx1DisplayModConnectedxFalse DisplayModStatus = 2
-	// DisplayModStatus011DisplayModx0HDMIx1DisplayModConnectedxTrue is "011 = Display Mod: 0, HDMI: 1, Display Mod Connected: True".
-	DisplayModStatus011DisplayModx0HDMIx1DisplayModConnectedxTrue DisplayModStatus = 3
-	// DisplayModStatus100DisplayModx1HDMIx0DisplayModConnectedxFalse is "100 = Display Mod: 1, HDMI: 0, Display Mod Connected: False".
-	DisplayModStatus100DisplayModx1HDMIx0DisplayModConnectedxFalse DisplayModStatus = 4
-	// DisplayModStatus101DisplayModx1HDMIx0DisplayModConnectedxTrue is "101 = Display Mod: 1, HDMI: 0, Display Mod Connected: True".
-	DisplayModStatus101DisplayModx1HDMIx0DisplayModConnectedxTrue DisplayModStatus = 5
-	// DisplayModStatus110DisplayModx1HDMIx1DisplayModConnectedxFalse is "110 = Display Mod: 1, HDMI: 1, Display Mod Connected: False".
-	DisplayModStatus110DisplayModx1HDMIx1DisplayModConnectedxFalse DisplayModStatus = 6
-	// DisplayModStatus111DisplayModx1HDMIx1DisplayModConnectedxTrue is "111 = Display Mod: 1, HDMI: 1, Display Mod Connected: True".
-	DisplayModStatus111DisplayModx1HDMIx1DisplayModConnectedxTrue DisplayModStatus = 7
+	// DisplayModStatus000DisplayMod is "000 = Display Mod: 0, HDMI: 0, Display Mod Connected: False".
+	DisplayModStatus000DisplayMod DisplayModStatus = 0
+	// DisplayModStatus001DisplayMod is "001 = Display Mod: 0, HDMI: 0, Display Mod Connected: True".
+	DisplayModStatus001DisplayMod DisplayModStatus = 1
+	// DisplayModStatus010DisplayMod is "010 = Display Mod: 0, HDMI: 1, Display Mod Connected: False".
+	DisplayModStatus010DisplayMod DisplayModStatus = 2
+	// DisplayModStatus011DisplayMod is "011 = Display Mod: 0, HDMI: 1, Display Mod Connected: True".
+	DisplayModStatus011DisplayMod DisplayModStatus = 3
+	// DisplayModStatus100DisplayMod is "100 = Display Mod: 1, HDMI: 0, Display Mod Connected: False".
+	DisplayModStatus100DisplayMod DisplayModStatus = 4
+	// DisplayModStatus101DisplayMod is "101 = Display Mod: 1, HDMI: 0, Display Mod Connected: True".
+	DisplayModStatus101DisplayMod DisplayModStatus = 5
+	// DisplayModStatus110DisplayMod is "110 = Display Mod: 1, HDMI: 1, Display Mod Connected: False".
+	DisplayModStatus110DisplayMod DisplayModStatus = 6
+	// DisplayModStatus111DisplayMod is "111 = Display Mod: 1, HDMI: 1, Display Mod Connected: True".
+	DisplayModStatus111DisplayMod DisplayModStatus = 7
 )
 
 var displayModStatusLabels = map[DisplayModStatus]string{
-	DisplayModStatus000DisplayModx0HDMIx0DisplayModConnectedxFalse: "000 = Display Mod: 0, HDMI: 0, Display Mod Connected: False",
-	DisplayModStatus001DisplayModx0HDMIx0DisplayModConnectedxTrue:  "001 = Display Mod: 0, HDMI: 0, Display Mod Connected: True",
-	DisplayModStatus010DisplayModx0HDMIx1DisplayModConnectedxFalse: "010 = Display Mod: 0, HDMI: 1, Display Mod Connected: False",
-	DisplayModStatus011DisplayModx0HDMIx1DisplayModConnectedxTrue:  "011 = Display Mod: 0, HDMI: 1, Display Mod Connected: True",
-	DisplayModStatus100DisplayModx1HDMIx0DisplayModConnectedxFalse: "100 = Display Mod: 1, HDMI: 0, Display Mod Connected: False",
-	DisplayModStatus101DisplayModx1HDMIx0DisplayModConnectedxTrue:  "101 = Display Mod: 1, HDMI: 0, Display Mod Connected: True",
-	DisplayModStatus110DisplayModx1HDMIx1DisplayModConnectedxFalse: "110 = Display Mod: 1, HDMI: 1, Display Mod Connected: False",
-	DisplayModStatus111DisplayModx1HDMIx1DisplayModConnectedxTrue:  "111 = Display Mod: 1, HDMI: 1, Display Mod Connected: True",
+	DisplayModStatus000DisplayMod: "000 = Display Mod: 0, HDMI: 0, Display Mod Connected: False",
+	DisplayModStatus001DisplayMod: "001 = Display Mod: 0, HDMI: 0, Display Mod Connected: True",
+	DisplayModStatus010DisplayMod: "010 = Display Mod: 0, HDMI: 1, Display Mod Connected: False",
+	DisplayModStatus011DisplayMod: "011 = Display Mod: 0, HDMI: 1, Display Mod Connected: True",
+	DisplayModStatus100DisplayMod: "100 = Display Mod: 1, HDMI: 0, Display Mod Connected: False",
+	DisplayModStatus101DisplayMod: "101 = Display Mod: 1, HDMI: 0, Display Mod Connected: True",
+	DisplayModStatus110DisplayMod: "110 = Display Mod: 1, HDMI: 1, Display Mod Connected: False",
+	DisplayModStatus111DisplayMod: "111 = Display Mod: 1, HDMI: 1, Display Mod Connected: True",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -945,18 +945,18 @@ type CameraControlID int64
 
 // CameraControlID values.
 const (
-	// CameraControlIDCameraIdlexNoOneIsAttemptingToChangeCameraSettings is "Camera Idle: No one is attempting to change camera settings".
-	CameraControlIDCameraIdlexNoOneIsAttemptingToChangeCameraSettings CameraControlID = 0
-	// CameraControlIDCameraControlxCameraIsInAMenuOrChangingSettingsToInterveneAppMustRequestControl is "Camera Control: Camera is in a menu or changing settings. To intervene, app must request control".
-	CameraControlIDCameraControlxCameraIsInAMenuOrChangingSettingsToInterveneAppMustRequestControl CameraControlID = 1
-	// CameraControlIDCameraExternalControlxAnOutsideEntityAppHasControlAndIsInAMenuOrModifyingSettings is "Camera External Control: An outside entity (app) has control and is in a menu or modifying settings".
-	CameraControlIDCameraExternalControlxAnOutsideEntityAppHasControlAndIsInAMenuOrModifyingSettings CameraControlID = 2
+	// CameraControlIDCameraIdle is "Camera Idle: No one is attempting to change camera settings".
+	CameraControlIDCameraIdle CameraControlID = 0
+	// CameraControlIDCameraControl is "Camera Control: Camera is in a menu or changing settings. To intervene, app must request control".
+	CameraControlIDCameraControl CameraControlID = 1
+	// CameraControlIDCameraExternalControl is "Camera External Control: An outside entity (app) has control and is in a menu or modifying settings".
+	CameraControlIDCameraExternalControl CameraControlID = 2
 )
 
 var cameraControlIDLabels = map[CameraControlID]string{
-	CameraControlIDCameraIdlexNoOneIsAttemptingToChangeCameraSettings:                                "Camera Idle: No one is attempting to change camera settings",
-	CameraControlIDCameraControlxCameraIsInAMenuOrChangingSettingsToInterveneAppMustRequestControl:   "Camera Control: Camera is in a menu or changing settings. To intervene, app must request control",
-	CameraControlIDCameraExternalControlxAnOutsideEntityAppHasControlAndIsInAMenuOrModifyingSettings: "Camera External Control: An outside entity (app) has control and is in a menu or modifying settings",
+	CameraControlIDCameraIdle:            "Camera Idle: No one is attempting to change camera settings",
+	CameraControlIDCameraControl:         "Camera Control: Camera is in a menu or changing settings. To intervene, app must request control",
+	CameraControlIDCameraExternalControl: "Camera External Control: An outside entity (app) has control and is in a menu or modifying settings",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.
@@ -1006,15 +1006,15 @@ type ActivePresetIsCustom int64
 
 // ActivePresetIsCustom values.
 const (
-	// ActivePresetIsCustomoItsAFactoryPreset is "No (its a factory preset)".
-	ActivePresetIsCustomoItsAFactoryPreset ActivePresetIsCustom = 0
+	// ActivePresetIsCustomNo is "No (its a factory preset)".
+	ActivePresetIsCustomNo ActivePresetIsCustom = 0
 	// ActivePresetIsCustomYes is "Yes".
 	ActivePresetIsCustomYes ActivePresetIsCustom = 1
 )
 
 var activePresetIsCustomLabels = map[ActivePresetIsCustom]string{
-	ActivePresetIsCustomoItsAFactoryPreset: "No (its a factory preset)",
-	ActivePresetIsCustomYes:                "Yes",
+	ActivePresetIsCustomNo:  "No (its a factory preset)",
+	ActivePresetIsCustomYes: "Yes",
 }
 
 // String returns the documented meaning, or the raw number when undocumented.

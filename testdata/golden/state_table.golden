@@ -1,0 +1,184 @@
+KEY                                   VALUE
+setting.anti-flicker                  60Hz
+setting.auto-power-down               5 Min
+setting.frames-per-second             24.0
+setting.gps                           On
+setting.hindsight                     Off
+setting.hypersmooth                   Low
+setting.lcd-brightness                100
+setting.led                           All On
+setting.max-lens                      On
+setting.media-format                  12
+setting.multi-shot-duration           No Limit
+setting.nightlapse-rate               10 Seconds
+setting.photo-lens                    0
+setting.photo-output                  Standard
+setting.photo-timelapse-rate          0.5 Seconds
+setting.scheduled-capture             0
+setting.setting-102                   8
+setting.setting-103                   3
+setting.setting-104                   1
+setting.setting-105                   0
+setting.setting-106                   2
+setting.setting-111                   10
+setting.setting-112                   5
+setting.setting-114                   1
+setting.setting-115                   0
+setting.setting-116                   0
+setting.setting-117                   0
+setting.setting-118                   4
+setting.setting-124                   0
+setting.setting-126                   0
+setting.setting-129                   2
+setting.setting-13                    1
+setting.setting-130                   107
+setting.setting-131                   3
+setting.setting-132                   105
+setting.setting-133                   4
+setting.setting-139                   3
+setting.setting-144                   12
+setting.setting-145                   0
+setting.setting-146                   0
+setting.setting-147                   0
+setting.setting-148                   1
+setting.setting-149                   2
+setting.setting-153                   100
+setting.setting-154                   3
+setting.setting-155                   0
+setting.setting-158                   1
+setting.setting-159                   1
+setting.setting-160                   0
+setting.setting-161                   100
+setting.setting-163                   1
+setting.setting-164                   100
+setting.setting-165                   0
+setting.setting-166                   0
+setting.setting-169                   1
+setting.setting-19                    0
+setting.setting-24                    0
+setting.setting-31                    0
+setting.setting-37                    0
+setting.setting-41                    9
+setting.setting-42                    5
+setting.setting-44                    9
+setting.setting-45                    5
+setting.setting-47                    4
+setting.setting-48                    3
+setting.setting-54                    1
+setting.setting-6                     1
+setting.setting-60                    0
+setting.setting-61                    0
+setting.setting-62                    0
+setting.setting-64                    4
+setting.setting-65                    0
+setting.setting-66                    0
+setting.setting-67                    0
+setting.setting-75                    0
+setting.setting-76                    0
+setting.setting-79                    1
+setting.setting-84                    0
+setting.setting-85                    0
+setting.setting-86                    1
+setting.setting-87                    0
+setting.setting-96                    0
+setting.time-lapse-digital-lenses     0
+setting.video-duration                No Limit
+setting.video-lens                    Max SuperView
+setting.video-resolution              2.7K
+setting.video-timelapse-rate          0.5 Seconds
+setting.webcam-digital-lenses         Wide
+status.5ghz-available                 true
+status.access-point-ssid              HERO9 Black
+status.active-hilights                0
+status.active-preset-is-custom        No (its a factory preset)
+status.ap-mode                        false
+status.battery-present                true
+status.busy                           false
+status.camera-control-id              Camera Idle: No one is attempting to change camera settings
+status.camera-name                    
+status.capture-delay-active           false
+status.cold                           false
+status.connected-devices              0
+status.connected-wifi-ssid            
+status.display-mod-status             000 = Display Mod: 0, HDMI: 0, Display Mod Connected: False
+status.encoding                       false
+status.flatmode                       12
+status.ftu                            false
+status.gps-lock                       true
+status.hindsight                      false
+status.internal-battery-bars          Charging
+status.internal-battery-percentage    98
+status.last-pairing-success           0
+status.last-pairing-type              Not Pairing
+status.last-wifi-scan-success         938351
+status.lcd-lock                       false
+status.lens-type                      Max Lens
+status.linux-core                     true
+status.live-bursts                    0
+status.liveview-exposure-select-mode  Disabled
+status.liveview-x                     0
+status.liveview-y                     0
+status.locate                         false
+status.media-mod-state                Microphone removed
+status.microphone-accessory           Accessory not connected
+status.minimum-status-poll-period     500
+status.mobile-friendly                true
+status.ota                            Idle
+status.ota-charged                    true
+status.overheating                    false
+status.pairing-state                  Never Started
+status.pairing-state-legacy           86
+status.pending-fw-update-cancel       false
+status.photo-interval-capture-count   0
+status.photo-preset                   262144
+status.photos                         2
+status.preset                         196608
+status.preset-group                   1000
+status.preset-modified                16973824
+status.preview-stream                 false
+status.preview-stream-available       true
+status.primary-storage                OK
+status.quick-capture                  false
+status.ready                          true
+status.remaining-live-bursts          8893
+status.remaining-photos               27191
+status.remaining-video-time           26679
+status.remote-connected               false
+status.remote-version                 0
+status.rotation                       0 degrees (upright)
+status.scheduled-capture              false
+status.scheduled-capture-preset-id    4294967295
+status.sd-card-capacity               0
+status.sd-card-errors                 0
+status.sd-card-remaining              194899840
+status.sd-card-write-speed-error      false
+status.status-109                     0
+status.status-14                      0
+status.status-3                       0
+status.status-36                      2
+status.status-37                      23
+status.status-4                       255
+status.status-61                      2
+status.status-62                      0
+status.status-63                      0
+status.status-64                      13595
+status.status-90                      0
+status.status-91                      0
+status.time-since-last-hilight        0
+status.time-warp-speed                15x
+status.timelapse-interval-countdown   0
+status.timelapse-preset               327680
+status.turbo-transfer                 false
+status.usb-connected                  false
+status.usb-controlled                 Disabled
+status.video-encoding-duration        0
+status.video-preset                   196608
+status.videos                         23
+status.wifi-bars                      0
+status.wifi-provisioning-state        Never started
+status.wifi-scan-state                Completed
+status.wireless-band                  5 GHz
+status.wireless-connections-enabled   true
+status.zoom-available                 false
+status.zoom-level                     0
+status.zoom-while-encoding            false

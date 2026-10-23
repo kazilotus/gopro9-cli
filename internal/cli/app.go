@@ -73,10 +73,10 @@ func (a *App) Run(ctx context.Context, args []string) int {
 		return int(exitcode.OK)
 	}
 	code := exitCodeFor(ctx, err)
-	// Cobra already printed usage errors; only emit our own line for the rest.
-	if code != exitcode.Usage {
-		_ = render.PrintError(a.stdio.Err, a.opts.Output, code.String(), int(code), err.Error())
+	if code == exitcode.Interrupted {
+		return int(code)
 	}
+	_ = render.PrintError(a.stdio.Err, a.opts.Output, code.String(), int(code), err.Error())
 	return int(code)
 }
 

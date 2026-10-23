@@ -33,6 +33,7 @@ unavailable or unsupported, 70 internal, 74 local I/O, 75 camera busy.`,
 		},
 	}
 	root.SetVersionTemplate("{{.Version}}\n")
+	root.SetFlagErrorFunc(func(_ *cobra.Command, err error) error { return newUsageError("%v", err) })
 
 	pf := root.PersistentFlags()
 	pf.StringVar(&a.opts.Host, "host", "", "camera IP or hostname (default: auto-discover on the USB link)")
@@ -47,6 +48,14 @@ unavailable or unsupported, 70 internal, 74 local I/O, 75 camera busy.`,
 		a.newVersionCommand(),
 		a.newCompletionCommand(),
 		a.newDocsCommand(root),
+		a.newDiscoverCommand(),
+		a.newDoctorCommand(),
+		a.newCapabilitiesCommand(),
+		a.newInfoCommand(),
+		a.newStatusCommand(),
+		a.newStateCommand(),
+		a.newKeepaliveCommand(),
+		a.newDatetimeCommand(),
 	)
 	return root
 }

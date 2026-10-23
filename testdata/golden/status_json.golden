@@ -1,0 +1,20 @@
+{
+  "ok": true,
+  "data": {
+    "battery_percent": 98,
+    "charging": true,
+    "recording": false,
+    "busy": false,
+    "overheating": false,
+    "sd_free_gb": 185.8709716796875,
+    "sd_status": "OK",
+    "preset_group": "video",
+    "preset": 196608,
+    "video_resolution": "2.7K",
+    "fps": "24.0",
+    "video_lens": "Max SuperView",
+    "name": "HERO9 Black",
+    "video_remaining_min": 444,
+    "photos_remaining": 27191
+  }
+}

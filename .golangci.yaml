@@ -36,7 +36,7 @@ linters:
       rules:
         sdk-no-cli:
           list-mode: lax
-          files: ["$all", "!**/internal/**", "!**/cmd/**", "!**/test/**"]
+          files: ["$all", "!$test", "!**/internal/**", "!**/cmd/**", "!**/test/**"]
           deny:
             - pkg: github.com/spf13/cobra
               desc: pkg/gopro must not depend on the CLI framework
