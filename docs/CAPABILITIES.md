@@ -14,9 +14,9 @@ Open GoPro HTTP spec version **2.0**. Overrides verified on firmware HD9.01.01.7
 |---|---|---|---|---|
 | `DCIM_INDEX` | GET | `/videos/DCIM/` | verified | HTML listing; sort params nd dd sd |
 | `GPCAMERA_OPENGOPRO_VERSION` | GET | `/gopro/version` | verified | {"version":"2.0"} |
-| `GPCAMERA_WEBCAM_EXIT_OGP` | GET | `/gopro/webcam/exit` | verified |  |
+| `GPCAMERA_WEBCAM_EXIT_OGP` | GET | `/gopro/webcam/exit` | verified | returns status idle (1), not off (0), on 72.70 |
 | `GPCAMERA_WEBCAM_PREVIEW_OGP` | GET | `/gopro/webcam/preview` | verified |  |
-| `GPCAMERA_WEBCAM_START_OGP` | GET | `/gopro/webcam/start` | verified | slow mode switch; a 5 s client timeout aborting it wedged /gopro/camera/state (500) until power cycle — use >=30 s |
+| `GPCAMERA_WEBCAM_START_OGP` | GET | `/gopro/webcam/start` | verified | mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s |
 | `GPCAMERA_WEBCAM_STATUS_OGP` | GET | `/gopro/webcam/status` | verified | status 1 idle, error 0 |
 | `GPCAMERA_WEBCAM_STOP_OGP` | GET | `/gopro/webcam/stop` | verified |  |
 | `GPCAMERA_WEBCAM_VERSION_OGP` | GET | `/gopro/webcam/version` | verified | version 4, usb_3_1_compatible true |

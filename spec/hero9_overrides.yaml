@@ -14,7 +14,7 @@ overrides:
   OGP_ADD_HILIGHT:              { support: verified }
   OGP_REMOVE_HILIGHT:           { support: verified }
   OGP_DIGITAL_ZOOM_SET:         { support: spec,        note: "500 while Max Lens Mod is on (status 77 zoom-available=0); check before sending" }
-  GPCAMERA_WEBCAM_START_OGP:    { support: verified,    note: "slow mode switch; a 5 s client timeout aborting it wedged /gopro/camera/state (500) until power cycle — use >=30 s" }
+  GPCAMERA_WEBCAM_START_OGP:    { support: verified,    note: "mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s" }
   # Read-only operations exercised on 2026-10-23 against firmware 72.00 and 72.70.
   GPCAMERA_OPENGOPRO_VERSION:   { support: verified,    note: "{\"version\":\"2.0\"}" }
   OGP_GET_STATE:                { support: verified,    note: "86 status + 88 setting ids" }
@@ -33,7 +33,7 @@ overrides:
   GPCAMERA_WEBCAM_VERSION_OGP:  { support: verified,    note: "version 4, usb_3_1_compatible true" }
   GPCAMERA_WEBCAM_PREVIEW_OGP:  { support: verified }
   GPCAMERA_WEBCAM_STOP_OGP:     { support: verified }
-  GPCAMERA_WEBCAM_EXIT_OGP:     { support: verified }
+  GPCAMERA_WEBCAM_EXIT_OGP:     { support: verified,    note: "returns status idle (1), not off (0), on 72.70" }
   OGP_MEDIA_INFO:               { support: unsupported, note: "404 empty body on 1.72" }
   OGP_GET_LAST_MEDIA:           { support: unsupported, note: "400 {}" }
   OGP_SET_WIRED_USB_CONTROL:    { support: unsupported, note: "404; HERO9 enables USB control via camera menu" }
