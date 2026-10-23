@@ -63,6 +63,7 @@ unavailable or unsupported, 70 internal, 74 local I/O, 75 camera busy.`,
 		a.newZoomCommand(),
 		a.newPowerCommand(),
 		a.newTurboCommand(),
+		a.newMediaCommand(),
 	)
 	return root
 }

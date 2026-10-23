@@ -41,6 +41,15 @@ func (r settingListResult) Rows() [][]string {
 	return rows
 }
 
+// Plain lists "name=value" pairs, one per line.
+func (r settingListResult) Plain() string {
+	lines := make([]string, 0, len(r.Settings))
+	for _, s := range r.Settings {
+		lines = append(lines, s.Name+"="+s.Value)
+	}
+	return strings.Join(lines, "\n")
+}
+
 func (r settingRow) Headers() []string { return nil }
 func (r settingRow) Rows() [][]string {
 	return [][]string{{"id", strconv.Itoa(int(r.ID))}, {"name", r.Name}, {"title", r.Title}, {"value", r.Value}, {"raw", strconv.FormatInt(r.Raw, 10)}, {"options", strings.Join(r.Options, ", ")}}

@@ -6,8 +6,14 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- Module targets Go 1.26 (toolchain go1.26.10) to pick up the crypto/x509 fix flagged by govulncheck.
+
 ### Added
 
+- M3 media: `media list|tree|download|thumbnail|screennail|gpmf|telemetry|hilight|delete`;
+  resumable, size-verified, parallel downloads with turbo transfer; LRV/THM companions.
 - M2 control: `shutter start|stop|toggle`, `capture video|photo|timelapse`, `preset list|load|group`,
   `setting list|get|set|describe|dump|apply` with typed validation and HERO9 support warnings,
   `zoom`, `power sleep|locate`, `turbo on|off`.

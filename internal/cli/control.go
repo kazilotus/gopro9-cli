@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -193,6 +194,17 @@ func (a *App) timedCapture(cmd *cobra.Command, g presets.Group, d time.Duration)
 
 type presetListResult struct {
 	presets.Status `yaml:",inline"`
+}
+
+// Plain lists preset ids and titles.
+func (r presetListResult) Plain() string {
+	lines := make([]string, 0, 4)
+	for _, g := range r.Groups {
+		for _, p := range g.Presets {
+			lines = append(lines, fmt.Sprintf("%d %s", p.ID, p.Title()))
+		}
+	}
+	return strings.Join(lines, "\n")
 }
 
 func (r presetListResult) Headers() []string {

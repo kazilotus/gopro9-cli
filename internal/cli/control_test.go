@@ -115,6 +115,12 @@ func TestSettingCommands(t *testing.T) {
 	require.Equal(t, 0, code)
 	golden(t, "setting_list", out)
 
+	out, _, code = runCam(t, cam, "setting", "list", "--output", "plain")
+	require.Equal(t, 0, code)
+	assert.Contains(t, out, "video-resolution=2.7K\n")
+	out, _, code = runCam(t, cam, "preset", "list", "--output", "plain")
+	require.Equal(t, 0, code)
+	assert.Contains(t, out, "196608 Max Video")
 	out, _, code = runCam(t, cam, "setting", "list", "--all", "--output", "json")
 	require.Equal(t, 0, code)
 	assert.Contains(t, out, "undocumented")

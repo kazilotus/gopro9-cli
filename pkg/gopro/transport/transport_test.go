@@ -152,7 +152,8 @@ func TestQueryEncoding(t *testing.T) {
 	_, err = c.Get(context.Background(), Request{Path: "/x", Params: Params{P("first", "1")}, Query: q})
 	require.NoError(t, err)
 	assert.Equal(t, "first=1&a=x+y&z=1", got)
-	assert.Equal(t, "path=100GOPRO%2FGH010397.MP4", Params{P("path", "100GOPRO/GH010397.MP4")}.Encode())
+	assert.Equal(t, "path=100GOPRO/GH010397.MP4", Params{P("path", "100GOPRO/GH010397.MP4")}.Encode(), "camera rejects %2F")
+	assert.Equal(t, "q=a+b%26c", Params{P("q", "a b&c")}.Encode())
 	assert.Empty(t, Params(nil).Encode())
 }
 

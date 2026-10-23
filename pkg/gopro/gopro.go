@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/gpcontrol"
+	"github.com/kazilotus/gopro9-cli/pkg/gopro/media"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/ogp"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/transport"
 )
@@ -21,6 +22,7 @@ type Camera struct {
 	Transport *transport.Client
 	OGP       *ogp.Client
 	Legacy    *gpcontrol.Client
+	Media     *media.Client
 }
 
 // Option configures New.
@@ -57,5 +59,5 @@ func New(ep transport.Endpoint, opts ...Option) *Camera {
 		transport.WithLogger(cfg.logger),
 		transport.WithUserAgent(cfg.ua),
 	)
-	return &Camera{Endpoint: ep, Transport: t, OGP: ogp.New(t), Legacy: gpcontrol.New(t)}
+	return &Camera{Endpoint: ep, Transport: t, OGP: ogp.New(t), Legacy: gpcontrol.New(t), Media: media.New(t)}
 }

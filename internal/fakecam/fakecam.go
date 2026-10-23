@@ -65,12 +65,13 @@ type Server struct {
 
 // MediaFile is one file on the fake SD card.
 type MediaFile struct {
-	Dir  string
-	Name string
-	Size int64
-	Mod  int64
-	LRV  bool
-	Body []byte
+	Dir    string
+	Name   string
+	Size   int64
+	Mod    int64
+	LRV    bool
+	Hidden bool // companions (.LRV/.THM) are served by the DCIM tree but absent from the media list
+	Body   []byte
 }
 
 // Option configures the server.
@@ -199,8 +200,32 @@ func (s *Server) loadMedia() {
 				body[i] = byte((int(h.Sum32()) + i) % 251)
 			}
 			s.Media = append(s.Media, MediaFile{Dir: d.D, Name: f.N, Size: size, Mod: mod, LRV: f.Ls != "", Body: body})
+			// Companion files exist on the card like on the real camera.
+			if len(f.N) >= 8 {
+				stem := f.N[2:8]
+				thm := make([]byte, 2048)
+				copy(thm, []byte{0xFF, 0xD8, 0xFF, 0xE0})
+				s.Media = append(s.Media, MediaFile{Dir: d.D, Name: f.N[:len(f.N)-4] + ".THM", Size: int64(len(thm)), Mod: mod, Hidden: true, Body: thm})
+				if f.Ls != "" {
+					lrv := make([]byte, 8192)
+					s.Media = append(s.Media, MediaFile{Dir: d.D, Name: "GL" + stem + ".LRV", Size: int64(len(lrv)), Mod: mod, Hidden: true, Body: lrv})
+				}
+			}
 		}
 	}
+}
+
+// Visible returns the media files the camera lists (excluding companions).
+func (s *Server) Visible() []MediaFile {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	var out []MediaFile
+	for _, m := range s.Media {
+		if !m.Hidden {
+			out = append(out, m)
+		}
+	}
+	return out
 }
 
 // Snapshot returns a copy of the request log.
@@ -520,6 +545,9 @@ func (s *Server) mediaList(w http.ResponseWriter, _ *http.Request) {
 	dirs := map[string][]item{}
 	order := []string{}
 	for _, m := range s.Media {
+		if m.Hidden {
+			continue
+		}
 		if _, ok := dirs[m.Dir]; !ok {
 			order = append(order, m.Dir)
 		}
@@ -630,8 +658,8 @@ func (s *Server) deleteFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) deleteGroup(w http.ResponseWriter, r *http.Request) {
-	// p=100GOPRO/GH010397.MP4 deletes every chapter sharing the 4-digit group number.
-	path := r.URL.Query().Get("p")
+	// p=/100GOPRO/GH010397.MP4 deletes every chapter sharing the 4-digit group number.
+	path := strings.TrimPrefix(r.URL.Query().Get("p"), "/")
 	dir, name, _ := strings.Cut(path, "/")
 	if len(name) < 8 {
 		writeJSON(w, http.StatusBadRequest, "{}")

@@ -208,7 +208,8 @@ type Params []Param
 // P builds a Param.
 func P(key, value string) Param { return Param{Key: key, Value: value} }
 
-// Encode renders the parameters in order, percent-escaped.
+// Encode renders the parameters in order, percent-escaped. Forward slashes
+// are left literal: the camera's media endpoints reject "%2F" in path values.
 func (p Params) Encode() string {
 	var b strings.Builder
 	for i, kv := range p {
@@ -217,7 +218,7 @@ func (p Params) Encode() string {
 		}
 		b.WriteString(url.QueryEscape(kv.Key))
 		b.WriteByte('=')
-		b.WriteString(url.QueryEscape(kv.Value))
+		b.WriteString(strings.ReplaceAll(url.QueryEscape(kv.Value), "%2F", "/"))
 	}
 	return b.String()
 }

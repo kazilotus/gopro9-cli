@@ -55,6 +55,9 @@ linters:
     gocritic:
       enabled-tags: [diagnostic, style, performance]
       disabled-checks: [hugeParam, unnamedResult, paramTypeCombine]
+      settings:
+        rangeValCopy:
+          sizeThreshold: 512
     gosec:
       excludes: [G104, G107, G115, G304]
     revive:
