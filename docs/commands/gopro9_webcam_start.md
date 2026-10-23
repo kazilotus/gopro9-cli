@@ -9,7 +9,7 @@ gopro9 webcam start [flags]
 ### Options
 
 ```
-      --fov wide|narrow|superview|linear   digital lens (default wide)
+      --fov wide|narrow|superview|linear   digital lens (applied by stop → set lens → start, the only sequence the HERO9 honours) (default wide)
   -h, --help                               help for start
       --res 480|720|1080                   output resolution (default: camera's choice)
       --udp-port int                       UDP port on this host the camera should stream to (default 8554)
