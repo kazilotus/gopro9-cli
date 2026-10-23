@@ -56,7 +56,7 @@ lint: ## golangci-lint
 
 .PHONY: vuln
 vuln: ## govulncheck
-	go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+	go run golang.org/x/vuln/cmd/govulncheck@v1.1.4 ./...
 
 .PHONY: docs
 docs: build ## Regenerate docs/commands

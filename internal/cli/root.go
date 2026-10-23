@@ -56,6 +56,13 @@ unavailable or unsupported, 70 internal, 74 local I/O, 75 camera busy.`,
 		a.newStateCommand(),
 		a.newKeepaliveCommand(),
 		a.newDatetimeCommand(),
+		a.newShutterCommand(),
+		a.newCaptureCommand(),
+		a.newPresetCommand(),
+		a.newSettingCommand(),
+		a.newZoomCommand(),
+		a.newPowerCommand(),
+		a.newTurboCommand(),
 	)
 	return root
 }

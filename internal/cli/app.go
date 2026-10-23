@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strings"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -86,6 +87,8 @@ func exitCodeFor(ctx context.Context, err error) exitcode.Code {
 	switch {
 	case errors.As(err, &coded):
 		return coded.ExitCode()
+	case isCobraUsageError(err):
+		return exitcode.Usage
 	case errors.Is(err, context.Canceled) || errors.Is(ctx.Err(), context.Canceled):
 		return exitcode.Interrupted
 	case errors.Is(err, context.DeadlineExceeded):
@@ -93,6 +96,17 @@ func exitCodeFor(ctx context.Context, err error) exitcode.Code {
 	default:
 		return exitcode.Software
 	}
+}
+
+// isCobraUsageError recognises cobra's untyped argument/command validation errors.
+func isCobraUsageError(err error) bool {
+	msg := err.Error()
+	for _, prefix := range []string{"unknown command", "invalid argument", "accepts ", "requires at least", "unknown flag", "unknown shorthand flag", "flag needs an argument"} {
+		if strings.HasPrefix(msg, prefix) {
+			return true
+		}
+	}
+	return false
 }
 
 // usageError carries the Usage exit code for argument validation failures.

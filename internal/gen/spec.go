@@ -74,6 +74,7 @@ type optionModel struct {
 	Label string // "2.7K 4:3"
 	Const string // "VideoResolution2_7K4x3"
 	Name  string // "2.7k-4-3"
+	HERO9 bool   // listed for HERO9 Black in x-option-metadata
 }
 
 type settingModel struct {
@@ -185,9 +186,6 @@ func buildSettings(spec *openAPI, m *model) error {
 				if err != nil {
 					continue // non-numeric enum members are not setting options
 				}
-				if !supportsHERO9(sch.OptionMetadata[key]) {
-					continue
-				}
 				label := sch.EnumDescriptions[key]
 				if label == "" {
 					label = "Option " + key
@@ -197,7 +195,7 @@ func buildSettings(spec *openAPI, m *model) error {
 					c += "V" + key
 				}
 				seen[c] = true
-				sm.Options = append(sm.Options, optionModel{Value: uint32(v), Label: label, Const: c, Name: kebab(label)})
+				sm.Options = append(sm.Options, optionModel{Value: uint32(v), Label: label, Const: c, Name: kebab(label), HERO9: supportsHERO9(sch.OptionMetadata[key])})
 			}
 			sort.Slice(sm.Options, func(i, j int) bool { return sm.Options[i].Value < sm.Options[j].Value })
 		} else {

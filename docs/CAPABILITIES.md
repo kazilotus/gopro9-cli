@@ -78,27 +78,29 @@ Open GoPro HTTP spec version **2.0**. Overrides verified on firmware HD9.01.01.7
 
 ## Settings (22 documented for HERO9)
 
+Options marked `*` are documented by the spec but not listed for the HERO9; the camera may still report them.
+
 | ID | Name | Options |
 |---|---|---|
-| 2 | `video-resolution` | 1=4K, 4=2.7K, 6=2.7K 4:3, 7=1440, 9=1080, 18=4K 4:3, 24=5K |
-| 3 | `frames-per-second` | 0=240.0, 1=120.0, 2=100.0, 5=60.0, 6=50.0, 8=30.0, 9=25.0, 10=24.0, 13=200.0 |
-| 5 | `video-timelapse-rate` | 0=0.5 Seconds, 1=1 Second, 2=2 Seconds, 3=5 Seconds, 4=10 Seconds, 5=30 Seconds, 6=60 Seconds, 7=2 Minutes, 8=5 Minutes, 9=30 Minutes, 10=60 Minutes |
-| 30 | `photo-timelapse-rate` | 100=60 Minutes, 101=30 Minutes, 102=5 Minutes, 103=2 Minutes, 104=60 Seconds, 105=30 Seconds, 106=10 Seconds, 107=5 Seconds, 108=2 Seconds, 109=1 Second, 110=0.5 Seconds |
+| 2 | `video-resolution` | 1=4K, 4=2.7K, 6=2.7K 4:3, 7=1440, 9=1080, 12=720*, 18=4K 4:3, 21=5.6K*, 24=5K, 25=5K 4:3*, 26=5.3K 8:7*, 27=5.3K 4:3*, 28=4K 8:7*, 31=8K*, 35=5.3K 21:9*, 36=4K 21:9*, 37=4K 1:1*, 38=900*, 39=4K SPH*, 40=8K 4:3*, 44=1440 4:3*, 100=5.3K*, 107=5.3K 8:7 V2*, 108=4K 8:7 V2*, 109=4K 9:16 V2*, 110=1080 9:16 V2*, 111=2.7K 4:3 V2*, 112=4K 4:3 V2*, 113=5.3K 4:3 V2* |
+| 3 | `frames-per-second` | 0=240.0, 1=120.0, 2=100.0, 3=90.0*, 5=60.0, 6=50.0, 8=30.0, 9=25.0, 10=24.0, 13=200.0, 15=400.0*, 16=360.0*, 17=300.0*, 18=480.0*, 19=960.0*, 20=800.0* |
+| 5 | `video-timelapse-rate` | 0=0.5 Seconds, 1=1 Second, 2=2 Seconds, 3=5 Seconds, 4=10 Seconds, 5=30 Seconds, 6=60 Seconds, 7=2 Minutes, 8=5 Minutes, 9=30 Minutes, 10=60 Minutes, 11=3 Seconds*, 12=4 Seconds*, 13=15 Seconds*, 14=20 Seconds*, 15=Auto* |
+| 30 | `photo-timelapse-rate` | 11=3 Seconds*, 100=60 Minutes, 101=30 Minutes, 102=5 Minutes, 103=2 Minutes, 104=60 Seconds, 105=30 Seconds, 106=10 Seconds, 107=5 Seconds, 108=2 Seconds, 109=1 Second, 110=0.5 Seconds |
 | 32 | `nightlapse-rate` | 4=4 Seconds, 5=5 Seconds, 10=10 Seconds, 15=15 Seconds, 20=20 Seconds, 30=30 Seconds, 100=60 Seconds, 120=2 Minutes, 300=5 Minutes, 1800=30 Minutes, 3600=60 Minutes, 3601=Auto |
 | 43 | `webcam-digital-lenses` | 0=Wide, 2=Narrow, 3=Superview, 4=Linear |
-| 59 | `auto-power-down` | 0=Never, 4=5 Min, 6=15 Min, 7=30 Min |
+| 59 | `auto-power-down` | 0=Never, 1=1 Min*, 4=5 Min, 6=15 Min, 7=30 Min, 11=8 Seconds*, 12=30 Seconds* |
 | 83 | `gps` | 0=Off, 1=On |
 | 88 | `lcd-brightness` | integer 10–100 |
-| 91 | `led` | 3=All On, 4=All Off, 5=Front Off Only |
-| 121 | `video-lens` | 0=Wide, 2=Narrow, 3=Superview, 4=Linear, 7=Max SuperView, 8=Linear + Horizon Leveling |
-| 122 | `photo-lens` | 19=Narrow, 100=Max SuperView, 101=Wide, 102=Linear |
-| 123 | `time-lapse-digital-lenses` | 19=Narrow, 101=Wide, 102=Linear |
+| 91 | `led` | 0=Off*, 2=On*, 3=All On, 4=All Off, 5=Front Off Only, 100=Back Only* |
+| 121 | `video-lens` | 0=Wide, 2=Narrow, 3=Superview, 4=Linear, 7=Max SuperView, 8=Linear + Horizon Leveling, 9=HyperView*, 10=Linear + Horizon Lock*, 11=Max HyperView*, 12=Ultra SuperView*, 13=Ultra Wide*, 14=Ultra Linear*, 104=Ultra HyperView* |
+| 122 | `photo-lens` | 0=Wide 12 MP*, 10=Linear 12 MP*, 15=9MP Wide*, 19=Narrow, 27=Wide 23 MP*, 28=Linear 23 MP*, 31=Wide 27 MP*, 32=Linear 27 MP*, 37=9MP Linear*, 38=13MP Linear*, 39=13MP Wide*, 40=13MP Ultra Wide*, 41=Ultra Wide 12 MP*, 44=13MP Ultra Linear*, 100=Max SuperView, 101=Wide, 102=Linear |
+| 123 | `time-lapse-digital-lenses` | 19=Narrow, 31=Wide 27 MP*, 32=Linear 27 MP*, 100=Max SuperView*, 101=Wide, 102=Linear |
 | 125 | `photo-output` | 0=Standard, 1=Raw, 2=HDR, 3=SuperPhoto |
 | 128 | `media-format` | 13=Time Lapse Video, 20=Time Lapse Photo, 21=Night Lapse Photo, 26=Night Lapse Video |
-| 134 | `anti-flicker` | 2=60Hz, 3=50Hz |
-| 135 | `hypersmooth` | 0=Off, 1=Low, 2=High, 3=Boost |
-| 156 | `video-duration` | 1=15 Seconds, 2=30 Seconds, 3=1 Minute, 4=5 Minutes, 5=15 Minutes, 6=30 Minutes, 7=1 Hour, 8=2 Hours, 9=3 Hours, 100=No Limit |
-| 157 | `multi-shot-duration` | 1=15 Seconds, 2=30 Seconds, 3=1 Minute, 4=5 Minutes, 5=15 Minutes, 6=30 Minutes, 7=1 Hour, 8=2 Hours, 9=3 Hours, 100=No Limit |
+| 134 | `anti-flicker` | 0=NTSC*, 1=PAL*, 2=60Hz, 3=50Hz |
+| 135 | `hypersmooth` | 0=Off, 1=Low, 2=High, 3=Boost, 4=Auto Boost*, 100=Standard* |
+| 156 | `video-duration` | 1=15 Seconds, 2=30 Seconds, 3=1 Minute, 4=5 Minutes, 5=15 Minutes, 6=30 Minutes, 7=1 Hour, 8=2 Hours, 9=3 Hours, 10=5 Seconds*, 11=10 Seconds*, 100=No Limit |
+| 157 | `multi-shot-duration` | 0=Off*, 1=15 Seconds, 2=30 Seconds, 3=1 Minute, 4=5 Minutes, 5=15 Minutes, 6=30 Minutes, 7=1 Hour, 8=2 Hours, 9=3 Hours, 100=No Limit |
 | 162 | `max-lens` | 0=Off, 1=On |
 | 167 | `hindsight` | 2=15 Seconds, 3=30 Seconds, 4=Off |
 | 168 | `scheduled-capture` | integer 2–8 |

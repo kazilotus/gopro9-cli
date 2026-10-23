@@ -107,6 +107,8 @@ type rawOption struct {
 func (r rawOption) ID() settings.SettingID { return r.id }
 func (r rawOption) Value() uint32          { return uint32(r.value) }
 func (r rawOption) String() string         { return strconv.FormatInt(r.value, 10) }
+func (rawOption) Valid() bool              { return false }
+func (rawOption) SupportedOnHERO9() bool   { return false }
 
 // Presets queries the preset status.
 func (c *Client) Presets(ctx context.Context) (presets.Status, error) {

@@ -59,7 +59,8 @@ const (
 // VideoResolution is setting 2: Video Resolution.
 type VideoResolution uint16
 
-// VideoResolution options supported by the HERO9 Black.
+// VideoResolution options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// VideoResolution4K is "4K".
 	VideoResolution4K VideoResolution = 1
@@ -71,20 +72,96 @@ const (
 	VideoResolution1440 VideoResolution = 7
 	// VideoResolution1080 is "1080".
 	VideoResolution1080 VideoResolution = 9
+	// VideoResolution720 is "720" (not listed for HERO9).
+	VideoResolution720 VideoResolution = 12
 	// VideoResolution4K4x3 is "4K 4:3".
 	VideoResolution4K4x3 VideoResolution = 18
+	// VideoResolution5_6K is "5.6K" (not listed for HERO9).
+	VideoResolution5_6K VideoResolution = 21
 	// VideoResolution5K is "5K".
 	VideoResolution5K VideoResolution = 24
+	// VideoResolution5K4x3 is "5K 4:3" (not listed for HERO9).
+	VideoResolution5K4x3 VideoResolution = 25
+	// VideoResolution5_3K8x7 is "5.3K 8:7" (not listed for HERO9).
+	VideoResolution5_3K8x7 VideoResolution = 26
+	// VideoResolution5_3K4x3 is "5.3K 4:3" (not listed for HERO9).
+	VideoResolution5_3K4x3 VideoResolution = 27
+	// VideoResolution4K8x7 is "4K 8:7" (not listed for HERO9).
+	VideoResolution4K8x7 VideoResolution = 28
+	// VideoResolution8K is "8K" (not listed for HERO9).
+	VideoResolution8K VideoResolution = 31
+	// VideoResolution5_3K21x9 is "5.3K 21:9" (not listed for HERO9).
+	VideoResolution5_3K21x9 VideoResolution = 35
+	// VideoResolution4K21x9 is "4K 21:9" (not listed for HERO9).
+	VideoResolution4K21x9 VideoResolution = 36
+	// VideoResolution4K1x1 is "4K 1:1" (not listed for HERO9).
+	VideoResolution4K1x1 VideoResolution = 37
+	// VideoResolution900 is "900" (not listed for HERO9).
+	VideoResolution900 VideoResolution = 38
+	// VideoResolution4KSPH is "4K SPH" (not listed for HERO9).
+	VideoResolution4KSPH VideoResolution = 39
+	// VideoResolution8K4x3 is "8K 4:3" (not listed for HERO9).
+	VideoResolution8K4x3 VideoResolution = 40
+	// VideoResolution14404x3 is "1440 4:3" (not listed for HERO9).
+	VideoResolution14404x3 VideoResolution = 44
+	// VideoResolution5_3K is "5.3K" (not listed for HERO9).
+	VideoResolution5_3K VideoResolution = 100
+	// VideoResolution5_3K8x7V2 is "5.3K 8:7 V2" (not listed for HERO9).
+	VideoResolution5_3K8x7V2 VideoResolution = 107
+	// VideoResolution4K8x7V2 is "4K 8:7 V2" (not listed for HERO9).
+	VideoResolution4K8x7V2 VideoResolution = 108
+	// VideoResolution4K9x16V2 is "4K 9:16 V2" (not listed for HERO9).
+	VideoResolution4K9x16V2 VideoResolution = 109
+	// VideoResolution10809x16V2 is "1080 9:16 V2" (not listed for HERO9).
+	VideoResolution10809x16V2 VideoResolution = 110
+	// VideoResolution2_7K4x3V2 is "2.7K 4:3 V2" (not listed for HERO9).
+	VideoResolution2_7K4x3V2 VideoResolution = 111
+	// VideoResolution4K4x3V2 is "4K 4:3 V2" (not listed for HERO9).
+	VideoResolution4K4x3V2 VideoResolution = 112
+	// VideoResolution5_3K4x3V2 is "5.3K 4:3 V2" (not listed for HERO9).
+	VideoResolution5_3K4x3V2 VideoResolution = 113
 )
 
 var videoResolutionLabels = map[VideoResolution]string{
-	VideoResolution4K:      "4K",
-	VideoResolution2_7K:    "2.7K",
-	VideoResolution2_7K4x3: "2.7K 4:3",
-	VideoResolution1440:    "1440",
-	VideoResolution1080:    "1080",
-	VideoResolution4K4x3:   "4K 4:3",
-	VideoResolution5K:      "5K",
+	VideoResolution4K:         "4K",
+	VideoResolution2_7K:       "2.7K",
+	VideoResolution2_7K4x3:    "2.7K 4:3",
+	VideoResolution1440:       "1440",
+	VideoResolution1080:       "1080",
+	VideoResolution720:        "720",
+	VideoResolution4K4x3:      "4K 4:3",
+	VideoResolution5_6K:       "5.6K",
+	VideoResolution5K:         "5K",
+	VideoResolution5K4x3:      "5K 4:3",
+	VideoResolution5_3K8x7:    "5.3K 8:7",
+	VideoResolution5_3K4x3:    "5.3K 4:3",
+	VideoResolution4K8x7:      "4K 8:7",
+	VideoResolution8K:         "8K",
+	VideoResolution5_3K21x9:   "5.3K 21:9",
+	VideoResolution4K21x9:     "4K 21:9",
+	VideoResolution4K1x1:      "4K 1:1",
+	VideoResolution900:        "900",
+	VideoResolution4KSPH:      "4K SPH",
+	VideoResolution8K4x3:      "8K 4:3",
+	VideoResolution14404x3:    "1440 4:3",
+	VideoResolution5_3K:       "5.3K",
+	VideoResolution5_3K8x7V2:  "5.3K 8:7 V2",
+	VideoResolution4K8x7V2:    "4K 8:7 V2",
+	VideoResolution4K9x16V2:   "4K 9:16 V2",
+	VideoResolution10809x16V2: "1080 9:16 V2",
+	VideoResolution2_7K4x3V2:  "2.7K 4:3 V2",
+	VideoResolution4K4x3V2:    "4K 4:3 V2",
+	VideoResolution5_3K4x3V2:  "5.3K 4:3 V2",
+}
+
+var videoResolutionHERO9 = map[VideoResolution]bool{
+	VideoResolution4K:      true,
+	VideoResolution2_7K:    true,
+	VideoResolution2_7K4x3: true,
+	VideoResolution1440:    true,
+	VideoResolution1080:    true,
+	VideoResolution4K4x3:   true,
+	VideoResolution5K:      true,
 }
 
 // ID implements Option.
@@ -93,8 +170,11 @@ func (VideoResolution) ID() SettingID { return SettingVideoResolution }
 // Value implements Option.
 func (o VideoResolution) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o VideoResolution) Valid() bool { _, ok := videoResolutionLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o VideoResolution) SupportedOnHERO9() bool { return videoResolutionHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o VideoResolution) String() string {
@@ -144,7 +224,8 @@ func (o *VideoResolution) UnmarshalText(text []byte) error { return o.Set(string
 // FramesPerSecond is setting 3: Frames Per Second.
 type FramesPerSecond uint16
 
-// FramesPerSecond options supported by the HERO9 Black.
+// FramesPerSecond options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// FramesPerSecond240 is "240.0".
 	FramesPerSecond240 FramesPerSecond = 0
@@ -152,6 +233,8 @@ const (
 	FramesPerSecond120 FramesPerSecond = 1
 	// FramesPerSecond100 is "100.0".
 	FramesPerSecond100 FramesPerSecond = 2
+	// FramesPerSecond90 is "90.0" (not listed for HERO9).
+	FramesPerSecond90 FramesPerSecond = 3
 	// FramesPerSecond60 is "60.0".
 	FramesPerSecond60 FramesPerSecond = 5
 	// FramesPerSecond50 is "50.0".
@@ -164,18 +247,49 @@ const (
 	FramesPerSecond24 FramesPerSecond = 10
 	// FramesPerSecond200 is "200.0".
 	FramesPerSecond200 FramesPerSecond = 13
+	// FramesPerSecond400 is "400.0" (not listed for HERO9).
+	FramesPerSecond400 FramesPerSecond = 15
+	// FramesPerSecond360 is "360.0" (not listed for HERO9).
+	FramesPerSecond360 FramesPerSecond = 16
+	// FramesPerSecond300 is "300.0" (not listed for HERO9).
+	FramesPerSecond300 FramesPerSecond = 17
+	// FramesPerSecond480 is "480.0" (not listed for HERO9).
+	FramesPerSecond480 FramesPerSecond = 18
+	// FramesPerSecond960 is "960.0" (not listed for HERO9).
+	FramesPerSecond960 FramesPerSecond = 19
+	// FramesPerSecond800 is "800.0" (not listed for HERO9).
+	FramesPerSecond800 FramesPerSecond = 20
 )
 
 var framesPerSecondLabels = map[FramesPerSecond]string{
 	FramesPerSecond240: "240.0",
 	FramesPerSecond120: "120.0",
 	FramesPerSecond100: "100.0",
+	FramesPerSecond90:  "90.0",
 	FramesPerSecond60:  "60.0",
 	FramesPerSecond50:  "50.0",
 	FramesPerSecond30:  "30.0",
 	FramesPerSecond25:  "25.0",
 	FramesPerSecond24:  "24.0",
 	FramesPerSecond200: "200.0",
+	FramesPerSecond400: "400.0",
+	FramesPerSecond360: "360.0",
+	FramesPerSecond300: "300.0",
+	FramesPerSecond480: "480.0",
+	FramesPerSecond960: "960.0",
+	FramesPerSecond800: "800.0",
+}
+
+var framesPerSecondHERO9 = map[FramesPerSecond]bool{
+	FramesPerSecond240: true,
+	FramesPerSecond120: true,
+	FramesPerSecond100: true,
+	FramesPerSecond60:  true,
+	FramesPerSecond50:  true,
+	FramesPerSecond30:  true,
+	FramesPerSecond25:  true,
+	FramesPerSecond24:  true,
+	FramesPerSecond200: true,
 }
 
 // ID implements Option.
@@ -184,8 +298,11 @@ func (FramesPerSecond) ID() SettingID { return SettingFramesPerSecond }
 // Value implements Option.
 func (o FramesPerSecond) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o FramesPerSecond) Valid() bool { _, ok := framesPerSecondLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o FramesPerSecond) SupportedOnHERO9() bool { return framesPerSecondHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o FramesPerSecond) String() string {
@@ -237,7 +354,8 @@ func (o *FramesPerSecond) UnmarshalText(text []byte) error { return o.Set(string
 // How frequently to take a video when performing a Video Timelapse
 type VideoTimelapseRate uint16
 
-// VideoTimelapseRate options supported by the HERO9 Black.
+// VideoTimelapseRate options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// VideoTimelapseRate0_5Seconds is "0.5 Seconds".
 	VideoTimelapseRate0_5Seconds VideoTimelapseRate = 0
@@ -261,6 +379,16 @@ const (
 	VideoTimelapseRate30Minutes VideoTimelapseRate = 9
 	// VideoTimelapseRate60Minutes is "60 Minutes".
 	VideoTimelapseRate60Minutes VideoTimelapseRate = 10
+	// VideoTimelapseRate3Seconds is "3 Seconds" (not listed for HERO9).
+	VideoTimelapseRate3Seconds VideoTimelapseRate = 11
+	// VideoTimelapseRate4Seconds is "4 Seconds" (not listed for HERO9).
+	VideoTimelapseRate4Seconds VideoTimelapseRate = 12
+	// VideoTimelapseRate15Seconds is "15 Seconds" (not listed for HERO9).
+	VideoTimelapseRate15Seconds VideoTimelapseRate = 13
+	// VideoTimelapseRate20Seconds is "20 Seconds" (not listed for HERO9).
+	VideoTimelapseRate20Seconds VideoTimelapseRate = 14
+	// VideoTimelapseRateAuto is "Auto" (not listed for HERO9).
+	VideoTimelapseRateAuto VideoTimelapseRate = 15
 )
 
 var videoTimelapseRateLabels = map[VideoTimelapseRate]string{
@@ -275,6 +403,25 @@ var videoTimelapseRateLabels = map[VideoTimelapseRate]string{
 	VideoTimelapseRate5Minutes:   "5 Minutes",
 	VideoTimelapseRate30Minutes:  "30 Minutes",
 	VideoTimelapseRate60Minutes:  "60 Minutes",
+	VideoTimelapseRate3Seconds:   "3 Seconds",
+	VideoTimelapseRate4Seconds:   "4 Seconds",
+	VideoTimelapseRate15Seconds:  "15 Seconds",
+	VideoTimelapseRate20Seconds:  "20 Seconds",
+	VideoTimelapseRateAuto:       "Auto",
+}
+
+var videoTimelapseRateHERO9 = map[VideoTimelapseRate]bool{
+	VideoTimelapseRate0_5Seconds: true,
+	VideoTimelapseRate1Second:    true,
+	VideoTimelapseRate2Seconds:   true,
+	VideoTimelapseRate5Seconds:   true,
+	VideoTimelapseRate10Seconds:  true,
+	VideoTimelapseRate30Seconds:  true,
+	VideoTimelapseRate60Seconds:  true,
+	VideoTimelapseRate2Minutes:   true,
+	VideoTimelapseRate5Minutes:   true,
+	VideoTimelapseRate30Minutes:  true,
+	VideoTimelapseRate60Minutes:  true,
 }
 
 // ID implements Option.
@@ -283,8 +430,11 @@ func (VideoTimelapseRate) ID() SettingID { return SettingVideoTimelapseRate }
 // Value implements Option.
 func (o VideoTimelapseRate) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o VideoTimelapseRate) Valid() bool { _, ok := videoTimelapseRateLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o VideoTimelapseRate) SupportedOnHERO9() bool { return videoTimelapseRateHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o VideoTimelapseRate) String() string {
@@ -336,8 +486,11 @@ func (o *VideoTimelapseRate) UnmarshalText(text []byte) error { return o.Set(str
 // How frequently to take a photo when performing a Photo Timelapse.
 type PhotoTimelapseRate uint16
 
-// PhotoTimelapseRate options supported by the HERO9 Black.
+// PhotoTimelapseRate options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
+	// PhotoTimelapseRate3Seconds is "3 Seconds" (not listed for HERO9).
+	PhotoTimelapseRate3Seconds PhotoTimelapseRate = 11
 	// PhotoTimelapseRate60Minutes is "60 Minutes".
 	PhotoTimelapseRate60Minutes PhotoTimelapseRate = 100
 	// PhotoTimelapseRate30Minutes is "30 Minutes".
@@ -363,6 +516,7 @@ const (
 )
 
 var photoTimelapseRateLabels = map[PhotoTimelapseRate]string{
+	PhotoTimelapseRate3Seconds:   "3 Seconds",
 	PhotoTimelapseRate60Minutes:  "60 Minutes",
 	PhotoTimelapseRate30Minutes:  "30 Minutes",
 	PhotoTimelapseRate5Minutes:   "5 Minutes",
@@ -376,14 +530,31 @@ var photoTimelapseRateLabels = map[PhotoTimelapseRate]string{
 	PhotoTimelapseRate0_5Seconds: "0.5 Seconds",
 }
 
+var photoTimelapseRateHERO9 = map[PhotoTimelapseRate]bool{
+	PhotoTimelapseRate60Minutes:  true,
+	PhotoTimelapseRate30Minutes:  true,
+	PhotoTimelapseRate5Minutes:   true,
+	PhotoTimelapseRate2Minutes:   true,
+	PhotoTimelapseRate60Seconds:  true,
+	PhotoTimelapseRate30Seconds:  true,
+	PhotoTimelapseRate10Seconds:  true,
+	PhotoTimelapseRate5Seconds:   true,
+	PhotoTimelapseRate2Seconds:   true,
+	PhotoTimelapseRate1Second:    true,
+	PhotoTimelapseRate0_5Seconds: true,
+}
+
 // ID implements Option.
 func (PhotoTimelapseRate) ID() SettingID { return SettingPhotoTimelapseRate }
 
 // Value implements Option.
 func (o PhotoTimelapseRate) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o PhotoTimelapseRate) Valid() bool { _, ok := photoTimelapseRateLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o PhotoTimelapseRate) SupportedOnHERO9() bool { return photoTimelapseRateHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o PhotoTimelapseRate) String() string {
@@ -435,7 +606,8 @@ func (o *PhotoTimelapseRate) UnmarshalText(text []byte) error { return o.Set(str
 // How frequently to take a video or photo when performing a Nightlapse.
 type NightlapseRate uint16
 
-// NightlapseRate options supported by the HERO9 Black.
+// NightlapseRate options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// NightlapseRate4Seconds is "4 Seconds".
 	NightlapseRate4Seconds NightlapseRate = 4
@@ -478,14 +650,32 @@ var nightlapseRateLabels = map[NightlapseRate]string{
 	NightlapseRateAuto:      "Auto",
 }
 
+var nightlapseRateHERO9 = map[NightlapseRate]bool{
+	NightlapseRate4Seconds:  true,
+	NightlapseRate5Seconds:  true,
+	NightlapseRate10Seconds: true,
+	NightlapseRate15Seconds: true,
+	NightlapseRate20Seconds: true,
+	NightlapseRate30Seconds: true,
+	NightlapseRate60Seconds: true,
+	NightlapseRate2Minutes:  true,
+	NightlapseRate5Minutes:  true,
+	NightlapseRate30Minutes: true,
+	NightlapseRate60Minutes: true,
+	NightlapseRateAuto:      true,
+}
+
 // ID implements Option.
 func (NightlapseRate) ID() SettingID { return SettingNightlapseRate }
 
 // Value implements Option.
 func (o NightlapseRate) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o NightlapseRate) Valid() bool { _, ok := nightlapseRateLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o NightlapseRate) SupportedOnHERO9() bool { return nightlapseRateHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o NightlapseRate) String() string {
@@ -535,7 +725,8 @@ func (o *NightlapseRate) UnmarshalText(text []byte) error { return o.Set(string(
 // WebcamDigitalLenses is setting 43: Webcam Digital Lenses.
 type WebcamDigitalLenses uint16
 
-// WebcamDigitalLenses options supported by the HERO9 Black.
+// WebcamDigitalLenses options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// WebcamDigitalLensesWide is "Wide".
 	WebcamDigitalLensesWide WebcamDigitalLenses = 0
@@ -554,14 +745,24 @@ var webcamDigitalLensesLabels = map[WebcamDigitalLenses]string{
 	WebcamDigitalLensesLinear:    "Linear",
 }
 
+var webcamDigitalLensesHERO9 = map[WebcamDigitalLenses]bool{
+	WebcamDigitalLensesWide:      true,
+	WebcamDigitalLensesNarrow:    true,
+	WebcamDigitalLensesSuperview: true,
+	WebcamDigitalLensesLinear:    true,
+}
+
 // ID implements Option.
 func (WebcamDigitalLenses) ID() SettingID { return SettingWebcamDigitalLenses }
 
 // Value implements Option.
 func (o WebcamDigitalLenses) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o WebcamDigitalLenses) Valid() bool { _, ok := webcamDigitalLensesLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o WebcamDigitalLenses) SupportedOnHERO9() bool { return webcamDigitalLensesHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o WebcamDigitalLenses) String() string {
@@ -611,23 +812,40 @@ func (o *WebcamDigitalLenses) UnmarshalText(text []byte) error { return o.Set(st
 // AutoPowerDown is setting 59: Auto Power Down.
 type AutoPowerDown uint16
 
-// AutoPowerDown options supported by the HERO9 Black.
+// AutoPowerDown options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// AutoPowerDownNever is "Never".
 	AutoPowerDownNever AutoPowerDown = 0
+	// AutoPowerDown1Min is "1 Min" (not listed for HERO9).
+	AutoPowerDown1Min AutoPowerDown = 1
 	// AutoPowerDown5Min is "5 Min".
 	AutoPowerDown5Min AutoPowerDown = 4
 	// AutoPowerDown15Min is "15 Min".
 	AutoPowerDown15Min AutoPowerDown = 6
 	// AutoPowerDown30Min is "30 Min".
 	AutoPowerDown30Min AutoPowerDown = 7
+	// AutoPowerDown8Seconds is "8 Seconds" (not listed for HERO9).
+	AutoPowerDown8Seconds AutoPowerDown = 11
+	// AutoPowerDown30Seconds is "30 Seconds" (not listed for HERO9).
+	AutoPowerDown30Seconds AutoPowerDown = 12
 )
 
 var autoPowerDownLabels = map[AutoPowerDown]string{
-	AutoPowerDownNever: "Never",
-	AutoPowerDown5Min:  "5 Min",
-	AutoPowerDown15Min: "15 Min",
-	AutoPowerDown30Min: "30 Min",
+	AutoPowerDownNever:     "Never",
+	AutoPowerDown1Min:      "1 Min",
+	AutoPowerDown5Min:      "5 Min",
+	AutoPowerDown15Min:     "15 Min",
+	AutoPowerDown30Min:     "30 Min",
+	AutoPowerDown8Seconds:  "8 Seconds",
+	AutoPowerDown30Seconds: "30 Seconds",
+}
+
+var autoPowerDownHERO9 = map[AutoPowerDown]bool{
+	AutoPowerDownNever: true,
+	AutoPowerDown5Min:  true,
+	AutoPowerDown15Min: true,
+	AutoPowerDown30Min: true,
 }
 
 // ID implements Option.
@@ -636,8 +854,11 @@ func (AutoPowerDown) ID() SettingID { return SettingAutoPowerDown }
 // Value implements Option.
 func (o AutoPowerDown) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o AutoPowerDown) Valid() bool { _, ok := autoPowerDownLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o AutoPowerDown) SupportedOnHERO9() bool { return autoPowerDownHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o AutoPowerDown) String() string {
@@ -687,7 +908,8 @@ func (o *AutoPowerDown) UnmarshalText(text []byte) error { return o.Set(string(t
 // GPS is setting 83: GPS.
 type GPS uint16
 
-// GPS options supported by the HERO9 Black.
+// GPS options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// GPSOff is "Off".
 	GPSOff GPS = 0
@@ -700,14 +922,22 @@ var gPSLabels = map[GPS]string{
 	GPSOn:  "On",
 }
 
+var gPSHERO9 = map[GPS]bool{
+	GPSOff: true,
+	GPSOn:  true,
+}
+
 // ID implements Option.
 func (GPS) ID() SettingID { return SettingGPS }
 
 // Value implements Option.
 func (o GPS) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o GPS) Valid() bool { _, ok := gPSLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o GPS) SupportedOnHERO9() bool { return gPSHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o GPS) String() string {
@@ -774,6 +1004,9 @@ func (o LCDBrightness) Value() uint32 { return uint32(o) }
 // Valid reports whether o is within the documented range.
 func (o LCDBrightness) Valid() bool { return o >= LCDBrightnessMin && o <= LCDBrightnessMax }
 
+// SupportedOnHERO9 always reports true for numeric settings documented for the HERO9.
+func (LCDBrightness) SupportedOnHERO9() bool { return true }
+
 // String returns the decimal value.
 func (o LCDBrightness) String() string { return strconv.FormatUint(uint64(o), 10) }
 
@@ -812,20 +1045,36 @@ func (o *LCDBrightness) UnmarshalText(text []byte) error { return o.Set(string(t
 // LED is setting 91: LED.
 type LED uint16
 
-// LED options supported by the HERO9 Black.
+// LED options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
+	// LEDOff is "Off" (not listed for HERO9).
+	LEDOff LED = 0
+	// LEDOn is "On" (not listed for HERO9).
+	LEDOn LED = 2
 	// LEDAllOn is "All On".
 	LEDAllOn LED = 3
 	// LEDAllOff is "All Off".
 	LEDAllOff LED = 4
 	// LEDFrontOffOnly is "Front Off Only".
 	LEDFrontOffOnly LED = 5
+	// LEDBackOnly is "Back Only" (not listed for HERO9).
+	LEDBackOnly LED = 100
 )
 
 var lEDLabels = map[LED]string{
+	LEDOff:          "Off",
+	LEDOn:           "On",
 	LEDAllOn:        "All On",
 	LEDAllOff:       "All Off",
 	LEDFrontOffOnly: "Front Off Only",
+	LEDBackOnly:     "Back Only",
+}
+
+var lEDHERO9 = map[LED]bool{
+	LEDAllOn:        true,
+	LEDAllOff:       true,
+	LEDFrontOffOnly: true,
 }
 
 // ID implements Option.
@@ -834,8 +1083,11 @@ func (LED) ID() SettingID { return SettingLED }
 // Value implements Option.
 func (o LED) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o LED) Valid() bool { _, ok := lEDLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o LED) SupportedOnHERO9() bool { return lEDHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o LED) String() string {
@@ -885,7 +1137,8 @@ func (o *LED) UnmarshalText(text []byte) error { return o.Set(string(text)) }
 // VideoLens is setting 121: Video Lens.
 type VideoLens uint16
 
-// VideoLens options supported by the HERO9 Black.
+// VideoLens options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// VideoLensWide is "Wide".
 	VideoLensWide VideoLens = 0
@@ -899,6 +1152,20 @@ const (
 	VideoLensMaxSuperView VideoLens = 7
 	// VideoLensLinearPlusHorizonLeveling is "Linear + Horizon Leveling".
 	VideoLensLinearPlusHorizonLeveling VideoLens = 8
+	// VideoLensHyperView is "HyperView" (not listed for HERO9).
+	VideoLensHyperView VideoLens = 9
+	// VideoLensLinearPlusHorizonLock is "Linear + Horizon Lock" (not listed for HERO9).
+	VideoLensLinearPlusHorizonLock VideoLens = 10
+	// VideoLensMaxHyperView is "Max HyperView" (not listed for HERO9).
+	VideoLensMaxHyperView VideoLens = 11
+	// VideoLensUltraSuperView is "Ultra SuperView" (not listed for HERO9).
+	VideoLensUltraSuperView VideoLens = 12
+	// VideoLensUltraWide is "Ultra Wide" (not listed for HERO9).
+	VideoLensUltraWide VideoLens = 13
+	// VideoLensUltraLinear is "Ultra Linear" (not listed for HERO9).
+	VideoLensUltraLinear VideoLens = 14
+	// VideoLensUltraHyperView is "Ultra HyperView" (not listed for HERO9).
+	VideoLensUltraHyperView VideoLens = 104
 )
 
 var videoLensLabels = map[VideoLens]string{
@@ -908,6 +1175,22 @@ var videoLensLabels = map[VideoLens]string{
 	VideoLensLinear:                    "Linear",
 	VideoLensMaxSuperView:              "Max SuperView",
 	VideoLensLinearPlusHorizonLeveling: "Linear + Horizon Leveling",
+	VideoLensHyperView:                 "HyperView",
+	VideoLensLinearPlusHorizonLock:     "Linear + Horizon Lock",
+	VideoLensMaxHyperView:              "Max HyperView",
+	VideoLensUltraSuperView:            "Ultra SuperView",
+	VideoLensUltraWide:                 "Ultra Wide",
+	VideoLensUltraLinear:               "Ultra Linear",
+	VideoLensUltraHyperView:            "Ultra HyperView",
+}
+
+var videoLensHERO9 = map[VideoLens]bool{
+	VideoLensWide:                      true,
+	VideoLensNarrow:                    true,
+	VideoLensSuperview:                 true,
+	VideoLensLinear:                    true,
+	VideoLensMaxSuperView:              true,
+	VideoLensLinearPlusHorizonLeveling: true,
 }
 
 // ID implements Option.
@@ -916,8 +1199,11 @@ func (VideoLens) ID() SettingID { return SettingVideoLens }
 // Value implements Option.
 func (o VideoLens) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o VideoLens) Valid() bool { _, ok := videoLensLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o VideoLens) SupportedOnHERO9() bool { return videoLensHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o VideoLens) String() string {
@@ -967,10 +1253,37 @@ func (o *VideoLens) UnmarshalText(text []byte) error { return o.Set(string(text)
 // PhotoLens is setting 122: Photo Lens.
 type PhotoLens uint16
 
-// PhotoLens options supported by the HERO9 Black.
+// PhotoLens options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
+	// PhotoLensWide12MP is "Wide 12 MP" (not listed for HERO9).
+	PhotoLensWide12MP PhotoLens = 0
+	// PhotoLensLinear12MP is "Linear 12 MP" (not listed for HERO9).
+	PhotoLensLinear12MP PhotoLens = 10
+	// PhotoLens9MPWide is "9MP Wide" (not listed for HERO9).
+	PhotoLens9MPWide PhotoLens = 15
 	// PhotoLensNarrow is "Narrow".
 	PhotoLensNarrow PhotoLens = 19
+	// PhotoLensWide23MP is "Wide 23 MP" (not listed for HERO9).
+	PhotoLensWide23MP PhotoLens = 27
+	// PhotoLensLinear23MP is "Linear 23 MP" (not listed for HERO9).
+	PhotoLensLinear23MP PhotoLens = 28
+	// PhotoLensWide27MP is "Wide 27 MP" (not listed for HERO9).
+	PhotoLensWide27MP PhotoLens = 31
+	// PhotoLensLinear27MP is "Linear 27 MP" (not listed for HERO9).
+	PhotoLensLinear27MP PhotoLens = 32
+	// PhotoLens9MPLinear is "9MP Linear" (not listed for HERO9).
+	PhotoLens9MPLinear PhotoLens = 37
+	// PhotoLens13MPLinear is "13MP Linear" (not listed for HERO9).
+	PhotoLens13MPLinear PhotoLens = 38
+	// PhotoLens13MPWide is "13MP Wide" (not listed for HERO9).
+	PhotoLens13MPWide PhotoLens = 39
+	// PhotoLens13MPUltraWide is "13MP Ultra Wide" (not listed for HERO9).
+	PhotoLens13MPUltraWide PhotoLens = 40
+	// PhotoLensUltraWide12MP is "Ultra Wide 12 MP" (not listed for HERO9).
+	PhotoLensUltraWide12MP PhotoLens = 41
+	// PhotoLens13MPUltraLinear is "13MP Ultra Linear" (not listed for HERO9).
+	PhotoLens13MPUltraLinear PhotoLens = 44
 	// PhotoLensMaxSuperView is "Max SuperView".
 	PhotoLensMaxSuperView PhotoLens = 100
 	// PhotoLensWide is "Wide".
@@ -980,10 +1293,30 @@ const (
 )
 
 var photoLensLabels = map[PhotoLens]string{
-	PhotoLensNarrow:       "Narrow",
-	PhotoLensMaxSuperView: "Max SuperView",
-	PhotoLensWide:         "Wide",
-	PhotoLensLinear:       "Linear",
+	PhotoLensWide12MP:        "Wide 12 MP",
+	PhotoLensLinear12MP:      "Linear 12 MP",
+	PhotoLens9MPWide:         "9MP Wide",
+	PhotoLensNarrow:          "Narrow",
+	PhotoLensWide23MP:        "Wide 23 MP",
+	PhotoLensLinear23MP:      "Linear 23 MP",
+	PhotoLensWide27MP:        "Wide 27 MP",
+	PhotoLensLinear27MP:      "Linear 27 MP",
+	PhotoLens9MPLinear:       "9MP Linear",
+	PhotoLens13MPLinear:      "13MP Linear",
+	PhotoLens13MPWide:        "13MP Wide",
+	PhotoLens13MPUltraWide:   "13MP Ultra Wide",
+	PhotoLensUltraWide12MP:   "Ultra Wide 12 MP",
+	PhotoLens13MPUltraLinear: "13MP Ultra Linear",
+	PhotoLensMaxSuperView:    "Max SuperView",
+	PhotoLensWide:            "Wide",
+	PhotoLensLinear:          "Linear",
+}
+
+var photoLensHERO9 = map[PhotoLens]bool{
+	PhotoLensNarrow:       true,
+	PhotoLensMaxSuperView: true,
+	PhotoLensWide:         true,
+	PhotoLensLinear:       true,
 }
 
 // ID implements Option.
@@ -992,8 +1325,11 @@ func (PhotoLens) ID() SettingID { return SettingPhotoLens }
 // Value implements Option.
 func (o PhotoLens) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o PhotoLens) Valid() bool { _, ok := photoLensLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o PhotoLens) SupportedOnHERO9() bool { return photoLensHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o PhotoLens) String() string {
@@ -1043,10 +1379,17 @@ func (o *PhotoLens) UnmarshalText(text []byte) error { return o.Set(string(text)
 // TimeLapseDigitalLenses is setting 123: Time Lapse Digital Lenses.
 type TimeLapseDigitalLenses uint16
 
-// TimeLapseDigitalLenses options supported by the HERO9 Black.
+// TimeLapseDigitalLenses options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// TimeLapseDigitalLensesNarrow is "Narrow".
 	TimeLapseDigitalLensesNarrow TimeLapseDigitalLenses = 19
+	// TimeLapseDigitalLensesWide27MP is "Wide 27 MP" (not listed for HERO9).
+	TimeLapseDigitalLensesWide27MP TimeLapseDigitalLenses = 31
+	// TimeLapseDigitalLensesLinear27MP is "Linear 27 MP" (not listed for HERO9).
+	TimeLapseDigitalLensesLinear27MP TimeLapseDigitalLenses = 32
+	// TimeLapseDigitalLensesMaxSuperView is "Max SuperView" (not listed for HERO9).
+	TimeLapseDigitalLensesMaxSuperView TimeLapseDigitalLenses = 100
 	// TimeLapseDigitalLensesWide is "Wide".
 	TimeLapseDigitalLensesWide TimeLapseDigitalLenses = 101
 	// TimeLapseDigitalLensesLinear is "Linear".
@@ -1054,9 +1397,18 @@ const (
 )
 
 var timeLapseDigitalLensesLabels = map[TimeLapseDigitalLenses]string{
-	TimeLapseDigitalLensesNarrow: "Narrow",
-	TimeLapseDigitalLensesWide:   "Wide",
-	TimeLapseDigitalLensesLinear: "Linear",
+	TimeLapseDigitalLensesNarrow:       "Narrow",
+	TimeLapseDigitalLensesWide27MP:     "Wide 27 MP",
+	TimeLapseDigitalLensesLinear27MP:   "Linear 27 MP",
+	TimeLapseDigitalLensesMaxSuperView: "Max SuperView",
+	TimeLapseDigitalLensesWide:         "Wide",
+	TimeLapseDigitalLensesLinear:       "Linear",
+}
+
+var timeLapseDigitalLensesHERO9 = map[TimeLapseDigitalLenses]bool{
+	TimeLapseDigitalLensesNarrow: true,
+	TimeLapseDigitalLensesWide:   true,
+	TimeLapseDigitalLensesLinear: true,
 }
 
 // ID implements Option.
@@ -1065,8 +1417,11 @@ func (TimeLapseDigitalLenses) ID() SettingID { return SettingTimeLapseDigitalLen
 // Value implements Option.
 func (o TimeLapseDigitalLenses) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o TimeLapseDigitalLenses) Valid() bool { _, ok := timeLapseDigitalLensesLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o TimeLapseDigitalLenses) SupportedOnHERO9() bool { return timeLapseDigitalLensesHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o TimeLapseDigitalLenses) String() string {
@@ -1116,7 +1471,8 @@ func (o *TimeLapseDigitalLenses) UnmarshalText(text []byte) error { return o.Set
 // PhotoOutput is setting 125: Photo Output.
 type PhotoOutput uint16
 
-// PhotoOutput options supported by the HERO9 Black.
+// PhotoOutput options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// PhotoOutputStandard is "Standard".
 	PhotoOutputStandard PhotoOutput = 0
@@ -1135,14 +1491,24 @@ var photoOutputLabels = map[PhotoOutput]string{
 	PhotoOutputSuperPhoto: "SuperPhoto",
 }
 
+var photoOutputHERO9 = map[PhotoOutput]bool{
+	PhotoOutputStandard:   true,
+	PhotoOutputRaw:        true,
+	PhotoOutputHDR:        true,
+	PhotoOutputSuperPhoto: true,
+}
+
 // ID implements Option.
 func (PhotoOutput) ID() SettingID { return SettingPhotoOutput }
 
 // Value implements Option.
 func (o PhotoOutput) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o PhotoOutput) Valid() bool { _, ok := photoOutputLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o PhotoOutput) SupportedOnHERO9() bool { return photoOutputHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o PhotoOutput) String() string {
@@ -1192,7 +1558,8 @@ func (o *PhotoOutput) UnmarshalText(text []byte) error { return o.Set(string(tex
 // MediaFormat is setting 128: Media Format.
 type MediaFormat uint16
 
-// MediaFormat options supported by the HERO9 Black.
+// MediaFormat options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// MediaFormatTimeLapseVideo is "Time Lapse Video".
 	MediaFormatTimeLapseVideo MediaFormat = 13
@@ -1211,14 +1578,24 @@ var mediaFormatLabels = map[MediaFormat]string{
 	MediaFormatNightLapseVideo: "Night Lapse Video",
 }
 
+var mediaFormatHERO9 = map[MediaFormat]bool{
+	MediaFormatTimeLapseVideo:  true,
+	MediaFormatTimeLapsePhoto:  true,
+	MediaFormatNightLapsePhoto: true,
+	MediaFormatNightLapseVideo: true,
+}
+
 // ID implements Option.
 func (MediaFormat) ID() SettingID { return SettingMediaFormat }
 
 // Value implements Option.
 func (o MediaFormat) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o MediaFormat) Valid() bool { _, ok := mediaFormatLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o MediaFormat) SupportedOnHERO9() bool { return mediaFormatHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o MediaFormat) String() string {
@@ -1268,8 +1645,13 @@ func (o *MediaFormat) UnmarshalText(text []byte) error { return o.Set(string(tex
 // AntiFlicker is setting 134: Anti-Flicker.
 type AntiFlicker uint16
 
-// AntiFlicker options supported by the HERO9 Black.
+// AntiFlicker options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
+	// AntiFlickerNTSC is "NTSC" (not listed for HERO9).
+	AntiFlickerNTSC AntiFlicker = 0
+	// AntiFlickerPAL is "PAL" (not listed for HERO9).
+	AntiFlickerPAL AntiFlicker = 1
 	// AntiFlicker60Hz is "60Hz".
 	AntiFlicker60Hz AntiFlicker = 2
 	// AntiFlicker50Hz is "50Hz".
@@ -1277,8 +1659,15 @@ const (
 )
 
 var antiFlickerLabels = map[AntiFlicker]string{
+	AntiFlickerNTSC: "NTSC",
+	AntiFlickerPAL:  "PAL",
 	AntiFlicker60Hz: "60Hz",
 	AntiFlicker50Hz: "50Hz",
+}
+
+var antiFlickerHERO9 = map[AntiFlicker]bool{
+	AntiFlicker60Hz: true,
+	AntiFlicker50Hz: true,
 }
 
 // ID implements Option.
@@ -1287,8 +1676,11 @@ func (AntiFlicker) ID() SettingID { return SettingAntiFlicker }
 // Value implements Option.
 func (o AntiFlicker) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o AntiFlicker) Valid() bool { _, ok := antiFlickerLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o AntiFlicker) SupportedOnHERO9() bool { return antiFlickerHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o AntiFlicker) String() string {
@@ -1338,7 +1730,8 @@ func (o *AntiFlicker) UnmarshalText(text []byte) error { return o.Set(string(tex
 // Hypersmooth is setting 135: Hypersmooth.
 type Hypersmooth uint16
 
-// Hypersmooth options supported by the HERO9 Black.
+// Hypersmooth options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// HypersmoothOff is "Off".
 	HypersmoothOff Hypersmooth = 0
@@ -1348,13 +1741,26 @@ const (
 	HypersmoothHigh Hypersmooth = 2
 	// HypersmoothBoost is "Boost".
 	HypersmoothBoost Hypersmooth = 3
+	// HypersmoothAutoBoost is "Auto Boost" (not listed for HERO9).
+	HypersmoothAutoBoost Hypersmooth = 4
+	// HypersmoothStandard is "Standard" (not listed for HERO9).
+	HypersmoothStandard Hypersmooth = 100
 )
 
 var hypersmoothLabels = map[Hypersmooth]string{
-	HypersmoothOff:   "Off",
-	HypersmoothLow:   "Low",
-	HypersmoothHigh:  "High",
-	HypersmoothBoost: "Boost",
+	HypersmoothOff:       "Off",
+	HypersmoothLow:       "Low",
+	HypersmoothHigh:      "High",
+	HypersmoothBoost:     "Boost",
+	HypersmoothAutoBoost: "Auto Boost",
+	HypersmoothStandard:  "Standard",
+}
+
+var hypersmoothHERO9 = map[Hypersmooth]bool{
+	HypersmoothOff:   true,
+	HypersmoothLow:   true,
+	HypersmoothHigh:  true,
+	HypersmoothBoost: true,
 }
 
 // ID implements Option.
@@ -1363,8 +1769,11 @@ func (Hypersmooth) ID() SettingID { return SettingHypersmooth }
 // Value implements Option.
 func (o Hypersmooth) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o Hypersmooth) Valid() bool { _, ok := hypersmoothLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o Hypersmooth) SupportedOnHERO9() bool { return hypersmoothHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o Hypersmooth) String() string {
@@ -1414,7 +1823,8 @@ func (o *Hypersmooth) UnmarshalText(text []byte) error { return o.Set(string(tex
 // VideoDuration is setting 156: Video Duration.
 type VideoDuration uint16
 
-// VideoDuration options supported by the HERO9 Black.
+// VideoDuration options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// VideoDuration15Seconds is "15 Seconds".
 	VideoDuration15Seconds VideoDuration = 1
@@ -1434,6 +1844,10 @@ const (
 	VideoDuration2Hours VideoDuration = 8
 	// VideoDuration3Hours is "3 Hours".
 	VideoDuration3Hours VideoDuration = 9
+	// VideoDuration5Seconds is "5 Seconds" (not listed for HERO9).
+	VideoDuration5Seconds VideoDuration = 10
+	// VideoDuration10Seconds is "10 Seconds" (not listed for HERO9).
+	VideoDuration10Seconds VideoDuration = 11
 	// VideoDurationNoLimit is "No Limit".
 	VideoDurationNoLimit VideoDuration = 100
 )
@@ -1448,7 +1862,22 @@ var videoDurationLabels = map[VideoDuration]string{
 	VideoDuration1Hour:     "1 Hour",
 	VideoDuration2Hours:    "2 Hours",
 	VideoDuration3Hours:    "3 Hours",
+	VideoDuration5Seconds:  "5 Seconds",
+	VideoDuration10Seconds: "10 Seconds",
 	VideoDurationNoLimit:   "No Limit",
+}
+
+var videoDurationHERO9 = map[VideoDuration]bool{
+	VideoDuration15Seconds: true,
+	VideoDuration30Seconds: true,
+	VideoDuration1Minute:   true,
+	VideoDuration5Minutes:  true,
+	VideoDuration15Minutes: true,
+	VideoDuration30Minutes: true,
+	VideoDuration1Hour:     true,
+	VideoDuration2Hours:    true,
+	VideoDuration3Hours:    true,
+	VideoDurationNoLimit:   true,
 }
 
 // ID implements Option.
@@ -1457,8 +1886,11 @@ func (VideoDuration) ID() SettingID { return SettingVideoDuration }
 // Value implements Option.
 func (o VideoDuration) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o VideoDuration) Valid() bool { _, ok := videoDurationLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o VideoDuration) SupportedOnHERO9() bool { return videoDurationHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o VideoDuration) String() string {
@@ -1508,8 +1940,11 @@ func (o *VideoDuration) UnmarshalText(text []byte) error { return o.Set(string(t
 // MultiShotDuration is setting 157: Multi Shot Duration.
 type MultiShotDuration uint16
 
-// MultiShotDuration options supported by the HERO9 Black.
+// MultiShotDuration options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
+	// MultiShotDurationOff is "Off" (not listed for HERO9).
+	MultiShotDurationOff MultiShotDuration = 0
 	// MultiShotDuration15Seconds is "15 Seconds".
 	MultiShotDuration15Seconds MultiShotDuration = 1
 	// MultiShotDuration30Seconds is "30 Seconds".
@@ -1533,6 +1968,7 @@ const (
 )
 
 var multiShotDurationLabels = map[MultiShotDuration]string{
+	MultiShotDurationOff:       "Off",
 	MultiShotDuration15Seconds: "15 Seconds",
 	MultiShotDuration30Seconds: "30 Seconds",
 	MultiShotDuration1Minute:   "1 Minute",
@@ -1545,14 +1981,30 @@ var multiShotDurationLabels = map[MultiShotDuration]string{
 	MultiShotDurationNoLimit:   "No Limit",
 }
 
+var multiShotDurationHERO9 = map[MultiShotDuration]bool{
+	MultiShotDuration15Seconds: true,
+	MultiShotDuration30Seconds: true,
+	MultiShotDuration1Minute:   true,
+	MultiShotDuration5Minutes:  true,
+	MultiShotDuration15Minutes: true,
+	MultiShotDuration30Minutes: true,
+	MultiShotDuration1Hour:     true,
+	MultiShotDuration2Hours:    true,
+	MultiShotDuration3Hours:    true,
+	MultiShotDurationNoLimit:   true,
+}
+
 // ID implements Option.
 func (MultiShotDuration) ID() SettingID { return SettingMultiShotDuration }
 
 // Value implements Option.
 func (o MultiShotDuration) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o MultiShotDuration) Valid() bool { _, ok := multiShotDurationLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o MultiShotDuration) SupportedOnHERO9() bool { return multiShotDurationHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o MultiShotDuration) String() string {
@@ -1602,7 +2054,8 @@ func (o *MultiShotDuration) UnmarshalText(text []byte) error { return o.Set(stri
 // MaxLens is setting 162: Max Lens.
 type MaxLens uint16
 
-// MaxLens options supported by the HERO9 Black.
+// MaxLens options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// MaxLensOff is "Off".
 	MaxLensOff MaxLens = 0
@@ -1615,14 +2068,22 @@ var maxLensLabels = map[MaxLens]string{
 	MaxLensOn:  "On",
 }
 
+var maxLensHERO9 = map[MaxLens]bool{
+	MaxLensOff: true,
+	MaxLensOn:  true,
+}
+
 // ID implements Option.
 func (MaxLens) ID() SettingID { return SettingMaxLens }
 
 // Value implements Option.
 func (o MaxLens) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o MaxLens) Valid() bool { _, ok := maxLensLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o MaxLens) SupportedOnHERO9() bool { return maxLensHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o MaxLens) String() string {
@@ -1672,7 +2133,8 @@ func (o *MaxLens) UnmarshalText(text []byte) error { return o.Set(string(text)) 
 // HindSight is setting 167: HindSight.
 type HindSight uint16
 
-// HindSight options supported by the HERO9 Black.
+// HindSight options documented by the Open GoPro spec. Options the spec does not
+// list for the HERO9 Black are marked; the camera may still report or reject them.
 const (
 	// HindSight15Seconds is "15 Seconds".
 	HindSight15Seconds HindSight = 2
@@ -1688,14 +2150,23 @@ var hindSightLabels = map[HindSight]string{
 	HindSightOff:       "Off",
 }
 
+var hindSightHERO9 = map[HindSight]bool{
+	HindSight15Seconds: true,
+	HindSight30Seconds: true,
+	HindSightOff:       true,
+}
+
 // ID implements Option.
 func (HindSight) ID() SettingID { return SettingHindSight }
 
 // Value implements Option.
 func (o HindSight) Value() uint32 { return uint32(o) }
 
-// Valid reports whether o is an option the HERO9 accepts.
+// Valid reports whether o is an option documented by the Open GoPro spec.
 func (o HindSight) Valid() bool { _, ok := hindSightLabels[o]; return ok }
+
+// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.
+func (o HindSight) SupportedOnHERO9() bool { return hindSightHERO9[o] }
 
 // String returns the human label, or the numeric value for unknown options.
 func (o HindSight) String() string {
@@ -1763,6 +2234,9 @@ func (o ScheduledCapture) Value() uint32 { return uint32(o) }
 // Valid reports whether o is within the documented range.
 func (o ScheduledCapture) Valid() bool { return o >= ScheduledCaptureMin && o <= ScheduledCaptureMax }
 
+// SupportedOnHERO9 always reports true for numeric settings documented for the HERO9.
+func (ScheduledCapture) SupportedOnHERO9() bool { return true }
+
 // String returns the decimal value.
 func (o ScheduledCapture) String() string { return strconv.FormatUint(uint64(o), 10) }
 
@@ -1802,13 +2276,35 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingVideoResolution, Name: "video-resolution", Title: "Video Resolution", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 1, Name: "4k", Label: "4K"},
-			{Value: 4, Name: "2.7k", Label: "2.7K"},
-			{Value: 6, Name: "2.7k-4-3", Label: "2.7K 4:3"},
-			{Value: 7, Name: "1440", Label: "1440"},
-			{Value: 9, Name: "1080", Label: "1080"},
-			{Value: 18, Name: "4k-4-3", Label: "4K 4:3"},
-			{Value: 24, Name: "5k", Label: "5K"},
+			{Value: 1, Name: "4k", Label: "4K", HERO9: true},
+			{Value: 4, Name: "2.7k", Label: "2.7K", HERO9: true},
+			{Value: 6, Name: "2.7k-4-3", Label: "2.7K 4:3", HERO9: true},
+			{Value: 7, Name: "1440", Label: "1440", HERO9: true},
+			{Value: 9, Name: "1080", Label: "1080", HERO9: true},
+			{Value: 12, Name: "720", Label: "720", HERO9: false},
+			{Value: 18, Name: "4k-4-3", Label: "4K 4:3", HERO9: true},
+			{Value: 21, Name: "5.6k", Label: "5.6K", HERO9: false},
+			{Value: 24, Name: "5k", Label: "5K", HERO9: true},
+			{Value: 25, Name: "5k-4-3", Label: "5K 4:3", HERO9: false},
+			{Value: 26, Name: "5.3k-8-7", Label: "5.3K 8:7", HERO9: false},
+			{Value: 27, Name: "5.3k-4-3", Label: "5.3K 4:3", HERO9: false},
+			{Value: 28, Name: "4k-8-7", Label: "4K 8:7", HERO9: false},
+			{Value: 31, Name: "8k", Label: "8K", HERO9: false},
+			{Value: 35, Name: "5.3k-21-9", Label: "5.3K 21:9", HERO9: false},
+			{Value: 36, Name: "4k-21-9", Label: "4K 21:9", HERO9: false},
+			{Value: 37, Name: "4k-1-1", Label: "4K 1:1", HERO9: false},
+			{Value: 38, Name: "900", Label: "900", HERO9: false},
+			{Value: 39, Name: "4k-sph", Label: "4K SPH", HERO9: false},
+			{Value: 40, Name: "8k-4-3", Label: "8K 4:3", HERO9: false},
+			{Value: 44, Name: "1440-4-3", Label: "1440 4:3", HERO9: false},
+			{Value: 100, Name: "5.3k", Label: "5.3K", HERO9: false},
+			{Value: 107, Name: "5.3k-8-7-v2", Label: "5.3K 8:7 V2", HERO9: false},
+			{Value: 108, Name: "4k-8-7-v2", Label: "4K 8:7 V2", HERO9: false},
+			{Value: 109, Name: "4k-9-16-v2", Label: "4K 9:16 V2", HERO9: false},
+			{Value: 110, Name: "1080-9-16-v2", Label: "1080 9:16 V2", HERO9: false},
+			{Value: 111, Name: "2.7k-4-3-v2", Label: "2.7K 4:3 V2", HERO9: false},
+			{Value: 112, Name: "4k-4-3-v2", Label: "4K 4:3 V2", HERO9: false},
+			{Value: 113, Name: "5.3k-4-3-v2", Label: "5.3K 4:3 V2", HERO9: false},
 		},
 		parse:     func(s string) (Option, error) { return ParseVideoResolution(s) },
 		fromValue: func(v uint32) (Option, bool) { o := VideoResolution(v); return o, o.Valid() },
@@ -1816,15 +2312,22 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingFramesPerSecond, Name: "frames-per-second", Title: "Frames Per Second", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "240.0", Label: "240.0"},
-			{Value: 1, Name: "120.0", Label: "120.0"},
-			{Value: 2, Name: "100.0", Label: "100.0"},
-			{Value: 5, Name: "60.0", Label: "60.0"},
-			{Value: 6, Name: "50.0", Label: "50.0"},
-			{Value: 8, Name: "30.0", Label: "30.0"},
-			{Value: 9, Name: "25.0", Label: "25.0"},
-			{Value: 10, Name: "24.0", Label: "24.0"},
-			{Value: 13, Name: "200.0", Label: "200.0"},
+			{Value: 0, Name: "240.0", Label: "240.0", HERO9: true},
+			{Value: 1, Name: "120.0", Label: "120.0", HERO9: true},
+			{Value: 2, Name: "100.0", Label: "100.0", HERO9: true},
+			{Value: 3, Name: "90.0", Label: "90.0", HERO9: false},
+			{Value: 5, Name: "60.0", Label: "60.0", HERO9: true},
+			{Value: 6, Name: "50.0", Label: "50.0", HERO9: true},
+			{Value: 8, Name: "30.0", Label: "30.0", HERO9: true},
+			{Value: 9, Name: "25.0", Label: "25.0", HERO9: true},
+			{Value: 10, Name: "24.0", Label: "24.0", HERO9: true},
+			{Value: 13, Name: "200.0", Label: "200.0", HERO9: true},
+			{Value: 15, Name: "400.0", Label: "400.0", HERO9: false},
+			{Value: 16, Name: "360.0", Label: "360.0", HERO9: false},
+			{Value: 17, Name: "300.0", Label: "300.0", HERO9: false},
+			{Value: 18, Name: "480.0", Label: "480.0", HERO9: false},
+			{Value: 19, Name: "960.0", Label: "960.0", HERO9: false},
+			{Value: 20, Name: "800.0", Label: "800.0", HERO9: false},
 		},
 		parse:     func(s string) (Option, error) { return ParseFramesPerSecond(s) },
 		fromValue: func(v uint32) (Option, bool) { o := FramesPerSecond(v); return o, o.Valid() },
@@ -1832,17 +2335,22 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingVideoTimelapseRate, Name: "video-timelapse-rate", Title: "Video Timelapse Rate", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "0.5-seconds", Label: "0.5 Seconds"},
-			{Value: 1, Name: "1-second", Label: "1 Second"},
-			{Value: 2, Name: "2-seconds", Label: "2 Seconds"},
-			{Value: 3, Name: "5-seconds", Label: "5 Seconds"},
-			{Value: 4, Name: "10-seconds", Label: "10 Seconds"},
-			{Value: 5, Name: "30-seconds", Label: "30 Seconds"},
-			{Value: 6, Name: "60-seconds", Label: "60 Seconds"},
-			{Value: 7, Name: "2-minutes", Label: "2 Minutes"},
-			{Value: 8, Name: "5-minutes", Label: "5 Minutes"},
-			{Value: 9, Name: "30-minutes", Label: "30 Minutes"},
-			{Value: 10, Name: "60-minutes", Label: "60 Minutes"},
+			{Value: 0, Name: "0.5-seconds", Label: "0.5 Seconds", HERO9: true},
+			{Value: 1, Name: "1-second", Label: "1 Second", HERO9: true},
+			{Value: 2, Name: "2-seconds", Label: "2 Seconds", HERO9: true},
+			{Value: 3, Name: "5-seconds", Label: "5 Seconds", HERO9: true},
+			{Value: 4, Name: "10-seconds", Label: "10 Seconds", HERO9: true},
+			{Value: 5, Name: "30-seconds", Label: "30 Seconds", HERO9: true},
+			{Value: 6, Name: "60-seconds", Label: "60 Seconds", HERO9: true},
+			{Value: 7, Name: "2-minutes", Label: "2 Minutes", HERO9: true},
+			{Value: 8, Name: "5-minutes", Label: "5 Minutes", HERO9: true},
+			{Value: 9, Name: "30-minutes", Label: "30 Minutes", HERO9: true},
+			{Value: 10, Name: "60-minutes", Label: "60 Minutes", HERO9: true},
+			{Value: 11, Name: "3-seconds", Label: "3 Seconds", HERO9: false},
+			{Value: 12, Name: "4-seconds", Label: "4 Seconds", HERO9: false},
+			{Value: 13, Name: "15-seconds", Label: "15 Seconds", HERO9: false},
+			{Value: 14, Name: "20-seconds", Label: "20 Seconds", HERO9: false},
+			{Value: 15, Name: "auto", Label: "Auto", HERO9: false},
 		},
 		parse:     func(s string) (Option, error) { return ParseVideoTimelapseRate(s) },
 		fromValue: func(v uint32) (Option, bool) { o := VideoTimelapseRate(v); return o, o.Valid() },
@@ -1850,17 +2358,18 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingPhotoTimelapseRate, Name: "photo-timelapse-rate", Title: "Photo Timelapse Rate", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 100, Name: "60-minutes", Label: "60 Minutes"},
-			{Value: 101, Name: "30-minutes", Label: "30 Minutes"},
-			{Value: 102, Name: "5-minutes", Label: "5 Minutes"},
-			{Value: 103, Name: "2-minutes", Label: "2 Minutes"},
-			{Value: 104, Name: "60-seconds", Label: "60 Seconds"},
-			{Value: 105, Name: "30-seconds", Label: "30 Seconds"},
-			{Value: 106, Name: "10-seconds", Label: "10 Seconds"},
-			{Value: 107, Name: "5-seconds", Label: "5 Seconds"},
-			{Value: 108, Name: "2-seconds", Label: "2 Seconds"},
-			{Value: 109, Name: "1-second", Label: "1 Second"},
-			{Value: 110, Name: "0.5-seconds", Label: "0.5 Seconds"},
+			{Value: 11, Name: "3-seconds", Label: "3 Seconds", HERO9: false},
+			{Value: 100, Name: "60-minutes", Label: "60 Minutes", HERO9: true},
+			{Value: 101, Name: "30-minutes", Label: "30 Minutes", HERO9: true},
+			{Value: 102, Name: "5-minutes", Label: "5 Minutes", HERO9: true},
+			{Value: 103, Name: "2-minutes", Label: "2 Minutes", HERO9: true},
+			{Value: 104, Name: "60-seconds", Label: "60 Seconds", HERO9: true},
+			{Value: 105, Name: "30-seconds", Label: "30 Seconds", HERO9: true},
+			{Value: 106, Name: "10-seconds", Label: "10 Seconds", HERO9: true},
+			{Value: 107, Name: "5-seconds", Label: "5 Seconds", HERO9: true},
+			{Value: 108, Name: "2-seconds", Label: "2 Seconds", HERO9: true},
+			{Value: 109, Name: "1-second", Label: "1 Second", HERO9: true},
+			{Value: 110, Name: "0.5-seconds", Label: "0.5 Seconds", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParsePhotoTimelapseRate(s) },
 		fromValue: func(v uint32) (Option, bool) { o := PhotoTimelapseRate(v); return o, o.Valid() },
@@ -1868,18 +2377,18 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingNightlapseRate, Name: "nightlapse-rate", Title: "Nightlapse Rate", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 4, Name: "4-seconds", Label: "4 Seconds"},
-			{Value: 5, Name: "5-seconds", Label: "5 Seconds"},
-			{Value: 10, Name: "10-seconds", Label: "10 Seconds"},
-			{Value: 15, Name: "15-seconds", Label: "15 Seconds"},
-			{Value: 20, Name: "20-seconds", Label: "20 Seconds"},
-			{Value: 30, Name: "30-seconds", Label: "30 Seconds"},
-			{Value: 100, Name: "60-seconds", Label: "60 Seconds"},
-			{Value: 120, Name: "2-minutes", Label: "2 Minutes"},
-			{Value: 300, Name: "5-minutes", Label: "5 Minutes"},
-			{Value: 1800, Name: "30-minutes", Label: "30 Minutes"},
-			{Value: 3600, Name: "60-minutes", Label: "60 Minutes"},
-			{Value: 3601, Name: "auto", Label: "Auto"},
+			{Value: 4, Name: "4-seconds", Label: "4 Seconds", HERO9: true},
+			{Value: 5, Name: "5-seconds", Label: "5 Seconds", HERO9: true},
+			{Value: 10, Name: "10-seconds", Label: "10 Seconds", HERO9: true},
+			{Value: 15, Name: "15-seconds", Label: "15 Seconds", HERO9: true},
+			{Value: 20, Name: "20-seconds", Label: "20 Seconds", HERO9: true},
+			{Value: 30, Name: "30-seconds", Label: "30 Seconds", HERO9: true},
+			{Value: 100, Name: "60-seconds", Label: "60 Seconds", HERO9: true},
+			{Value: 120, Name: "2-minutes", Label: "2 Minutes", HERO9: true},
+			{Value: 300, Name: "5-minutes", Label: "5 Minutes", HERO9: true},
+			{Value: 1800, Name: "30-minutes", Label: "30 Minutes", HERO9: true},
+			{Value: 3600, Name: "60-minutes", Label: "60 Minutes", HERO9: true},
+			{Value: 3601, Name: "auto", Label: "Auto", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseNightlapseRate(s) },
 		fromValue: func(v uint32) (Option, bool) { o := NightlapseRate(v); return o, o.Valid() },
@@ -1887,10 +2396,10 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingWebcamDigitalLenses, Name: "webcam-digital-lenses", Title: "Webcam Digital Lenses", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "wide", Label: "Wide"},
-			{Value: 2, Name: "narrow", Label: "Narrow"},
-			{Value: 3, Name: "superview", Label: "Superview"},
-			{Value: 4, Name: "linear", Label: "Linear"},
+			{Value: 0, Name: "wide", Label: "Wide", HERO9: true},
+			{Value: 2, Name: "narrow", Label: "Narrow", HERO9: true},
+			{Value: 3, Name: "superview", Label: "Superview", HERO9: true},
+			{Value: 4, Name: "linear", Label: "Linear", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseWebcamDigitalLenses(s) },
 		fromValue: func(v uint32) (Option, bool) { o := WebcamDigitalLenses(v); return o, o.Valid() },
@@ -1898,10 +2407,13 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingAutoPowerDown, Name: "auto-power-down", Title: "Auto Power Down", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "never", Label: "Never"},
-			{Value: 4, Name: "5-min", Label: "5 Min"},
-			{Value: 6, Name: "15-min", Label: "15 Min"},
-			{Value: 7, Name: "30-min", Label: "30 Min"},
+			{Value: 0, Name: "never", Label: "Never", HERO9: true},
+			{Value: 1, Name: "1-min", Label: "1 Min", HERO9: false},
+			{Value: 4, Name: "5-min", Label: "5 Min", HERO9: true},
+			{Value: 6, Name: "15-min", Label: "15 Min", HERO9: true},
+			{Value: 7, Name: "30-min", Label: "30 Min", HERO9: true},
+			{Value: 11, Name: "8-seconds", Label: "8 Seconds", HERO9: false},
+			{Value: 12, Name: "30-seconds", Label: "30 Seconds", HERO9: false},
 		},
 		parse:     func(s string) (Option, error) { return ParseAutoPowerDown(s) },
 		fromValue: func(v uint32) (Option, bool) { o := AutoPowerDown(v); return o, o.Valid() },
@@ -1909,8 +2421,8 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingGPS, Name: "gps", Title: "GPS", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "off", Label: "Off"},
-			{Value: 1, Name: "on", Label: "On"},
+			{Value: 0, Name: "off", Label: "Off", HERO9: true},
+			{Value: 1, Name: "on", Label: "On", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseGPS(s) },
 		fromValue: func(v uint32) (Option, bool) { o := GPS(v); return o, o.Valid() },
@@ -1924,9 +2436,12 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingLED, Name: "led", Title: "LED", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 3, Name: "all-on", Label: "All On"},
-			{Value: 4, Name: "all-off", Label: "All Off"},
-			{Value: 5, Name: "front-off-only", Label: "Front Off Only"},
+			{Value: 0, Name: "off", Label: "Off", HERO9: false},
+			{Value: 2, Name: "on", Label: "On", HERO9: false},
+			{Value: 3, Name: "all-on", Label: "All On", HERO9: true},
+			{Value: 4, Name: "all-off", Label: "All Off", HERO9: true},
+			{Value: 5, Name: "front-off-only", Label: "Front Off Only", HERO9: true},
+			{Value: 100, Name: "back-only", Label: "Back Only", HERO9: false},
 		},
 		parse:     func(s string) (Option, error) { return ParseLED(s) },
 		fromValue: func(v uint32) (Option, bool) { o := LED(v); return o, o.Valid() },
@@ -1934,12 +2449,19 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingVideoLens, Name: "video-lens", Title: "Video Lens", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "wide", Label: "Wide"},
-			{Value: 2, Name: "narrow", Label: "Narrow"},
-			{Value: 3, Name: "superview", Label: "Superview"},
-			{Value: 4, Name: "linear", Label: "Linear"},
-			{Value: 7, Name: "max-superview", Label: "Max SuperView"},
-			{Value: 8, Name: "linear-horizon-leveling", Label: "Linear + Horizon Leveling"},
+			{Value: 0, Name: "wide", Label: "Wide", HERO9: true},
+			{Value: 2, Name: "narrow", Label: "Narrow", HERO9: true},
+			{Value: 3, Name: "superview", Label: "Superview", HERO9: true},
+			{Value: 4, Name: "linear", Label: "Linear", HERO9: true},
+			{Value: 7, Name: "max-superview", Label: "Max SuperView", HERO9: true},
+			{Value: 8, Name: "linear-horizon-leveling", Label: "Linear + Horizon Leveling", HERO9: true},
+			{Value: 9, Name: "hyperview", Label: "HyperView", HERO9: false},
+			{Value: 10, Name: "linear-horizon-lock", Label: "Linear + Horizon Lock", HERO9: false},
+			{Value: 11, Name: "max-hyperview", Label: "Max HyperView", HERO9: false},
+			{Value: 12, Name: "ultra-superview", Label: "Ultra SuperView", HERO9: false},
+			{Value: 13, Name: "ultra-wide", Label: "Ultra Wide", HERO9: false},
+			{Value: 14, Name: "ultra-linear", Label: "Ultra Linear", HERO9: false},
+			{Value: 104, Name: "ultra-hyperview", Label: "Ultra HyperView", HERO9: false},
 		},
 		parse:     func(s string) (Option, error) { return ParseVideoLens(s) },
 		fromValue: func(v uint32) (Option, bool) { o := VideoLens(v); return o, o.Valid() },
@@ -1947,10 +2469,23 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingPhotoLens, Name: "photo-lens", Title: "Photo Lens", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 19, Name: "narrow", Label: "Narrow"},
-			{Value: 100, Name: "max-superview", Label: "Max SuperView"},
-			{Value: 101, Name: "wide", Label: "Wide"},
-			{Value: 102, Name: "linear", Label: "Linear"},
+			{Value: 0, Name: "wide-12-mp", Label: "Wide 12 MP", HERO9: false},
+			{Value: 10, Name: "linear-12-mp", Label: "Linear 12 MP", HERO9: false},
+			{Value: 15, Name: "9mp-wide", Label: "9MP Wide", HERO9: false},
+			{Value: 19, Name: "narrow", Label: "Narrow", HERO9: true},
+			{Value: 27, Name: "wide-23-mp", Label: "Wide 23 MP", HERO9: false},
+			{Value: 28, Name: "linear-23-mp", Label: "Linear 23 MP", HERO9: false},
+			{Value: 31, Name: "wide-27-mp", Label: "Wide 27 MP", HERO9: false},
+			{Value: 32, Name: "linear-27-mp", Label: "Linear 27 MP", HERO9: false},
+			{Value: 37, Name: "9mp-linear", Label: "9MP Linear", HERO9: false},
+			{Value: 38, Name: "13mp-linear", Label: "13MP Linear", HERO9: false},
+			{Value: 39, Name: "13mp-wide", Label: "13MP Wide", HERO9: false},
+			{Value: 40, Name: "13mp-ultra-wide", Label: "13MP Ultra Wide", HERO9: false},
+			{Value: 41, Name: "ultra-wide-12-mp", Label: "Ultra Wide 12 MP", HERO9: false},
+			{Value: 44, Name: "13mp-ultra-linear", Label: "13MP Ultra Linear", HERO9: false},
+			{Value: 100, Name: "max-superview", Label: "Max SuperView", HERO9: true},
+			{Value: 101, Name: "wide", Label: "Wide", HERO9: true},
+			{Value: 102, Name: "linear", Label: "Linear", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParsePhotoLens(s) },
 		fromValue: func(v uint32) (Option, bool) { o := PhotoLens(v); return o, o.Valid() },
@@ -1958,9 +2493,12 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingTimeLapseDigitalLenses, Name: "time-lapse-digital-lenses", Title: "Time Lapse Digital Lenses", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 19, Name: "narrow", Label: "Narrow"},
-			{Value: 101, Name: "wide", Label: "Wide"},
-			{Value: 102, Name: "linear", Label: "Linear"},
+			{Value: 19, Name: "narrow", Label: "Narrow", HERO9: true},
+			{Value: 31, Name: "wide-27-mp", Label: "Wide 27 MP", HERO9: false},
+			{Value: 32, Name: "linear-27-mp", Label: "Linear 27 MP", HERO9: false},
+			{Value: 100, Name: "max-superview", Label: "Max SuperView", HERO9: false},
+			{Value: 101, Name: "wide", Label: "Wide", HERO9: true},
+			{Value: 102, Name: "linear", Label: "Linear", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseTimeLapseDigitalLenses(s) },
 		fromValue: func(v uint32) (Option, bool) { o := TimeLapseDigitalLenses(v); return o, o.Valid() },
@@ -1968,10 +2506,10 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingPhotoOutput, Name: "photo-output", Title: "Photo Output", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "standard", Label: "Standard"},
-			{Value: 1, Name: "raw", Label: "Raw"},
-			{Value: 2, Name: "hdr", Label: "HDR"},
-			{Value: 3, Name: "superphoto", Label: "SuperPhoto"},
+			{Value: 0, Name: "standard", Label: "Standard", HERO9: true},
+			{Value: 1, Name: "raw", Label: "Raw", HERO9: true},
+			{Value: 2, Name: "hdr", Label: "HDR", HERO9: true},
+			{Value: 3, Name: "superphoto", Label: "SuperPhoto", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParsePhotoOutput(s) },
 		fromValue: func(v uint32) (Option, bool) { o := PhotoOutput(v); return o, o.Valid() },
@@ -1979,10 +2517,10 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingMediaFormat, Name: "media-format", Title: "Media Format", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 13, Name: "time-lapse-video", Label: "Time Lapse Video"},
-			{Value: 20, Name: "time-lapse-photo", Label: "Time Lapse Photo"},
-			{Value: 21, Name: "night-lapse-photo", Label: "Night Lapse Photo"},
-			{Value: 26, Name: "night-lapse-video", Label: "Night Lapse Video"},
+			{Value: 13, Name: "time-lapse-video", Label: "Time Lapse Video", HERO9: true},
+			{Value: 20, Name: "time-lapse-photo", Label: "Time Lapse Photo", HERO9: true},
+			{Value: 21, Name: "night-lapse-photo", Label: "Night Lapse Photo", HERO9: true},
+			{Value: 26, Name: "night-lapse-video", Label: "Night Lapse Video", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseMediaFormat(s) },
 		fromValue: func(v uint32) (Option, bool) { o := MediaFormat(v); return o, o.Valid() },
@@ -1990,8 +2528,10 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingAntiFlicker, Name: "anti-flicker", Title: "Anti-Flicker", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 2, Name: "60hz", Label: "60Hz"},
-			{Value: 3, Name: "50hz", Label: "50Hz"},
+			{Value: 0, Name: "ntsc", Label: "NTSC", HERO9: false},
+			{Value: 1, Name: "pal", Label: "PAL", HERO9: false},
+			{Value: 2, Name: "60hz", Label: "60Hz", HERO9: true},
+			{Value: 3, Name: "50hz", Label: "50Hz", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseAntiFlicker(s) },
 		fromValue: func(v uint32) (Option, bool) { o := AntiFlicker(v); return o, o.Valid() },
@@ -1999,10 +2539,12 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingHypersmooth, Name: "hypersmooth", Title: "Hypersmooth", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "off", Label: "Off"},
-			{Value: 1, Name: "low", Label: "Low"},
-			{Value: 2, Name: "high", Label: "High"},
-			{Value: 3, Name: "boost", Label: "Boost"},
+			{Value: 0, Name: "off", Label: "Off", HERO9: true},
+			{Value: 1, Name: "low", Label: "Low", HERO9: true},
+			{Value: 2, Name: "high", Label: "High", HERO9: true},
+			{Value: 3, Name: "boost", Label: "Boost", HERO9: true},
+			{Value: 4, Name: "auto-boost", Label: "Auto Boost", HERO9: false},
+			{Value: 100, Name: "standard", Label: "Standard", HERO9: false},
 		},
 		parse:     func(s string) (Option, error) { return ParseHypersmooth(s) },
 		fromValue: func(v uint32) (Option, bool) { o := Hypersmooth(v); return o, o.Valid() },
@@ -2010,16 +2552,18 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingVideoDuration, Name: "video-duration", Title: "Video Duration", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 1, Name: "15-seconds", Label: "15 Seconds"},
-			{Value: 2, Name: "30-seconds", Label: "30 Seconds"},
-			{Value: 3, Name: "1-minute", Label: "1 Minute"},
-			{Value: 4, Name: "5-minutes", Label: "5 Minutes"},
-			{Value: 5, Name: "15-minutes", Label: "15 Minutes"},
-			{Value: 6, Name: "30-minutes", Label: "30 Minutes"},
-			{Value: 7, Name: "1-hour", Label: "1 Hour"},
-			{Value: 8, Name: "2-hours", Label: "2 Hours"},
-			{Value: 9, Name: "3-hours", Label: "3 Hours"},
-			{Value: 100, Name: "no-limit", Label: "No Limit"},
+			{Value: 1, Name: "15-seconds", Label: "15 Seconds", HERO9: true},
+			{Value: 2, Name: "30-seconds", Label: "30 Seconds", HERO9: true},
+			{Value: 3, Name: "1-minute", Label: "1 Minute", HERO9: true},
+			{Value: 4, Name: "5-minutes", Label: "5 Minutes", HERO9: true},
+			{Value: 5, Name: "15-minutes", Label: "15 Minutes", HERO9: true},
+			{Value: 6, Name: "30-minutes", Label: "30 Minutes", HERO9: true},
+			{Value: 7, Name: "1-hour", Label: "1 Hour", HERO9: true},
+			{Value: 8, Name: "2-hours", Label: "2 Hours", HERO9: true},
+			{Value: 9, Name: "3-hours", Label: "3 Hours", HERO9: true},
+			{Value: 10, Name: "5-seconds", Label: "5 Seconds", HERO9: false},
+			{Value: 11, Name: "10-seconds", Label: "10 Seconds", HERO9: false},
+			{Value: 100, Name: "no-limit", Label: "No Limit", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseVideoDuration(s) },
 		fromValue: func(v uint32) (Option, bool) { o := VideoDuration(v); return o, o.Valid() },
@@ -2027,16 +2571,17 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingMultiShotDuration, Name: "multi-shot-duration", Title: "Multi Shot Duration", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 1, Name: "15-seconds", Label: "15 Seconds"},
-			{Value: 2, Name: "30-seconds", Label: "30 Seconds"},
-			{Value: 3, Name: "1-minute", Label: "1 Minute"},
-			{Value: 4, Name: "5-minutes", Label: "5 Minutes"},
-			{Value: 5, Name: "15-minutes", Label: "15 Minutes"},
-			{Value: 6, Name: "30-minutes", Label: "30 Minutes"},
-			{Value: 7, Name: "1-hour", Label: "1 Hour"},
-			{Value: 8, Name: "2-hours", Label: "2 Hours"},
-			{Value: 9, Name: "3-hours", Label: "3 Hours"},
-			{Value: 100, Name: "no-limit", Label: "No Limit"},
+			{Value: 0, Name: "off", Label: "Off", HERO9: false},
+			{Value: 1, Name: "15-seconds", Label: "15 Seconds", HERO9: true},
+			{Value: 2, Name: "30-seconds", Label: "30 Seconds", HERO9: true},
+			{Value: 3, Name: "1-minute", Label: "1 Minute", HERO9: true},
+			{Value: 4, Name: "5-minutes", Label: "5 Minutes", HERO9: true},
+			{Value: 5, Name: "15-minutes", Label: "15 Minutes", HERO9: true},
+			{Value: 6, Name: "30-minutes", Label: "30 Minutes", HERO9: true},
+			{Value: 7, Name: "1-hour", Label: "1 Hour", HERO9: true},
+			{Value: 8, Name: "2-hours", Label: "2 Hours", HERO9: true},
+			{Value: 9, Name: "3-hours", Label: "3 Hours", HERO9: true},
+			{Value: 100, Name: "no-limit", Label: "No Limit", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseMultiShotDuration(s) },
 		fromValue: func(v uint32) (Option, bool) { o := MultiShotDuration(v); return o, o.Valid() },
@@ -2044,8 +2589,8 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingMaxLens, Name: "max-lens", Title: "Max Lens", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 0, Name: "off", Label: "Off"},
-			{Value: 1, Name: "on", Label: "On"},
+			{Value: 0, Name: "off", Label: "Off", HERO9: true},
+			{Value: 1, Name: "on", Label: "On", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseMaxLens(s) },
 		fromValue: func(v uint32) (Option, bool) { o := MaxLens(v); return o, o.Valid() },
@@ -2053,9 +2598,9 @@ var descriptors = []Descriptor{
 	{
 		ID: SettingHindSight, Name: "hindsight", Title: "HindSight", Numeric: false,
 		Options: []OptionInfo{
-			{Value: 2, Name: "15-seconds", Label: "15 Seconds"},
-			{Value: 3, Name: "30-seconds", Label: "30 Seconds"},
-			{Value: 4, Name: "off", Label: "Off"},
+			{Value: 2, Name: "15-seconds", Label: "15 Seconds", HERO9: true},
+			{Value: 3, Name: "30-seconds", Label: "30 Seconds", HERO9: true},
+			{Value: 4, Name: "off", Label: "Off", HERO9: true},
 		},
 		parse:     func(s string) (Option, error) { return ParseHindSight(s) },
 		fromValue: func(v uint32) (Option, bool) { o := HindSight(v); return o, o.Valid() },

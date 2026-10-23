@@ -8,6 +8,9 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- M2 control: `shutter start|stop|toggle`, `capture video|photo|timelapse`, `preset list|load|group`,
+  `setting list|get|set|describe|dump|apply` with typed validation and HERO9 support warnings,
+  `zoom`, `power sleep|locate`, `turbo on|off`.
 - M1 connect: USB discovery (subnet probe + native mDNS), `discover`, `doctor` (link checks,
   Host-guard test, capability-drift probes, fixture recording), `info`, `status`, `state`
   (typed, `--raw`, `--watch`), `keepalive`, `datetime get|set|sync`, `capabilities`.

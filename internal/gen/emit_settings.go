@@ -35,7 +35,7 @@ func emitSettings(m *model) string {
 		if s.IsEnum {
 			w("\t\tOptions: []OptionInfo{\n")
 			for _, o := range s.Options {
-				w("\t\t\t{Value: %d, Name: %q, Label: %q},\n", o.Value, o.Name, o.Label)
+				w("\t\t\t{Value: %d, Name: %q, Label: %q, HERO9: %v},\n", o.Value, o.Name, o.Label, o.HERO9)
 			}
 			w("\t\t},\n")
 			w("\t\tparse: func(s string) (Option, error) { return Parse%s(s) },\n", s.TypeName)
@@ -82,9 +82,13 @@ func emitEnumSetting(b *strings.Builder, s settingModel) {
 		w("//\n// %s\n", wrapComment(s.Desc))
 	}
 	w("type %s uint16\n\n", t)
-	w("// %s options supported by the HERO9 Black.\nconst (\n", t)
+	w("// %s options documented by the Open GoPro spec. Options the spec does not\n// list for the HERO9 Black are marked; the camera may still report or reject them.\nconst (\n", t)
 	for _, o := range s.Options {
-		w("\t// %s is %q.\n\t%s %s = %d\n", o.Const, o.Label, o.Const, t, o.Value)
+		note := ""
+		if !o.HERO9 {
+			note = " (not listed for HERO9)"
+		}
+		w("\t// %s is %q%s.\n\t%s %s = %d\n", o.Const, o.Label, note, o.Const, t, o.Value)
 	}
 	w(")\n\n")
 	w("var %sLabels = map[%s]string{\n", lower(t), t)
@@ -92,9 +96,17 @@ func emitEnumSetting(b *strings.Builder, s settingModel) {
 		w("\t%s: %q,\n", o.Const, o.Label)
 	}
 	w("}\n\n")
+	w("var %sHERO9 = map[%s]bool{\n", lower(t), t)
+	for _, o := range s.Options {
+		if o.HERO9 {
+			w("\t%s: true,\n", o.Const)
+		}
+	}
+	w("}\n\n")
 	w("// ID implements Option.\nfunc (%s) ID() SettingID { return Setting%s }\n\n", t, t)
 	w("// Value implements Option.\nfunc (o %s) Value() uint32 { return uint32(o) }\n\n", t)
-	w("// Valid reports whether o is an option the HERO9 accepts.\nfunc (o %s) Valid() bool { _, ok := %sLabels[o]; return ok }\n\n", t, lower(t))
+	w("// Valid reports whether o is an option documented by the Open GoPro spec.\nfunc (o %s) Valid() bool { _, ok := %sLabels[o]; return ok }\n\n", t, lower(t))
+	w("// SupportedOnHERO9 reports whether the spec lists o for the HERO9 Black.\nfunc (o %s) SupportedOnHERO9() bool { return %sHERO9[o] }\n\n", t, lower(t))
 	w("// String returns the human label, or the numeric value for unknown options.\n")
 	w("func (o %s) String() string {\n\tif l, ok := %sLabels[o]; ok {\n\t\treturn l\n\t}\n\treturn strconv.FormatUint(uint64(o), 10)\n}\n\n", t, lower(t))
 	w("// Parse%s accepts a label (case/punctuation-insensitive) first, then a numeric option value.\n", t)
@@ -123,6 +135,7 @@ func emitNumericSetting(b *strings.Builder, s settingModel) {
 	} else {
 		w("// Valid always reports true: the spec documents no bounds for this setting.\nfunc (%s) Valid() bool { return true }\n\n", t)
 	}
+	w("// SupportedOnHERO9 always reports true for numeric settings documented for the HERO9.\nfunc (%s) SupportedOnHERO9() bool { return true }\n\n", t)
 	w("// String returns the decimal value.\nfunc (o %s) String() string { return strconv.FormatUint(uint64(o), 10) }\n\n", t)
 	w("// Parse%s parses a decimal value and checks the documented range.\n", t)
 	w("func Parse%s(s string) (%s, error) {\n\tn, err := strconv.ParseUint(s, 10, 32)\n\tif err != nil {\n\t\treturn 0, fmt.Errorf(\"settings: %s must be an integer: %%w\", err)\n\t}\n\to := %s(n)\n\tif !o.Valid() {\n\t\treturn 0, fmt.Errorf(\"settings: %s %%d out of range\", n)\n\t}\n\treturn o, nil\n}\n\n", t, t, s.Title, t, s.Title)

@@ -87,15 +87,25 @@ func TestVideoResolutionTyped(t *testing.T) {
 	assert.Equal(t, VideoResolution2_7K4x3, v)
 	// Numeric-looking labels resolve as labels, not wire values: "1080" is the
 	// 1080p label (wire value 9), not option 1080.
+	fps, err := ParseFramesPerSecond("60")
+	require.NoError(t, err, "redundant .0 in spec labels is optional")
+	assert.Equal(t, FramesPerSecond60, fps)
+	fps, err = ParseFramesPerSecond("60.0")
+	require.NoError(t, err)
+	assert.Equal(t, FramesPerSecond60, fps)
 	v, err = ParseVideoResolution("1080")
 	require.NoError(t, err)
 	assert.Equal(t, VideoResolution1080, v)
 	assert.Equal(t, uint32(9), v.Value())
 
-	_, err = ParseVideoResolution("8k") // HERO13-only option is rejected for HERO9
-	require.Error(t, err)
-	_, err = ParseVideoResolution("31")
-	require.Error(t, err)
+	// HERO13-only options are documented, hence parseable, but flagged.
+	v8k, err := ParseVideoResolution("8k")
+	require.NoError(t, err)
+	assert.True(t, v8k.Valid())
+	assert.False(t, v8k.SupportedOnHERO9())
+	assert.True(t, VideoResolution4K.SupportedOnHERO9())
+	_, err = ParseVideoResolution("999")
+	require.Error(t, err, "undocumented numeric value")
 
 	var flag VideoResolution
 	require.NoError(t, flag.Set("1080"))
@@ -122,6 +132,7 @@ func TestNumericSetting(t *testing.T) {
 	assert.Equal(t, "50", v.String())
 	assert.Equal(t, uint32(50), v.Value())
 	assert.Equal(t, SettingLCDBrightness, v.ID())
+	assert.True(t, v.SupportedOnHERO9())
 }
 
 func TestSettingIDString(t *testing.T) {

@@ -82,6 +82,8 @@ func TestSettings(t *testing.T) {
 	assert.Equal(t, settings.SettingID(169), raw.ID())
 	assert.Equal(t, "1", raw.String())
 	assert.Equal(t, uint32(1), raw.Value())
+	assert.False(t, raw.Valid())
+	assert.False(t, raw.SupportedOnHERO9())
 
 	_, err = c.GetSetting(ctx, settings.SettingID(9999))
 	require.Error(t, err)

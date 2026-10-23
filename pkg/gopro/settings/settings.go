@@ -9,6 +9,7 @@ package settings
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -36,6 +37,10 @@ type Option interface {
 	ID() SettingID
 	Value() uint32
 	String() string
+	// Valid reports whether the value is documented by the Open GoPro spec.
+	Valid() bool
+	// SupportedOnHERO9 reports whether the spec lists the value for the HERO9 Black.
+	SupportedOnHERO9() bool
 }
 
 // OptionInfo describes one selectable option of an enumerated setting.
@@ -43,6 +48,7 @@ type OptionInfo struct {
 	Value uint32 `json:"value" yaml:"value"`
 	Name  string `json:"name" yaml:"name"`
 	Label string `json:"label" yaml:"label"`
+	HERO9 bool   `json:"hero9" yaml:"hero9"`
 }
 
 // Descriptor is the registry entry for one setting.
@@ -101,9 +107,13 @@ func ByID(id SettingID) (Descriptor, bool) {
 	return d, ok
 }
 
+var trailingZero = regexp.MustCompile(`(\d)\.0\b`)
+
 // normalize lowercases and strips everything but letters and digits so
-// "2.7K 4:3", "2.7k-4-3" and "27k43" compare equal.
+// "2.7K 4:3", "2.7k-4-3" and "27k43" compare equal. A redundant ".0"
+// is dropped first so "60" matches the spec label "60.0".
 func normalize(s string) string {
+	s = trailingZero.ReplaceAllString(s, "$1")
 	var b strings.Builder
 	for _, r := range strings.ToLower(s) {
 		if unicode.IsLetter(r) || unicode.IsDigit(r) {

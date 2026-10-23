@@ -70,10 +70,12 @@ func TestBadEnvValueIsConfigError(t *testing.T) {
 	assert.Contains(t, errOut, "unknown output format")
 }
 
-func TestUnknownCommandIsSoftwareError(t *testing.T) {
+func TestUnknownCommandIsUsageError(t *testing.T) {
 	_, errOut, code := run(t, "nope")
-	assert.Equal(t, int(exitcode.Software), code) // cobra returns a plain error for unknown subcommands
+	assert.Equal(t, int(exitcode.Usage), code)
 	assert.Contains(t, errOut, "unknown command")
+	_, _, code = run(t, "version", "extra-arg")
+	assert.Equal(t, int(exitcode.Usage), code)
 }
 
 func TestBadFlagIsUsageError(t *testing.T) {

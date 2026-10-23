@@ -1,0 +1,23 @@
+ID   NAME                       VALUE          OPTIONS
+2    video-resolution           2.7K           4K, 2.7K, 2.7K 4:3, 1440, 1080, 4K 4:3, 5K
+3    frames-per-second          24.0           240.0, 120.0, 100.0, 60.0, 50.0, 30.0, 25.0, 24.0, 200.0
+5    video-timelapse-rate       0.5 Seconds    0.5 Seconds, 1 Second, 2 Seconds, 5 Seconds, 10 Seconds, 30 Seconds, 60 Seconds, 2 Minutes, 5 Minutes, 30 Minutes, 60 Minutes
+30   photo-timelapse-rate       0.5 Seconds    60 Minutes, 30 Minutes, 5 Minutes, 2 Minutes, 60 Seconds, 30 Seconds, 10 Seconds, 5 Seconds, 2 Seconds, 1 Second, 0.5 Seconds
+32   nightlapse-rate            10 Seconds     4 Seconds, 5 Seconds, 10 Seconds, 15 Seconds, 20 Seconds, 30 Seconds, 60 Seconds, 2 Minutes, 5 Minutes, 30 Minutes, 60 Minutes, Auto
+43   webcam-digital-lenses      Wide           Wide, Narrow, Superview, Linear
+59   auto-power-down            5 Min          Never, 5 Min, 15 Min, 30 Min
+83   gps                        On             Off, On
+88   lcd-brightness             100            10-100
+91   led                        All On         All On, All Off, Front Off Only
+121  video-lens                 Max SuperView  Wide, Narrow, Superview, Linear, Max SuperView, Linear + Horizon Leveling
+122  photo-lens                 0              Narrow, Max SuperView, Wide, Linear
+123  time-lapse-digital-lenses  0              Narrow, Wide, Linear
+125  photo-output               Standard       Standard, Raw, HDR, SuperPhoto
+128  media-format               12             Time Lapse Video, Time Lapse Photo, Night Lapse Photo, Night Lapse Video
+134  anti-flicker               60Hz           60Hz, 50Hz
+135  hypersmooth                Low            Off, Low, High, Boost
+156  video-duration             No Limit       15 Seconds, 30 Seconds, 1 Minute, 5 Minutes, 15 Minutes, 30 Minutes, 1 Hour, 2 Hours, 3 Hours, No Limit
+157  multi-shot-duration        No Limit       15 Seconds, 30 Seconds, 1 Minute, 5 Minutes, 15 Minutes, 30 Minutes, 1 Hour, 2 Hours, 3 Hours, No Limit
+162  max-lens                   On             Off, On
+167  hindsight                  Off            15 Seconds, 30 Seconds, Off
+168  scheduled-capture          0              2-8

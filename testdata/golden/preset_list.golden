@@ -1,0 +1,4 @@
+GROUP      ID      TITLE         MODE                       CUSTOM
+video      196608  Max Video     FLAT_MODE_VIDEO            false
+photo      262144  Max Photo     FLAT_MODE_PHOTO            false
+timelapse  327680  Max Timewarp  FLAT_MODE_TIME_WARP_VIDEO  false

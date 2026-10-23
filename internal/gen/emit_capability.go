@@ -86,11 +86,15 @@ func emitCapabilityDoc(m *model) string {
 		o := &ops[i]
 		w("| `%s` | %s | `%s` | %s | %s |\n", o.ID, o.Method, o.Path, o.Level, strings.ReplaceAll(o.Note, "|", "\\|"))
 	}
-	w("\n## Settings (%d documented for HERO9)\n\n| ID | Name | Options |\n|---|---|---|\n", len(m.Settings))
+	w("\n## Settings (%d documented for HERO9)\n\nOptions marked `*` are documented by the spec but not listed for the HERO9; the camera may still report them.\n\n| ID | Name | Options |\n|---|---|---|\n", len(m.Settings))
 	for _, s := range m.Settings {
 		opts := make([]string, 0, len(s.Options))
 		for _, o := range s.Options {
-			opts = append(opts, fmt.Sprintf("%d=%s", o.Value, o.Label))
+			mark := ""
+			if !o.HERO9 {
+				mark = "*"
+			}
+			opts = append(opts, fmt.Sprintf("%d=%s%s", o.Value, o.Label, mark))
 		}
 		if !s.IsEnum {
 			if s.Max > 0 {
