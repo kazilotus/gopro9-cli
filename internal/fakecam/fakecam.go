@@ -8,6 +8,7 @@
 package fakecam
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"hash/fnv"
@@ -61,6 +62,12 @@ type Server struct {
 	// Behaviour toggles.
 	HostCheck bool
 	FailWith  map[string]int // path -> status code to force
+
+	// StreamPort is where UDP MPEG-TS packets are sent while streaming
+	// (default 8554, like the camera). StreamPackets is how many to emit per
+	// start (default 50, ~20 ms apart).
+	StreamPort    int
+	StreamPackets int
 }
 
 // MediaFile is one file on the fake SD card.
@@ -104,6 +111,8 @@ func Start(opts ...Option) (*Server, error) {
 		Hilights:      map[string][]int64{},
 		FailWith:      map[string]int{},
 		NotApplicable: map[uint16]bool{},
+		StreamPort:    8554,
+		StreamPackets: 50,
 	}
 	for _, o := range opts {
 		o(s)
@@ -306,8 +315,9 @@ func (s *Server) handler() http.Handler {
 	reg("/gopro/webcam/preview", s.webcam(3))
 	reg("/gopro/webcam/stop", s.webcam(1))
 	reg("/gopro/webcam/exit", s.webcam(0))
-	reg("/gopro/camera/stream/start", func(w http.ResponseWriter, _ *http.Request) {
+	reg("/gopro/camera/stream/start", func(w http.ResponseWriter, r *http.Request) {
 		s.set(func() { s.Streaming = true })
+		s.emitTS(r)
 		writeJSON(w, http.StatusOK, "{}")
 	})
 	reg("/gopro/camera/stream/stop", func(w http.ResponseWriter, _ *http.Request) {
@@ -736,12 +746,55 @@ func (s *Server) webcamStatus(w http.ResponseWriter, _ *http.Request) {
 func (s *Server) webcam(status int) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if status == 2 {
-			if res := r.URL.Query().Get("res"); res != "" && res != "480" && res != "720" && res != "1080" {
-				writeJSON(w, http.StatusBadRequest, `{"status":0,"error":1}`)
+			// Wire values from the Open GoPro spec: 4=480p, 7=720p, 12=1080p.
+			if res := r.URL.Query().Get("res"); res != "" && res != "4" && res != "7" && res != "12" {
+				writeJSON(w, http.StatusOK, `{"status":0,"error":6}`)
 				return
 			}
 		}
 		s.set(func() { s.WebcamStatus = status })
+		if status == 2 || status == 3 {
+			s.emitTS(r)
+		}
 		writeJSON(w, http.StatusOK, `{"status":0,"error":0}`)
 	}
+}
+
+// emitTS sends synthetic MPEG-TS packets (188 bytes, 0x47 sync) to the
+// requesting host, the way the camera streams to whoever started it.
+func (s *Server) emitTS(r *http.Request) {
+	host, _, err := net.SplitHostPort(r.RemoteAddr)
+	if err != nil {
+		return
+	}
+	port := s.StreamPort
+	if p := r.URL.Query().Get("port"); p != "" {
+		if n, perr := strconv.Atoi(p); perr == nil {
+			port = n
+		}
+	}
+	s.mu.Lock()
+	count := s.StreamPackets
+	s.mu.Unlock()
+	go func() {
+		conn, derr := (&net.Dialer{}).DialContext(context.Background(), "udp", net.JoinHostPort(host, strconv.Itoa(port)))
+		if derr != nil {
+			return
+		}
+		defer func() { _ = conn.Close() }()
+		pkt := make([]byte, 188*7) // 7 TS packets per datagram like the camera
+		for i := 0; i < 7; i++ {
+			pkt[i*188] = 0x47
+		}
+		for i := 0; i < count; i++ {
+			s.mu.Lock()
+			streaming := s.Streaming || s.WebcamStatus == 2 || s.WebcamStatus == 3
+			s.mu.Unlock()
+			if !streaming {
+				return
+			}
+			_, _ = conn.Write(pkt)
+			time.Sleep(20 * time.Millisecond)
+		}
+	}()
 }

@@ -12,6 +12,8 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- M4 live: `webcam start|preview|stop|exit|status|version`, `stream start|stop|play|record`
+  (UDP MPEG-TS receiver with stats, player hand-off to ffplay/mpv/vlc).
 - M3 media: `media list|tree|download|thumbnail|screennail|gpmf|telemetry|hilight|delete`;
   resumable, size-verified, parallel downloads with turbo transfer; LRV/THM companions.
 - M2 control: `shutter start|stop|toggle`, `capture video|photo|timelapse`, `preset list|load|group`,

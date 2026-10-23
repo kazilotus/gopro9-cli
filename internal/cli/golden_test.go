@@ -23,6 +23,9 @@ var update = flag.Bool("update", false, "rewrite golden files")
 // fixedNow is the deterministic clock used by golden tests.
 var fixedNow = time.Date(2026, 10, 23, 8, 46, 34, 0, time.UTC)
 
+// Golden files render local times; pin the zone so they match on every runner.
+func init() { time.Local = time.UTC }
+
 // runCam executes the CLI against a fake camera and returns stdout, stderr, exit code.
 func runCam(t *testing.T, cam *fakecam.Server, args ...string) (string, string, int) {
 	t.Helper()

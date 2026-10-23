@@ -13,7 +13,9 @@ import (
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/gpcontrol"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/media"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/ogp"
+	"github.com/kazilotus/gopro9-cli/pkg/gopro/stream"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/transport"
+	"github.com/kazilotus/gopro9-cli/pkg/gopro/webcam"
 )
 
 // Camera is the facade over one connected HERO9.
@@ -23,6 +25,8 @@ type Camera struct {
 	OGP       *ogp.Client
 	Legacy    *gpcontrol.Client
 	Media     *media.Client
+	Webcam    *webcam.Client
+	Stream    *stream.Client
 }
 
 // Option configures New.
@@ -59,5 +63,5 @@ func New(ep transport.Endpoint, opts ...Option) *Camera {
 		transport.WithLogger(cfg.logger),
 		transport.WithUserAgent(cfg.ua),
 	)
-	return &Camera{Endpoint: ep, Transport: t, OGP: ogp.New(t), Legacy: gpcontrol.New(t), Media: media.New(t)}
+	return &Camera{Endpoint: ep, Transport: t, OGP: ogp.New(t), Legacy: gpcontrol.New(t), Media: media.New(t), Webcam: webcam.New(t), Stream: stream.New(t)}
 }

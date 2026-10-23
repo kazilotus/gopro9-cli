@@ -191,6 +191,9 @@ func TestTimeout(t *testing.T) {
 	c := New(ep, WithTimeout(50*time.Millisecond), WithRetries(0, 0))
 	_, err := c.Get(context.Background(), Request{Path: "/slow"})
 	require.ErrorIs(t, err, ErrTimeout)
+	// A per-request override extends the deadline (server answers after 2s; use a fast path instead).
+	_, err = c.Get(context.Background(), Request{Path: "/slow", Timeout: 80 * time.Millisecond})
+	require.ErrorIs(t, err, ErrTimeout)
 }
 
 func TestContextCancelDuringRetryBackoff(t *testing.T) {

@@ -144,6 +144,9 @@ type Request struct {
 	Idempotent bool // enables retry on transport failures
 	// Accept lists status codes that are not errors (default: 2xx only).
 	Accept []int
+	// Timeout overrides the client's per-request timeout when positive. Slow
+	// mode switches (webcam start/exit) need more than the default.
+	Timeout time.Duration
 }
 
 // Get performs the request and reads the whole body.
@@ -254,7 +257,11 @@ func (c *Client) do(ctx context.Context, method string, req Request, body io.Rea
 }
 
 func (c *Client) once(ctx context.Context, method, fullURL, opName string, req Request, body io.Reader) (*http.Response, io.ReadCloser, error) {
-	rctx, cancel := context.WithTimeout(ctx, c.timeout)
+	timeout := c.timeout
+	if req.Timeout > 0 {
+		timeout = req.Timeout
+	}
+	rctx, cancel := context.WithTimeout(ctx, timeout)
 	httpReq, err := http.NewRequestWithContext(rctx, method, fullURL, body)
 	if err != nil {
 		cancel()

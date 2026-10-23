@@ -64,6 +64,8 @@ unavailable or unsupported, 70 internal, 74 local I/O, 75 camera busy.`,
 		a.newPowerCommand(),
 		a.newTurboCommand(),
 		a.newMediaCommand(),
+		a.newWebcamCommand(),
+		a.newStreamCommand(),
 	)
 	return root
 }
