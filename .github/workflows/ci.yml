@@ -43,7 +43,7 @@ jobs:
       - name: Coverage summary
         if: runner.os != 'Windows'
         run: go tool cover -func=coverage.out | tail -1
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v7
         if: matrix.os == 'ubuntu-latest'
         with: { files: coverage.out, fail_ci_if_error: false }
   build:
