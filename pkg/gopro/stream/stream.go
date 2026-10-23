@@ -103,6 +103,11 @@ func Receive(ctx context.Context, conn *net.UDPConn, w io.Writer, o ReceiveOptio
 	})
 	defer stop()
 	for o.MaxDuration <= 0 || first.IsZero() || time.Since(first) < o.MaxDuration {
+		// A steady packet flow never errors, so cancellation must be checked
+		// explicitly before each read, not only on read failure.
+		if closed.Load() || ctx.Err() != nil {
+			break
+		}
 		if err := conn.SetReadDeadline(time.Now().Add(o.IdleTimeout)); err != nil {
 			return stats, err
 		}

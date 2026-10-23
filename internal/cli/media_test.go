@@ -101,7 +101,7 @@ func TestMediaDownload(t *testing.T) {
 func TestMediaBlobs(t *testing.T) {
 	cam := fakecam.New(t)
 	dir := t.TempDir()
-	for _, sub := range []string{"thumbnail", "screennail", "gpmf", "telemetry"} {
+	for _, sub := range []string{"thumbnail", "screennail", "gpmf"} {
 		out := filepath.Join(dir, sub+".bin")
 		_, errOut, code := runCam(t, cam, "media", sub, "100GOPRO/GH010397.MP4", "--out", out)
 		require.Equal(t, 0, code, "%s: %s", sub, errOut)
@@ -124,9 +124,6 @@ func TestMediaBlobs(t *testing.T) {
 
 	_, _, code = runCam(t, cam, "media", "thumbnail", "100GOPRO/NOPE.MP4", "--out", "-")
 	assert.Equal(t, 69, code)
-	_, errOut, code := runCam(t, cam, "media", "telemetry", "100GOPRO/GH010397.MP4", "--format", "gpx", "--out", "-")
-	assert.Equal(t, 64, code)
-	assert.Contains(t, errOut, "raw only")
 	blocked := filepath.Join(dir, "blocked")
 	require.NoError(t, os.WriteFile(blocked, nil, 0o600)) // a file where a directory is needed
 	_, _, code = runCam(t, cam, "media", "thumbnail", "100GOPRO/GH010397.MP4", "--out", filepath.Join(blocked, "x.jpg"))

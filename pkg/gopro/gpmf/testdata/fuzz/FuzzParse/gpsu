@@ -1,0 +1,2 @@
+go test fuzz v1
+[]byte("GPSUU\x10\x00\x01260123120000.500")

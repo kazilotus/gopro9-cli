@@ -1,0 +1,2 @@
+go test fuzz v1
+[]byte("DEVC\x00\x01\x00 DVIDL\x04\x00\x01\x00\x00\x00\x01DVNMc\x01\x00\fFake HERO9  ")

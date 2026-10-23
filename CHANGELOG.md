@@ -12,6 +12,9 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- M5 labs + telemetry: `labs qr|time|build|validate|explain|extensions` (Labs command-language
+  parser, validator, builder, QR rendering to terminal/PNG/SVG); GPMF decoder with MP4 gpmd
+  track extraction; `media telemetry --format summary|gpx|csv|json|raw` and `--from FILE`.
 - M4 live: `webcam start|preview|stop|exit|status|version`, `stream start|stop|play|record`
   (UDP MPEG-TS receiver with stats, player hand-off to ffplay/mpv/vlc).
 - M3 media: `media list|tree|download|thumbnail|screennail|gpmf|telemetry|hilight|delete`;
