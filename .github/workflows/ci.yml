@@ -15,17 +15,17 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with: { go-version-file: go.mod, cache: true }
-      - uses: golangci/golangci-lint-action@v8
+      - uses: golangci/golangci-lint-action@v9
         with: { version: v2.8.0 }
   generate:
     name: Generated code is fresh
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with: { go-version-file: go.mod, cache: true }
       - run: make generate-check
   test:
@@ -36,22 +36,24 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with: { go-version-file: go.mod, cache: true }
-      - run: go test -race -shuffle=on -count=1 -coverprofile=coverage.out -covermode=atomic ./...
+      - name: Test
+        shell: bash
+        run: go test -race -shuffle=on -count=1 -coverprofile=coverage.out -covermode=atomic ./...
       - name: Coverage summary
-        if: runner.os != 'Windows'
+        shell: bash
         run: go tool cover -func=coverage.out | tail -1
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v7
         if: matrix.os == 'ubuntu-latest'
         with: { files: coverage.out, fail_ci_if_error: false }
   build:
     name: Cross-build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with: { go-version-file: go.mod, cache: true }
       - name: Build all targets
         run: |
@@ -64,20 +66,20 @@ jobs:
     name: govulncheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
         with: { go-version-file: go.mod, cache: true }
       - run: go run golang.org/x/vuln/cmd/govulncheck@latest ./...
   release-dry-run:
     name: GoReleaser snapshot
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with: { fetch-depth: 0 }
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with: { go-version-file: go.mod, cache: true }
       - uses: anchore/sbom-action/download-syft@v0
-      - uses: goreleaser/goreleaser-action@v6
+      - uses: goreleaser/goreleaser-action@v7
         with:
           version: "~> v2"
           args: release --snapshot --clean --skip=publish,sign
