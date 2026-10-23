@@ -5,6 +5,18 @@ spec_version: "2.0"
 camera: "HERO9 Black"
 firmware_tested: ["HD9.01.01.72.00", "HD9.01.01.72.70"]
 overrides:
+  # Read-only operations exercised on 2026-10-23 against firmware 72.00 and 72.70.
+  GPCAMERA_OPENGOPRO_VERSION:   { support: verified,    note: "{\"version\":\"2.0\"}" }
+  OGP_GET_STATE:                { support: verified,    note: "86 status + 88 setting ids" }
+  OGP_PRESETS_GET:              { support: verified }
+  OGP_KEEP_ALIVE:               { support: verified }
+  OGP_SET_ANALYTICS:            { support: verified }
+  OGP_MEDIA_LIST:               { support: verified }
+  OGP_MEDIA_THUMBNAIL:          { support: verified }
+  OGP_MEDIA_SCREENNAIL:         { support: verified }
+  OGP_MEDIA_GPMF:               { support: verified }
+  OGP_MEDIA_TELEMETRY:          { support: verified }
+  OGP_DOWNLOAD_MEDIA:           { support: verified,    note: "HEAD returns 403; use Range GET" }
   OGP_SHUTTER:                  { support: verified,    note: "spec omits HERO9; present on 1.72" }
   OGP_GET_DATE_AND_TIME_DST:    { support: verified,    note: "200 with date/time; dst field absent" }
   GPCAMERA_WEBCAM_STATUS_OGP:   { support: verified,    note: "status 1 idle, error 0" }
@@ -20,17 +32,17 @@ overrides:
   OGP_SET_DATE_AND_TIME_DST:    { support: unsupported, note: "untested; legacy setup/date_time path to be probed" }
   OGP_LABS_QR_CODE:             { support: unsupported, note: "HERO13 only" }
 legacy:   # /gp/gpControl endpoints absent from the upstream spec, probed on 1.72
-  GP_INFO:              { path: /gp/gpControl/info,                       support: verified }
-  GP_STATUS:            { path: /gp/gpControl/status,                     support: verified }
-  GP_MEDIA_LIST:        { path: /gp/gpMediaList,                          support: verified }
-  GP_ANALYTICS_GET:     { path: /gp/gpControl/analytics/get,              support: verified, note: "binary blob" }
-  GP_WEBCAM_STATUS:     { path: /gp/gpWebcam/STATUS,                      support: verified }
-  GP_WEBCAM_VERSION:    { path: /gp/gpWebcam/VERSION,                     support: verified }
-  GP_SOFTUPDATE_FORM:   { path: /gp/gpSoftUpdate,                         support: verified, note: "HTML multipart form; dangerous" }
-  GP_LOCATE:            { path: /gp/gpControl/command/system/locate?p=1,  support: spec }
-  GP_MEDIA_METADATA:    { path: /gp/gpMediaMetadata,                      support: unsupported, note: "501" }
-  GP_VERSION:           { path: /gp/gpControl/version,                    support: unsupported, note: "400 from gpcontrol_cgi_handler 6.00" }
-  DCIM_INDEX:           { path: /videos/DCIM/,                            support: verified, note: "HTML listing; sort params nd dd sd" }
+  GP_INFO:              { path: "/gp/gpControl/info",                       support: verified }
+  GP_STATUS:            { path: "/gp/gpControl/status",                     support: verified }
+  GP_MEDIA_LIST:        { path: "/gp/gpMediaList",                          support: verified }
+  GP_ANALYTICS_GET:     { path: "/gp/gpControl/analytics/get",              support: verified, note: "binary blob" }
+  GP_WEBCAM_STATUS:     { path: "/gp/gpWebcam/STATUS",                      support: verified }
+  GP_WEBCAM_VERSION:    { path: "/gp/gpWebcam/VERSION",                     support: verified }
+  GP_SOFTUPDATE_FORM:   { path: "/gp/gpSoftUpdate",                         support: verified, note: "HTML multipart form; dangerous" }
+  GP_LOCATE:            { path: "/gp/gpControl/command/system/locate?p=1",  support: spec }
+  GP_MEDIA_METADATA:    { path: "/gp/gpMediaMetadata",                      support: unsupported, note: "501" }
+  GP_VERSION:           { path: "/gp/gpControl/version",                    support: unsupported, note: "400 from gpcontrol_cgi_handler 6.00" }
+  DCIM_INDEX:           { path: "/videos/DCIM/",                            support: verified, note: "HTML listing; sort params nd dd sd" }
 transport_facts:
   ports_http: [80, 8000, 8001, 8080]
   port_unknown_tcp: 8081
