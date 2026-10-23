@@ -9,12 +9,12 @@ overrides:
   OGP_PRESET_LOAD:              { support: verified }
   OGP_PRESET_SET_GROUP:         { support: verified }
   OGP_TURBO_MODE_ENABLE:        { support: verified }
-  OGP_PREVIEW_STREAM_START:     { support: verified,    note: "MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested" }
+  OGP_PREVIEW_STREAM_START:     { support: verified,    note: "MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested; 409 while webcam mode is streaming" }
   OGP_PREVIEW_STREAM_STOP:      { support: verified }
   OGP_ADD_HILIGHT:              { support: verified }
   OGP_REMOVE_HILIGHT:           { support: verified }
   OGP_DIGITAL_ZOOM_SET:         { support: spec,        note: "500 while Max Lens Mod is on (status 77 zoom-available=0); check before sending" }
-  GPCAMERA_WEBCAM_START_OGP:    { support: verified,    note: "mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s" }
+  GPCAMERA_WEBCAM_START_OGP:    { support: verified,    note: "fov param IGNORED; entering webcam mode resets setting 43 to Superview; lens sticks only when set while webcam-idle (stop → set 43 → start). Mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s" }
   # Read-only operations exercised on 2026-10-23 against firmware 72.00 and 72.70.
   GPCAMERA_OPENGOPRO_VERSION:   { support: verified,    note: "{\"version\":\"2.0\"}" }
   OGP_GET_STATE:                { support: verified,    note: "86 status + 88 setting ids" }

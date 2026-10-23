@@ -3,7 +3,7 @@ DCIM_INDEX                   verified  GET     /videos/DCIM/                    
 GPCAMERA_OPENGOPRO_VERSION   verified  GET     /gopro/version                           {"version":"2.0"}
 GPCAMERA_WEBCAM_EXIT_OGP     verified  GET     /gopro/webcam/exit                       returns status idle (1), not off (0), on 72.70
 GPCAMERA_WEBCAM_PREVIEW_OGP  verified  GET     /gopro/webcam/preview                    
-GPCAMERA_WEBCAM_START_OGP    verified  GET     /gopro/webcam/start                      mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s
+GPCAMERA_WEBCAM_START_OGP    verified  GET     /gopro/webcam/start                      fov param IGNORED; entering webcam mode resets setting 43 to Superview; lens sticks only when set while webcam-idle (stop → set 43 → start). Mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s
 GPCAMERA_WEBCAM_STATUS_OGP   verified  GET     /gopro/webcam/status                     status 1 idle, error 0
 GPCAMERA_WEBCAM_STOP_OGP     verified  GET     /gopro/webcam/stop                       
 GPCAMERA_WEBCAM_VERSION_OGP  verified  GET     /gopro/webcam/version                    version 4, usb_3_1_compatible true
@@ -27,7 +27,7 @@ OGP_MEDIA_THUMBNAIL          verified  GET     /gopro/media/thumbnail
 OGP_PRESETS_GET              verified  GET     /gopro/camera/presets/get                
 OGP_PRESET_LOAD              verified  GET     /gopro/camera/presets/load               
 OGP_PRESET_SET_GROUP         verified  GET     /gopro/camera/presets/set_group          
-OGP_PREVIEW_STREAM_START     verified  GET     /gopro/camera/stream/start               MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested
+OGP_PREVIEW_STREAM_START     verified  GET     /gopro/camera/stream/start               MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested; 409 while webcam mode is streaming
 OGP_PREVIEW_STREAM_STOP      verified  GET     /gopro/camera/stream/stop                
 OGP_REMOVE_HILIGHT           verified  GET     /gopro/media/hilight/remove              
 OGP_SET_ANALYTICS            verified  GET     /gopro/camera/analytics/set_client_info  

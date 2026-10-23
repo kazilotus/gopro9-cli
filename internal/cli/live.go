@@ -13,6 +13,7 @@ import (
 	"github.com/kazilotus/gopro9-cli/internal/cli/render"
 	"github.com/kazilotus/gopro9-cli/internal/exitcode"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro"
+	"github.com/kazilotus/gopro9-cli/pkg/gopro/settings"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/stream"
 	"github.com/kazilotus/gopro9-cli/pkg/gopro/webcam"
 )
@@ -67,11 +68,13 @@ to normal operation.`,
 				return err
 			}
 			opts := webcam.StartOptions{Resolution: res, FOV: fov, HasFOV: cmd.Flags().Changed("fov"), Port: port}
-			return a.webcamAction(cmd, cam, "webcam start", func(ctx context.Context) error { return cam.Webcam.Start(ctx, opts) })
+			return a.webcamAction(cmd, cam, "webcam start", func(ctx context.Context) error {
+				return cam.Webcam.StartWithLens(ctx, opts, webcamLensGetter(cam), webcamLensSetter(cam))
+			})
 		},
 	}
 	start.Flags().Var(&res, "res", "output resolution (default: camera's choice)")
-	start.Flags().Var(&fov, "fov", "digital lens")
+	start.Flags().Var(&fov, "fov", "digital lens (applied by stop → set lens → start, the only sequence the HERO9 honours)")
 	start.Flags().IntVar(&port, "udp-port", 0, "UDP port on this host the camera should stream to (default 8554)")
 	preview := &cobra.Command{
 		Use:   "preview",
@@ -143,6 +146,25 @@ to normal operation.`,
 	}
 	cmd.AddCommand(start, preview, stop, exit, status, version)
 	return cmd
+}
+
+// webcamLensGetter reads the camera's webcam-digital-lenses setting (id 43),
+// whose values coincide with webcam.FOV.
+func webcamLensGetter(cam *gopro.Camera) func(context.Context) (webcam.FOV, error) {
+	return func(ctx context.Context) (webcam.FOV, error) {
+		opt, err := cam.OGP.GetSetting(ctx, settings.SettingWebcamDigitalLenses)
+		if err != nil {
+			return 0, err
+		}
+		return webcam.FOV(opt.Value()), nil
+	}
+}
+
+// webcamLensSetter writes the webcam-digital-lenses setting.
+func webcamLensSetter(cam *gopro.Camera) func(context.Context, webcam.FOV) error {
+	return func(ctx context.Context, f webcam.FOV) error {
+		return cam.OGP.SetSetting(ctx, settings.WebcamDigitalLenses(f))
+	}
 }
 
 // webcamAction runs a webcam command and reports the resulting state, turning

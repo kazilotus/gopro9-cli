@@ -51,6 +51,31 @@ func TestLifecycle(t *testing.T) {
 	assert.Equal(t, "GET /gopro/webcam/start", all[len(all)-1])
 }
 
+func TestStartWithLens(t *testing.T) {
+	t.Parallel()
+	cam := fakecam.New(t)
+	cam.StreamPackets = 0
+	c := webcam.New(transport.New(cam.Endpoint()))
+	ctx := context.Background()
+	current := func(context.Context) (webcam.FOV, error) { return webcam.FOV(cam.Settings[43]), nil }
+	set := func(_ context.Context, f webcam.FOV) error { cam.Settings[43] = int64(f); return nil }
+
+	require.NoError(t, c.StartWithLens(ctx, webcam.StartOptions{Resolution: webcam.Res720, FOV: webcam.FOVLinear, HasFOV: true}, current, set))
+	assert.Equal(t, int64(4), cam.Settings[43])
+	assert.Equal(t, 2, cam.WebcamStatus)
+	n := len(cam.Snapshot())
+	// Already linear and already in webcam mode: a plain start, nothing else.
+	require.NoError(t, c.StartWithLens(ctx, webcam.StartOptions{FOV: webcam.FOVLinear, HasFOV: true}, current, set))
+	assert.Len(t, cam.Snapshot()[n:], 1)
+	// No lens requested: plain start.
+	require.NoError(t, c.StartWithLens(ctx, webcam.StartOptions{}, current, set))
+	// Errors propagate.
+	boom := func(context.Context) (webcam.FOV, error) { return 0, assert.AnError }
+	require.Error(t, c.StartWithLens(ctx, webcam.StartOptions{FOV: webcam.FOVWide, HasFOV: true}, boom, set))
+	setErr := func(context.Context, webcam.FOV) error { return assert.AnError }
+	require.Error(t, c.StartWithLens(ctx, webcam.StartOptions{FOV: webcam.FOVWide, HasFOV: true}, current, setErr))
+}
+
 func TestEnums(t *testing.T) {
 	t.Parallel()
 	assert.Equal(t, "streaming", webcam.StatusHighPowerPreview.String())

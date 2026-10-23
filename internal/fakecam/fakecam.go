@@ -472,7 +472,13 @@ func (s *Server) setting(w http.ResponseWriter, r *http.Request) {
 	}
 	s.mu.Lock()
 	notApplicable := s.NotApplicable[uint16(id)]
+	streaming := s.WebcamStatus == 2 || s.WebcamStatus == 3
 	s.mu.Unlock()
+	if streaming {
+		// The real camera answers 500 to any setting change while the webcam streams.
+		writeJSON(w, http.StatusInternalServerError, "")
+		return
+	}
 	reject := func(available []uint32) {
 		if available == nil {
 			available = []uint32{}
@@ -752,7 +758,14 @@ func (s *Server) webcam(status int) http.HandlerFunc {
 				return
 			}
 		}
-		s.set(func() { s.WebcamStatus = status })
+		s.set(func() {
+			// HERO9 1.72: the fov parameter is ignored, and entering webcam mode
+			// from off resets the webcam lens (setting 43) to Superview (3).
+			if s.WebcamStatus == 0 && (status == 2 || status == 3) {
+				s.Settings[43] = 3
+			}
+			s.WebcamStatus = status
+		})
 		if status == 2 || status == 3 {
 			s.emitTS(r)
 		}

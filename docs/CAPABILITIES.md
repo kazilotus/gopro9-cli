@@ -16,7 +16,7 @@ Open GoPro HTTP spec version **2.0**. Overrides verified on firmware HD9.01.01.7
 | `GPCAMERA_OPENGOPRO_VERSION` | GET | `/gopro/version` | verified | {"version":"2.0"} |
 | `GPCAMERA_WEBCAM_EXIT_OGP` | GET | `/gopro/webcam/exit` | verified | returns status idle (1), not off (0), on 72.70 |
 | `GPCAMERA_WEBCAM_PREVIEW_OGP` | GET | `/gopro/webcam/preview` | verified |  |
-| `GPCAMERA_WEBCAM_START_OGP` | GET | `/gopro/webcam/start` | verified | mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s |
+| `GPCAMERA_WEBCAM_START_OGP` | GET | `/gopro/webcam/start` | verified | fov param IGNORED; entering webcam mode resets setting 43 to Superview; lens sticks only when set while webcam-idle (stop → set 43 → start). Mode switch takes ~3 s; 1280x720 h264 30fps + aac at ~6.4 Mbit/s to UDP 8554. A 5 s client timeout that aborted it once wedged /gopro/camera/state (500) until power cycle — use >=30 s |
 | `GPCAMERA_WEBCAM_STATUS_OGP` | GET | `/gopro/webcam/status` | verified | status 1 idle, error 0 |
 | `GPCAMERA_WEBCAM_STOP_OGP` | GET | `/gopro/webcam/stop` | verified |  |
 | `GPCAMERA_WEBCAM_VERSION_OGP` | GET | `/gopro/webcam/version` | verified | version 4, usb_3_1_compatible true |
@@ -40,7 +40,7 @@ Open GoPro HTTP spec version **2.0**. Overrides verified on firmware HD9.01.01.7
 | `OGP_PRESETS_GET` | GET | `/gopro/camera/presets/get` | verified |  |
 | `OGP_PRESET_LOAD` | GET | `/gopro/camera/presets/load` | verified |  |
 | `OGP_PRESET_SET_GROUP` | GET | `/gopro/camera/presets/set_group` | verified |  |
-| `OGP_PREVIEW_STREAM_START` | GET | `/gopro/camera/stream/start` | verified | MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested |
+| `OGP_PREVIEW_STREAM_START` | GET | `/gopro/camera/stream/start` | verified | MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested; 409 while webcam mode is streaming |
 | `OGP_PREVIEW_STREAM_STOP` | GET | `/gopro/camera/stream/stop` | verified |  |
 | `OGP_REMOVE_HILIGHT` | GET | `/gopro/media/hilight/remove` | verified |  |
 | `OGP_SET_ANALYTICS` | GET | `/gopro/camera/analytics/set_client_info` | verified |  |

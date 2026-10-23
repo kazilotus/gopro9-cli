@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- `webcam start --fov` now applies the lens with the only sequence HERO9 firmware honours
+  (stop → set webcam-digital-lenses → start); the camera ignores the `fov` query parameter and
+  resets the lens to Superview when entering webcam mode.
+
 ## [0.1.0] - 2026-10-23
 
 First public release. Verified end to end against a HERO9 Black on firmware HD9.01.01.72.00

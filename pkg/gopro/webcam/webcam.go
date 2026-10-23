@@ -241,6 +241,35 @@ func (c *Client) Start(ctx context.Context, o StartOptions) error {
 	return err
 }
 
+// StartWithLens starts streaming with a specific digital lens. On HERO9
+// firmware 1.72 the `fov` query parameter is ignored and a lens chosen in
+// normal mode is overwritten when webcam mode is entered; the only sequence
+// that sticks is: enter webcam mode, stop (idle), set the webcam lens
+// setting, start. setLens applies the setting (settings package, injected to
+// avoid an import cycle) and current reports the lens the camera holds.
+func (c *Client) StartWithLens(ctx context.Context, o StartOptions, current func(context.Context) (FOV, error), setLens func(context.Context, FOV) error) error {
+	if err := c.Start(ctx, o); err != nil {
+		return err
+	}
+	if !o.HasFOV {
+		return nil
+	}
+	have, err := current(ctx)
+	if err != nil {
+		return err
+	}
+	if have == o.FOV {
+		return nil
+	}
+	if err := c.Stop(ctx); err != nil {
+		return err
+	}
+	if err := setLens(ctx, o.FOV); err != nil {
+		return err
+	}
+	return c.Start(ctx, o)
+}
+
 // Preview begins the low-power preview stream.
 func (c *Client) Preview(ctx context.Context) error {
 	_, err := c.t.Get(ctx, transport.Request{Path: "/gopro/webcam/preview", Timeout: ModeSwitchTimeout})

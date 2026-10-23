@@ -31,7 +31,20 @@ func TestWebcamCommands(t *testing.T) {
 	out, errOut, code := runCam(t, cam, "webcam", "start", "--res", "1080", "--fov", "linear", "--output", "plain")
 	require.Equal(t, 0, code, errOut)
 	assert.Equal(t, "streaming\n", out)
-	assert.Contains(t, strings.Join(cam.Snapshot(), "\n"), "/gopro/webcam/start?res=12&fov=4")
+	reqs := strings.Join(cam.Snapshot(), "\n")
+	assert.Contains(t, reqs, "/gopro/webcam/start?res=12&fov=4")
+	// The lens only sticks when set while webcam-idle: start → stop → set 43 → start.
+	assert.Contains(t, reqs, "/gopro/webcam/stop\nGET /gopro/camera/setting?setting=43&option=4\nGET /gopro/webcam/start?res=12&fov=4")
+	assert.Equal(t, int64(4), cam.Settings[43], "linear applied")
+	assert.Equal(t, 2, cam.WebcamStatus)
+
+	// Lens already matching: no restart.
+	cam.WebcamStatus = 0
+	before := len(cam.Snapshot())
+	_, _, code = runCam(t, cam, "webcam", "start", "--fov", "superview")
+	require.Equal(t, 0, code)
+	after := cam.Snapshot()[before:]
+	assert.Len(t, after, 3, "start, state read, status — no stop/set/restart: %v", after)
 
 	_, _, code = runCam(t, cam, "webcam", "preview")
 	require.Equal(t, 0, code)
