@@ -42,7 +42,7 @@ func TestStartStopAndReceive(t *testing.T) {
 	assert.Equal(t, 10, calls)
 	assert.Equal(t, byte(0x47), buf.Bytes()[0], "MPEG-TS sync byte")
 	assert.Positive(t, stats.Bitrate())
-	assert.Positive(t, stats.FirstPacket)
+	assert.GreaterOrEqual(t, stats.FirstPacket, time.Duration(0)) // Windows clocks tick at ~15 ms; the first packet may land in the same tick
 
 	require.NoError(t, c.Stop(ctx))
 	assert.False(t, cam.Streaming)
