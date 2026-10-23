@@ -16,7 +16,7 @@ Open GoPro HTTP spec version **2.0**. Overrides verified on firmware HD9.01.01.7
 | `GPCAMERA_OPENGOPRO_VERSION` | GET | `/gopro/version` | verified | {"version":"2.0"} |
 | `GPCAMERA_WEBCAM_EXIT_OGP` | GET | `/gopro/webcam/exit` | verified |  |
 | `GPCAMERA_WEBCAM_PREVIEW_OGP` | GET | `/gopro/webcam/preview` | verified |  |
-| `GPCAMERA_WEBCAM_START_OGP` | GET | `/gopro/webcam/start` | verified | not exercised in probe; documented HERO9 webcam v4 |
+| `GPCAMERA_WEBCAM_START_OGP` | GET | `/gopro/webcam/start` | verified | slow mode switch; a 5 s client timeout aborting it wedged /gopro/camera/state (500) until power cycle — use >=30 s |
 | `GPCAMERA_WEBCAM_STATUS_OGP` | GET | `/gopro/webcam/status` | verified | status 1 idle, error 0 |
 | `GPCAMERA_WEBCAM_STOP_OGP` | GET | `/gopro/webcam/stop` | verified |  |
 | `GPCAMERA_WEBCAM_VERSION_OGP` | GET | `/gopro/webcam/version` | verified | version 4, usb_3_1_compatible true |
@@ -27,6 +27,7 @@ Open GoPro HTTP spec version **2.0**. Overrides verified on firmware HD9.01.01.7
 | `GP_STATUS` | GET | `/gp/gpControl/status` | verified |  |
 | `GP_WEBCAM_STATUS` | GET | `/gp/gpWebcam/STATUS` | verified |  |
 | `GP_WEBCAM_VERSION` | GET | `/gp/gpWebcam/VERSION` | verified |  |
+| `OGP_ADD_HILIGHT` | GET | `/gopro/media/hilight/file` | verified |  |
 | `OGP_DOWNLOAD_MEDIA` | GET | `/videos/DCIM/{directory}/{filename}` | verified | HEAD returns 403; use Range GET |
 | `OGP_GET_DATE_AND_TIME_DST` | GET | `/gopro/camera/get_date_time` | verified | 200 with date/time; dst field absent |
 | `OGP_GET_STATE` | GET | `/gopro/camera/state` | verified | 86 status + 88 setting ids |
@@ -37,23 +38,22 @@ Open GoPro HTTP spec version **2.0**. Overrides verified on firmware HD9.01.01.7
 | `OGP_MEDIA_TELEMETRY` | GET | `/gopro/media/telemetry` | verified |  |
 | `OGP_MEDIA_THUMBNAIL` | GET | `/gopro/media/thumbnail` | verified |  |
 | `OGP_PRESETS_GET` | GET | `/gopro/camera/presets/get` | verified |  |
+| `OGP_PRESET_LOAD` | GET | `/gopro/camera/presets/load` | verified |  |
+| `OGP_PRESET_SET_GROUP` | GET | `/gopro/camera/presets/set_group` | verified |  |
+| `OGP_PREVIEW_STREAM_START` | GET | `/gopro/camera/stream/start` | verified | MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested |
+| `OGP_PREVIEW_STREAM_STOP` | GET | `/gopro/camera/stream/stop` | verified |  |
+| `OGP_REMOVE_HILIGHT` | GET | `/gopro/media/hilight/remove` | verified |  |
 | `OGP_SET_ANALYTICS` | GET | `/gopro/camera/analytics/set_client_info` | verified |  |
 | `OGP_SHUTTER` | GET | `/gopro/camera/shutter/{mode}` | verified | spec omits HERO9; present on 1.72 |
+| `OGP_TURBO_MODE_ENABLE` | GET | `/gopro/media/turbo_transfer` | verified |  |
 | `GPCAMERA_DELETE_ALL_FILES_ID` | GET | `/gp/gpControl/command/storage/delete/all` | spec |  |
 | `GPCAMERA_DELETE_FILE_GROUP` | GET | `/gp/gpControl/command/storage/delete/group` | spec |  |
 | `GPCAMERA_FIRMWARE_UPDATE_V2` | POST | `/gp/gpSoftUpdate` | spec |  |
 | `GPCAMERA_FWUPDATE_DOWNLOAD_FILE` | POST | `/gp/gpUpdate` | spec |  |
 | `GPCAMERA_POWER_ID` | GET | `/gp/gpControl/command/system/sleep` | spec |  |
 | `GP_LOCATE` | GET | `/gp/gpControl/command/system/locate` | spec |  |
-| `OGP_ADD_HILIGHT` | GET | `/gopro/media/hilight/file` | spec |  |
 | `OGP_DELETE_SINGLE_FILE` | GET | `/gopro/media/delete/file` | spec |  |
-| `OGP_DIGITAL_ZOOM_SET` | GET | `/gopro/camera/digital_zoom` | spec |  |
-| `OGP_PRESET_LOAD` | GET | `/gopro/camera/presets/load` | spec |  |
-| `OGP_PRESET_SET_GROUP` | GET | `/gopro/camera/presets/set_group` | spec |  |
-| `OGP_PREVIEW_STREAM_START` | GET | `/gopro/camera/stream/start` | spec |  |
-| `OGP_PREVIEW_STREAM_STOP` | GET | `/gopro/camera/stream/stop` | spec |  |
-| `OGP_REMOVE_HILIGHT` | GET | `/gopro/media/hilight/remove` | spec |  |
-| `OGP_TURBO_MODE_ENABLE` | GET | `/gopro/media/turbo_transfer` | spec |  |
+| `OGP_DIGITAL_ZOOM_SET` | GET | `/gopro/camera/digital_zoom` | spec | 500 while Max Lens Mod is on (status 77 zoom-available=0); check before sending |
 | `GPCAMERA_CLEAR_HOME_NETWORK_CERT` | POST | `/gopro/cohn/cert/clear` | unsupported |  |
 | `GPCAMERA_CREATE_HOME_NETWORK_CERT` | POST | `/gopro/cohn/cert/create` | unsupported |  |
 | `GPCAMERA_CUSTOM_PRESET_UPDATE` | PUT | `/gopro/camera/presets/update_custom` | unsupported |  |

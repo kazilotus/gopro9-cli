@@ -28,11 +28,23 @@ Target hosts: macOS, Linux, Windows (amd64 + arm64).
   10.5.5.9), but discovery, pairing and BLE wakeup are out of scope.
 - MTP mass-storage mode. Different USB configuration, no HTTP; macOS has no native MTP stack.
 - COHN, live streaming (RTMP), camera naming, custom-preset editing. Not on HERO9 firmware.
+- Firmware upload (`/gp/gpSoftUpdate`). Excluded by owner decision; documented in the capability matrix only.
 - GUI, TUI, or a daemon. One process, one invocation, exits.
 
 ---
 
 ## 2. Ground truth: what the camera actually exposes
+
+Additional findings from building against the camera (all encoded in `pkg/gopro` and `internal/fakecam`):
+
+- `/gopro/camera/setting` parses query parameters positionally: `setting` must precede `option` or the camera answers 400. `transport.Params` preserves order.
+- Media path values must keep `/` literal; `%2F` yields 400.
+- A setting change the camera refuses answers 403 with `{"error":1,"setting_id":N,"option_id":M,"available_options":[...]}`; an empty list means the setting does not apply in the current mode. Decoded as `ogp.SettingRejectedError`.
+- The camera holds setting values the spec does not list for HERO9 (e.g. photo lens 0 "Wide 12 MP", settings 123/128). Generated enums therefore include all documented options with a HERO9 flag.
+- Digital zoom returns 500 while Max Lens Mod is enabled (status 77 zoom-available = 0).
+- Webcam start/stop/exit are slow mode switches. A 5 s client timeout that aborted `webcam/start` left `/gopro/camera/state` returning 500 until a power cycle; these requests use a 30 s timeout.
+- `/gopro/media/telemetry` returns an MP4 (`ftyp`, `moov`, `mdat`) whose single `meta`/`gpmd` track holds one DEVC payload per sample; `/gopro/media/gpmf` returns raw GPMF.
+- The preview stream is MPEG-TS (h264 848x480 + aac, ~6.6 Mbit/s) pushed to UDP 8554 on the host that started it.
 
 Measured on the real camera (serial redacted), see `testdata/fixtures/hero9_HD9.01.01.72.70/`.
 
@@ -93,7 +105,6 @@ gopro9-cli/
 │   ├── gpmf/                        # GPMF/telemetry parser → typed streams (GPS5, ACCL, GYRO…) + GPX/CSV
 │   ├── webcam/                      # start/preview/stop/exit/status/version with typed Res/FOV
 │   ├── stream/                      # UDP 8554 receiver, TS passthrough to file/stdout, ffplay handoff
-│   ├── ota/                         # firmware package validation + multipart upload (opt-in, dangerous)
 │   └── labs/                        # Labs command language: tokenizer, AST, validator, builder, QR render
 ├── spec/
 │   ├── opengopro/openapi.json       # vendored upstream spec (pinned commit in SPEC_VERSION)
@@ -215,7 +226,6 @@ gopro9
 │   └── delete file <path> | group <path> | all      (requires --yes)
 ├── webcam    start [--res 480|720|1080] [--fov wide|narrow|superview|linear] | preview | stop | exit | status | version
 ├── stream    start [--port 8554] | stop | play [--player ffplay|vlc|mpv] | record --out file.ts [--duration]
-├── firmware  info | validate <zip|dir> | upload <zip|dir> --i-understand-this-can-brick-the-camera
 ├── labs
 │   ├── qr "<command>" [--png out.png] [--svg] [--ansi] [--size]     render a Labs QR code
 │   ├── time [--utc] [--precision]                                   precision time-sync QR

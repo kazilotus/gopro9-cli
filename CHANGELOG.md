@@ -12,6 +12,9 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
+- `config show|path|set` with a `$XDG_CONFIG_HOME/gopro9/config.yaml` file (flags > env > file).
+- Generated command reference under `docs/commands/`, architecture decision records, hardware e2e
+  suite covering media, telemetry and state-preserving mutations.
 - M5 labs + telemetry: `labs qr|time|build|validate|explain|extensions` (Labs command-language
   parser, validator, builder, QR rendering to terminal/PNG/SVG); GPMF decoder with MP4 gpmd
   track extraction; `media telemetry --format summary|gpx|csv|json|raw` and `--from FILE`.

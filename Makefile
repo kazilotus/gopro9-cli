@@ -21,12 +21,14 @@ install: ## go install with version metadata
 	go install -trimpath -ldflags '$(LDFLAGS)' ./cmd/gopro9
 
 .PHONY: generate
-generate: ## Regenerate code from spec/
+generate: ## Regenerate code from spec/ and the command reference docs
 	go generate ./...
+	rm -rf docs/commands && go run ./cmd/gopro9 docs markdown --dir docs/commands
 
 .PHONY: generate-check
-generate-check: generate ## Fail if generated code is stale
-	@git diff --exit-code -- pkg docs/COMMANDS.md docs/CAPABILITIES.md || (echo "generated files are stale: run make generate" && exit 1)
+generate-check: generate ## Fail if generated code or docs are stale
+	@git diff --exit-code -- pkg docs/commands docs/CAPABILITIES.md || (echo "generated files are stale: run make generate" && exit 1)
+	@test -z "$$(git ls-files --others --exclude-standard docs/commands)" || (echo "untracked generated docs: run make generate and commit" && git ls-files --others --exclude-standard docs/commands && exit 1)
 
 .PHONY: test
 test: ## Unit + integration tests with race detector
@@ -58,9 +60,6 @@ lint: ## golangci-lint
 vuln: ## govulncheck
 	go run golang.org/x/vuln/cmd/govulncheck@latest ./...
 
-.PHONY: docs
-docs: build ## Regenerate docs/commands
-	rm -rf docs/commands && $(BIN) docs markdown --dir docs/commands
 
 .PHONY: snapshot
 snapshot: ## GoReleaser snapshot build

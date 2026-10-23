@@ -3,7 +3,7 @@ DCIM_INDEX                   verified  GET     /videos/DCIM/                    
 GPCAMERA_OPENGOPRO_VERSION   verified  GET     /gopro/version                           {"version":"2.0"}
 GPCAMERA_WEBCAM_EXIT_OGP     verified  GET     /gopro/webcam/exit                       
 GPCAMERA_WEBCAM_PREVIEW_OGP  verified  GET     /gopro/webcam/preview                    
-GPCAMERA_WEBCAM_START_OGP    verified  GET     /gopro/webcam/start                      not exercised in probe; documented HERO9 webcam v4
+GPCAMERA_WEBCAM_START_OGP    verified  GET     /gopro/webcam/start                      slow mode switch; a 5 s client timeout aborting it wedged /gopro/camera/state (500) until power cycle — use >=30 s
 GPCAMERA_WEBCAM_STATUS_OGP   verified  GET     /gopro/webcam/status                     status 1 idle, error 0
 GPCAMERA_WEBCAM_STOP_OGP     verified  GET     /gopro/webcam/stop                       
 GPCAMERA_WEBCAM_VERSION_OGP  verified  GET     /gopro/webcam/version                    version 4, usb_3_1_compatible true
@@ -14,6 +14,7 @@ GP_SOFTUPDATE_FORM           verified  GET     /gp/gpSoftUpdate                 
 GP_STATUS                    verified  GET     /gp/gpControl/status                     
 GP_WEBCAM_STATUS             verified  GET     /gp/gpWebcam/STATUS                      
 GP_WEBCAM_VERSION            verified  GET     /gp/gpWebcam/VERSION                     
+OGP_ADD_HILIGHT              verified  GET     /gopro/media/hilight/file                
 OGP_DOWNLOAD_MEDIA           verified  GET     /videos/DCIM/{directory}/{filename}      HEAD returns 403; use Range GET
 OGP_GET_DATE_AND_TIME_DST    verified  GET     /gopro/camera/get_date_time              200 with date/time; dst field absent
 OGP_GET_STATE                verified  GET     /gopro/camera/state                      86 status + 88 setting ids
@@ -24,5 +25,11 @@ OGP_MEDIA_SCREENNAIL         verified  GET     /gopro/media/screennail
 OGP_MEDIA_TELEMETRY          verified  GET     /gopro/media/telemetry                   
 OGP_MEDIA_THUMBNAIL          verified  GET     /gopro/media/thumbnail                   
 OGP_PRESETS_GET              verified  GET     /gopro/camera/presets/get                
+OGP_PRESET_LOAD              verified  GET     /gopro/camera/presets/load               
+OGP_PRESET_SET_GROUP         verified  GET     /gopro/camera/presets/set_group          
+OGP_PREVIEW_STREAM_START     verified  GET     /gopro/camera/stream/start               MPEG-TS h264 848x480 + aac to UDP 8554; 'port' param untested
+OGP_PREVIEW_STREAM_STOP      verified  GET     /gopro/camera/stream/stop                
+OGP_REMOVE_HILIGHT           verified  GET     /gopro/media/hilight/remove              
 OGP_SET_ANALYTICS            verified  GET     /gopro/camera/analytics/set_client_info  
 OGP_SHUTTER                  verified  GET     /gopro/camera/shutter/{mode}             spec omits HERO9; present on 1.72
+OGP_TURBO_MODE_ENABLE        verified  GET     /gopro/media/turbo_transfer              

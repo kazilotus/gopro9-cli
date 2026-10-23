@@ -29,7 +29,10 @@ unavailable or unsupported, 70 internal, 74 local I/O, 75 camera busy.`,
 			DisableDefaultCmd: true, // we ship our own `completion` command
 		},
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
-			return a.bindEnv(cmd)
+			if err := a.bindEnv(cmd); err != nil {
+				return err
+			}
+			return a.applyConfigFile(cmd)
 		},
 	}
 	root.SetVersionTemplate("{{.Version}}\n")
@@ -67,6 +70,7 @@ unavailable or unsupported, 70 internal, 74 local I/O, 75 camera busy.`,
 		a.newWebcamCommand(),
 		a.newStreamCommand(),
 		a.newLabsCommand(),
+		a.newConfigCommand(),
 	)
 	return root
 }
