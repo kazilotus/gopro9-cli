@@ -1,0 +1,21 @@
+name: Bug report
+description: Something does not work as documented
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes: { label: What happened, description: What you ran, what you expected, what you got. }
+    validations: { required: true }
+  - type: textarea
+    id: doctor
+    attributes:
+      label: gopro9 doctor output
+      description: Paste the output of `gopro9 doctor --output json` with the camera connected.
+      render: json
+  - type: input
+    id: version
+    attributes: { label: gopro9 version, description: Output of `gopro9 version --output plain` }
+    validations: { required: true }
+  - type: input
+    id: firmware
+    attributes: { label: Camera firmware, placeholder: HD9.01.01.72.70 }

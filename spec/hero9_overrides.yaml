@@ -1,0 +1,42 @@
+# Empirical corrections to x-supported-cameras in spec/opengopro/openapi.json.
+# Produced by probing a real HERO9 Black over USB (see docs/ARCHITECTURE.md §2).
+# support: verified | unsupported   (anything not listed inherits the spec's answer → "spec")
+spec_version: "2.0"
+camera: "HERO9 Black"
+firmware_tested: ["HD9.01.01.72.00", "HD9.01.01.72.70"]
+overrides:
+  OGP_SHUTTER:                  { support: verified,    note: "spec omits HERO9; present on 1.72" }
+  OGP_GET_DATE_AND_TIME_DST:    { support: verified,    note: "200 with date/time; dst field absent" }
+  GPCAMERA_WEBCAM_STATUS_OGP:   { support: verified,    note: "status 1 idle, error 0" }
+  GPCAMERA_WEBCAM_VERSION_OGP:  { support: verified,    note: "version 4, usb_3_1_compatible true" }
+  GPCAMERA_WEBCAM_START_OGP:    { support: verified,    note: "not exercised in probe; documented HERO9 webcam v4" }
+  GPCAMERA_WEBCAM_PREVIEW_OGP:  { support: verified }
+  GPCAMERA_WEBCAM_STOP_OGP:     { support: verified }
+  GPCAMERA_WEBCAM_EXIT_OGP:     { support: verified }
+  OGP_MEDIA_INFO:               { support: unsupported, note: "404 empty body on 1.72" }
+  OGP_GET_LAST_MEDIA:           { support: unsupported, note: "400 {}" }
+  OGP_SET_WIRED_USB_CONTROL:    { support: unsupported, note: "404; HERO9 enables USB control via camera menu" }
+  OGP_CAMERA_INFO:              { support: unsupported, note: "404; use gpControl/info" }
+  OGP_SET_DATE_AND_TIME_DST:    { support: unsupported, note: "untested; legacy setup/date_time path to be probed" }
+  OGP_LABS_QR_CODE:             { support: unsupported, note: "HERO13 only" }
+legacy:   # /gp/gpControl endpoints absent from the upstream spec, probed on 1.72
+  GP_INFO:              { path: /gp/gpControl/info,                       support: verified }
+  GP_STATUS:            { path: /gp/gpControl/status,                     support: verified }
+  GP_MEDIA_LIST:        { path: /gp/gpMediaList,                          support: verified }
+  GP_ANALYTICS_GET:     { path: /gp/gpControl/analytics/get,              support: verified, note: "binary blob" }
+  GP_WEBCAM_STATUS:     { path: /gp/gpWebcam/STATUS,                      support: verified }
+  GP_WEBCAM_VERSION:    { path: /gp/gpWebcam/VERSION,                     support: verified }
+  GP_SOFTUPDATE_FORM:   { path: /gp/gpSoftUpdate,                         support: verified, note: "HTML multipart form; dangerous" }
+  GP_LOCATE:            { path: /gp/gpControl/command/system/locate?p=1,  support: spec }
+  GP_MEDIA_METADATA:    { path: /gp/gpMediaMetadata,                      support: unsupported, note: "501" }
+  GP_VERSION:           { path: /gp/gpControl/version,                    support: unsupported, note: "400 from gpcontrol_cgi_handler 6.00" }
+  DCIM_INDEX:           { path: /videos/DCIM/,                            support: verified, note: "HTML listing; sort params nd dd sd" }
+transport_facts:
+  ports_http: [80, 8000, 8001, 8080]
+  port_unknown_tcp: 8081
+  udp_stream_port: 8554
+  host_header_required: true
+  accepted_hosts: ["<camera-ip>", "10.5.5.9", "localhost"]
+  head_on_media: 403
+  range_requests: true
+  tls: false

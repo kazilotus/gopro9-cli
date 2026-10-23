@@ -1,0 +1,9 @@
+{
+"version": "6.00",
+"path_info": "version",
+"query_string": "",
+"error_code":-3,
+"error_msg": "400 Bad Request",
+"function": "gpcontrol_cgi_handler",
+"line": 177
+}

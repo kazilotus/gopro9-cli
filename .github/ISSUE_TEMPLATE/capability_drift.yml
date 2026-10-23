@@ -1,0 +1,16 @@
+name: Capability drift
+description: An operation marked supported fails, or an unsupported one works
+labels: [capability]
+body:
+  - type: input
+    id: op
+    attributes: { label: Operation ID, placeholder: OGP_MEDIA_INFO }
+    validations: { required: true }
+  - type: input
+    id: firmware
+    attributes: { label: Camera firmware, placeholder: HD9.01.01.72.70 }
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes: { label: Evidence, description: "Output of `gopro9 doctor --probe` or a raw request/response." }
+    validations: { required: true }

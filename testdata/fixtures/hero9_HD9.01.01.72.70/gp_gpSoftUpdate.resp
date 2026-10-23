@@ -1,0 +1,9 @@
+<HTML><HEAD><TITLE>GoPro Firmware Updater</TITLE></HEAD>
+<BODY><H1>Upload Firmware</H1>
+<form method="POST" enctype="multipart/form-data" 	action="">
+<p>Sha1sum:
+<input type="text" name="sha1" size="50" value=""><p>
+<p>Firmware Package:
+<input type="file" name="file" value=""><p>
+<input type="submit" name="update"></form>
+</BODY></HTML>

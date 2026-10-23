@@ -1,0 +1,84 @@
+version: "2"
+run:
+  timeout: 5m
+  tests: true
+  build-tags: [e2e]
+linters:
+  default: standard
+  enable:
+    - bodyclose
+    - copyloopvar
+    - depguard
+    - errname
+    - errorlint
+    - exhaustive
+    - forbidigo
+    - gocritic
+    - gosec
+    - misspell
+    - nilerr
+    - noctx
+    - nolintlint
+    - perfsprint
+    - prealloc
+    - revive
+    - sloglint
+    - testifylint
+    - thelper
+    - tparallel
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - wastedassign
+    - whitespace
+  settings:
+    depguard:
+      rules:
+        sdk-no-cli:
+          list-mode: lax
+          files: ["$all", "!**/internal/**", "!**/cmd/**", "!**/test/**"]
+          deny:
+            - pkg: github.com/spf13/cobra
+              desc: pkg/gopro must not depend on the CLI framework
+            - pkg: github.com/kazilotus/gopro9-cli/internal
+              desc: pkg/gopro must not import internal packages
+    forbidigo:
+      forbid:
+        - pattern: ^fmt\.Print.*$
+          msg: write to the injected io.Writer instead of stdout
+        - pattern: ^os\.Exit$
+          msg: return an error with an exit code instead
+      exclude-godoc-examples: true
+      analyze-types: true
+    exhaustive:
+      default-signifies-exhaustive: true
+    gocritic:
+      enabled-tags: [diagnostic, style, performance]
+      disabled-checks: [hugeParam, unnamedResult, paramTypeCombine]
+    gosec:
+      excludes: [G104, G107, G115, G304]
+    revive:
+      rules:
+        - name: exported
+          arguments: [disableStutteringCheck]
+        - name: package-comments
+        - name: unused-parameter
+        - name: var-naming
+        - name: indent-error-flow
+        - name: early-return
+  exclusions:
+    generated: lax
+    paths:
+      - zz_.*\.go$
+    rules:
+      - path: _test\.go
+        linters: [gosec, forbidigo, errcheck, noctx]
+      - path: cmd/gopro9/main\.go
+        linters: [forbidigo]
+      - path: internal/gen/
+        linters: [forbidigo, gosec]
+formatters:
+  enable: [gofmt, gofumpt, goimports]
+  settings:
+    goimports:
+      local-prefixes: [github.com/kazilotus/gopro9-cli]

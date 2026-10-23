@@ -1,0 +1,5 @@
+* text=auto eol=lf
+*.go text eol=lf
+testdata/fixtures/** -text
+testdata/gpmf/** binary
+*.png binary

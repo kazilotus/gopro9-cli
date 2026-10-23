@@ -1,0 +1,11 @@
+name: Feature request
+description: Propose a new command or SDK capability
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes: { label: Problem, description: What are you trying to do over USB that the tool cannot? }
+    validations: { required: true }
+  - type: textarea
+    id: endpoint
+    attributes: { label: Camera endpoint, description: If known, the HTTP path and a sample response from the camera. }

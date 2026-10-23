@@ -1,0 +1,87 @@
+{
+ "presetGroupArray": [
+  {
+   "id": "PRESET_GROUP_ID_VIDEO",
+   "presetArray": [
+    {
+     "id": 196608,
+     "mode": "FLAT_MODE_VIDEO",
+     "titleId": "PRESET_TITLE_MAX_VIDEO",
+     "userDefined": false,
+     "icon": "PRESET_ICON_MAX_VIDEO",
+     "settingArray": [
+      {
+       "id": 2,
+       "value": 4,
+       "isCaption": true
+      },
+      {
+       "id": 3,
+       "value": 10,
+       "isCaption": true
+      },
+      {
+       "id": 121,
+       "value": 7,
+       "isCaption": true
+      }
+     ],
+     "isModified": true
+    }
+   ],
+   "canAddPreset": false
+  },
+  {
+   "id": "PRESET_GROUP_ID_PHOTO",
+   "presetArray": [
+    {
+     "id": 262144,
+     "mode": "FLAT_MODE_PHOTO",
+     "titleId": "PRESET_TITLE_MAX_PHOTO",
+     "userDefined": false,
+     "icon": "PRESET_ICON_MAX_PHOTO",
+     "settingArray": [
+      {
+       "id": 122,
+       "value": 25,
+       "isCaption": true
+      }
+     ],
+     "isModified": false
+    }
+   ],
+   "canAddPreset": false
+  },
+  {
+   "id": "PRESET_GROUP_ID_TIMELAPSE",
+   "presetArray": [
+    {
+     "id": 327680,
+     "mode": "FLAT_MODE_TIME_WARP_VIDEO",
+     "titleId": "PRESET_TITLE_MAX_TIMEWARP",
+     "userDefined": false,
+     "icon": "PRESET_ICON_MAX_TIMEWARP",
+     "settingArray": [
+      {
+       "id": 2,
+       "value": 4,
+       "isCaption": true
+      },
+      {
+       "id": 111,
+       "value": 10,
+       "isCaption": true
+      },
+      {
+       "id": 121,
+       "value": 7,
+       "isCaption": true
+      }
+     ],
+     "isModified": false
+    }
+   ],
+   "canAddPreset": false
+  }
+ ]
+}
