@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-23
+
+First public release. Verified end to end against a HERO9 Black on firmware HD9.01.01.72.00
+and GoPro Labs 72.70 over USB-C.
+
 ### Changed
 
 - Module targets Go 1.26 (toolchain go1.26.10) to pick up the crypto/x509 fix flagged by govulncheck.
@@ -33,3 +38,6 @@ All notable changes to this project are documented here. The format follows
 - Fake HERO9 (`internal/fakecam`) driving CLI golden tests; hardware e2e suite behind `-tags e2e`.
 - M0 skeleton: `version`, `completion`, `docs` commands; output formats table/json/yaml/plain;
   sysexits-style exit codes; CI (lint, tests on 3 OSes, cross-build, govulncheck, GoReleaser snapshot).
+
+[Unreleased]: https://github.com/kazilotus/gopro9-cli/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/kazilotus/gopro9-cli/releases/tag/v0.1.0
